@@ -1,0 +1,38 @@
+.DS_Store
+
+# Xcode / Swift build output
+DerivedData/
+build/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Python local environments and caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Hugging Face / generated model caches. The app may bundle local models for
+# measurement, but lean git keeps those large files outside version control.
+.hf_cache/
+/models/
+dilemma/Resources/Models/**
+!dilemma/Resources/Models/
+!dilemma/Resources/Models/.gitkeep
+
+# Keep the local Bhatia source available on disk, but only track the small
+# source artifacts needed by the prototype.
+Bhatia/**
+!Bhatia/
+!Bhatia/Code and Data/
+!Bhatia/Code and Data/2 - Vectorize Reasons/
+!Bhatia/Code and Data/2 - Vectorize Reasons/attributes.csv
+!Bhatia/Code and Data/2 - Vectorize Reasons/code.ipynb
+!Bhatia/Code and Data/3 - Calculate Attributes/
+!Bhatia/Code and Data/3 - Calculate Attributes/code.py
+!Bhatia/Code and Data/5 - Cluster/
+!Bhatia/Code and Data/5 - Cluster/code.py
