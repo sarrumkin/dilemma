@@ -27,7 +27,7 @@ struct AttributeEmbeddingStore: Sendable {
 
   static func load(
     resourceName: String,
-    bundle: Bundle = DecisionKernelResources.bundle,
+    bundle: Bundle = DecisionKernelResourceBundle.bundle,
     subdirectory: String? = "Attributes"
   ) throws -> AttributeEmbeddingStore {
     guard let metadataURL = bundle.url(

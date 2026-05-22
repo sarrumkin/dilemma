@@ -2,8 +2,16 @@ import ProjectDescription
 
 let deploymentTarget: DeploymentTargets = .iOS("18.0")
 
+func targetInfoPlist(_ targetName: String) -> InfoPlist {
+  .file(path: "\(targetName)/Info.plist")
+}
+
 let project = Project(
   name: "dilemma",
+  options: .options(
+    disableBundleAccessors: true,
+    disableSynthesizedResourceAccessors: true
+  ),
   packages: [
     .package(url: "https://github.com/jkrukowski/swift-embeddings", from: "0.0.16"),
   ],
@@ -21,20 +29,12 @@ let project = Project(
       product: .app,
       bundleId: "com.local.dilemma",
       deploymentTargets: deploymentTarget,
-      infoPlist: .file(path: "dilemma/Sources/Info.plist"),
+      infoPlist: targetInfoPlist("dilemma"),
       // Buildable folders keep source membership synchronized in Xcode:
       // adding a Swift file under dilemma/Sources does not require
       // regenerating the project just to add a file reference.
       buildableFolders: [
-        .folder(
-          "dilemma/Sources",
-          exceptions: [
-            .exception(excluded: [
-              "Info.plist",
-              "file.txt",
-            ]),
-          ]
-        ),
+        "dilemma/Sources",
       ],
       dependencies: [
         .target(name: "DecisionKernel"),
@@ -46,7 +46,7 @@ let project = Project(
       product: .framework,
       bundleId: "com.local.dilemma.DecisionKernel",
       deploymentTargets: deploymentTarget,
-      infoPlist: .default,
+      infoPlist: targetInfoPlist("DecisionKernel"),
       resources: .resources([
         .folderReference(path: "DecisionKernel/Resources/Attributes"),
         .folderReference(path: "DecisionKernel/Resources/Models"),
@@ -65,9 +65,9 @@ let project = Project(
       product: .unitTests,
       bundleId: "com.local.dilemma.DecisionKernelTests",
       deploymentTargets: deploymentTarget,
-      infoPlist: .default,
+      infoPlist: targetInfoPlist("DecisionKernelTests"),
       buildableFolders: [
-        "DecisionKernelTests",
+        "DecisionKernelTests/Sources",
       ],
       dependencies: [
         .target(name: "DecisionKernel"),

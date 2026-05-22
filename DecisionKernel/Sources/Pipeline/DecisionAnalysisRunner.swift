@@ -6,7 +6,7 @@ public struct DecisionAnalysisRunner: Sendable {
   private let attributesResourceName: String
 
   public init(
-    bundle: Bundle = DecisionKernelResources.bundle,
+    bundle: Bundle = DecisionKernelResourceBundle.bundle,
     modelResourceName: String = "all-MiniLM-L12-v2",
     attributesResourceName: String = "attributes_l12"
   ) {

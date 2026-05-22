@@ -7,7 +7,7 @@ import Testing
 struct DecisionAnalysisRunnerIntegrationTests {
   @Test(
     .enabled(
-      if: DecisionKernelResources.bundle.url(
+      if: DecisionKernelResourceBundle.bundle.url(
         forResource: "all-MiniLM-L6-v2",
         withExtension: nil,
         subdirectory: "Models"
@@ -38,7 +38,7 @@ struct DecisionAnalysisRunnerIntegrationTests {
 
   @Test(
     .enabled(
-      if: DecisionKernelResources.bundle.url(
+      if: DecisionKernelResourceBundle.bundle.url(
         forResource: "all-MiniLM-L12-v2",
         withExtension: nil,
         subdirectory: "Models"
