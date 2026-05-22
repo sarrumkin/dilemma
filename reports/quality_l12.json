@@ -1,0 +1,378 @@
+{
+  "model_id": "sentence-transformers/all-MiniLM-L12-v2",
+  "embedding_dimension": 384,
+  "quality_smoke": [
+    {
+      "reason": "This option would save me money.",
+      "polarity": "benefit",
+      "top_5": [
+        {
+          "name": "money",
+          "direction": "pro",
+          "score": 0.4230688810348511
+        },
+        {
+          "name": "buying things i want",
+          "direction": "pro",
+          "score": 0.3188636600971222
+        },
+        {
+          "name": "immediacy vs. delay",
+          "direction": "pro",
+          "score": 0.3114238977432251
+        },
+        {
+          "name": "functional consumption",
+          "direction": "pro",
+          "score": 0.29703032970428467
+        },
+        {
+          "name": "utilitarian consumption",
+          "direction": "pro",
+          "score": 0.29703032970428467
+        }
+      ]
+    },
+    {
+      "reason": "There is a chance I could lose stability.",
+      "polarity": "cost",
+      "top_5": [
+        {
+          "name": "having physical ability",
+          "direction": "con",
+          "score": 0.42592763900756836
+        },
+        {
+          "name": "security",
+          "direction": "con",
+          "score": 0.39237844944000244
+        },
+        {
+          "name": "looking physically fit",
+          "direction": "con",
+          "score": 0.3633192777633667
+        },
+        {
+          "name": "having stability in life",
+          "direction": "con",
+          "score": 0.35413163900375366
+        },
+        {
+          "name": "safety vs. risk",
+          "direction": "con",
+          "score": 0.34755098819732666
+        }
+      ]
+    },
+    {
+      "reason": "It could improve my career prospects.",
+      "polarity": "benefit",
+      "top_5": [
+        {
+          "name": "career",
+          "direction": "pro",
+          "score": 0.652083694934845
+        },
+        {
+          "name": "having a career",
+          "direction": "pro",
+          "score": 0.61891770362854
+        },
+        {
+          "name": "obtaining an advanced educational degree",
+          "direction": "pro",
+          "score": 0.5591394901275635
+        },
+        {
+          "name": "keeping up to date with career-related knowledge",
+          "direction": "pro",
+          "score": 0.5224934220314026
+        },
+        {
+          "name": "having mechanical ability",
+          "direction": "pro",
+          "score": 0.5179570913314819
+        }
+      ]
+    },
+    {
+      "reason": "It may hurt my mental health.",
+      "polarity": "cost",
+      "top_5": [
+        {
+          "name": "being mentally healthy",
+          "direction": "con",
+          "score": 0.5525452494621277
+        },
+        {
+          "name": "protecting my wellbeing",
+          "direction": "con",
+          "score": 0.4990572929382324
+        },
+        {
+          "name": "health",
+          "direction": "con",
+          "score": 0.45920372009277344
+        },
+        {
+          "name": "avoiding stress",
+          "direction": "con",
+          "score": 0.43567681312561035
+        },
+        {
+          "name": "carrying myself well",
+          "direction": "con",
+          "score": 0.4230956435203552
+        }
+      ]
+    },
+    {
+      "reason": "It could strengthen the relationship.",
+      "polarity": "benefit",
+      "top_5": [
+        {
+          "name": "being close to my spouse",
+          "direction": "pro",
+          "score": 0.6967664957046509
+        },
+        {
+          "name": "having a mature romantic relationship",
+          "direction": "pro",
+          "score": 0.6503740549087524
+        },
+        {
+          "name": "having a good marriage",
+          "direction": "pro",
+          "score": 0.6402184963226318
+        },
+        {
+          "name": "having friends i love",
+          "direction": "pro",
+          "score": 0.6255025863647461
+        },
+        {
+          "name": "feeling close to my parents",
+          "direction": "pro",
+          "score": 0.6130732893943787
+        }
+      ]
+    },
+    {
+      "reason": "It would give me more time with my family.",
+      "polarity": "benefit",
+      "top_5": [
+        {
+          "name": "receiving help from my parents",
+          "direction": "pro",
+          "score": 0.4490513205528259
+        },
+        {
+          "name": "feeling close to my parents",
+          "direction": "pro",
+          "score": 0.44272658228874207
+        },
+        {
+          "name": "living close to my parents",
+          "direction": "pro",
+          "score": 0.432430624961853
+        },
+        {
+          "name": "having a stable family life",
+          "direction": "pro",
+          "score": 0.39389559626579285
+        },
+        {
+          "name": "being close to my children",
+          "direction": "pro",
+          "score": 0.38074183464050293
+        }
+      ]
+    },
+    {
+      "reason": "I would have more independence.",
+      "polarity": "benefit",
+      "top_5": [
+        {
+          "name": "having freedom",
+          "direction": "pro",
+          "score": 0.459507554769516
+        },
+        {
+          "name": "being independent",
+          "direction": "pro",
+          "score": 0.42283082008361816
+        },
+        {
+          "name": "having freedom of choice",
+          "direction": "pro",
+          "score": 0.4146525263786316
+        },
+        {
+          "name": "equality",
+          "direction": "pro",
+          "score": 0.4119518995285034
+        },
+        {
+          "name": "individualism",
+          "direction": "pro",
+          "score": 0.38565438985824585
+        }
+      ]
+    },
+    {
+      "reason": "It requires a lot of time and work.",
+      "polarity": "cost",
+      "top_5": [
+        {
+          "name": "agency perception",
+          "direction": "con",
+          "score": 0.41493427753448486
+        },
+        {
+          "name": "grit perception",
+          "direction": "con",
+          "score": 0.40420717000961304
+        },
+        {
+          "name": "ability perception",
+          "direction": "con",
+          "score": 0.3989189863204956
+        },
+        {
+          "name": "strength perception",
+          "direction": "con",
+          "score": 0.3887447118759155
+        },
+        {
+          "name": "achievement",
+          "direction": "con",
+          "score": 0.36596405506134033
+        }
+      ]
+    },
+    {
+      "reason": "I would learn useful new skills.",
+      "polarity": "benefit",
+      "top_5": [
+        {
+          "name": "having mechanical ability",
+          "direction": "pro",
+          "score": 0.4668044447898865
+        },
+        {
+          "name": "developing others",
+          "direction": "pro",
+          "score": 0.4388166069984436
+        },
+        {
+          "name": "having a career",
+          "direction": "pro",
+          "score": 0.4378017485141754
+        },
+        {
+          "name": "having a mentor",
+          "direction": "pro",
+          "score": 0.4336799383163452
+        },
+        {
+          "name": "keeping up to date with career-related knowledge",
+          "direction": "pro",
+          "score": 0.4275349974632263
+        }
+      ]
+    },
+    {
+      "reason": "It may damage my reputation.",
+      "polarity": "cost",
+      "top_5": [
+        {
+          "name": "being respected by others",
+          "direction": "con",
+          "score": 0.5052777528762817
+        },
+        {
+          "name": "social",
+          "direction": "con",
+          "score": 0.4886467158794403
+        },
+        {
+          "name": "carrying myself well",
+          "direction": "con",
+          "score": 0.4380636215209961
+        },
+        {
+          "name": "having others’ trust",
+          "direction": "con",
+          "score": 0.4356791377067566
+        },
+        {
+          "name": "standing up for my beliefs",
+          "direction": "con",
+          "score": 0.4020053446292877
+        }
+      ]
+    },
+    {
+      "reason": "It sounds enjoyable and exciting.",
+      "polarity": "benefit",
+      "top_5": [
+        {
+          "name": "pleasure",
+          "direction": "pro",
+          "score": 0.6041274666786194
+        },
+        {
+          "name": "having an exciting life",
+          "direction": "pro",
+          "score": 0.5928175449371338
+        },
+        {
+          "name": "stimulation",
+          "direction": "pro",
+          "score": 0.47615474462509155
+        },
+        {
+          "name": "hedonism",
+          "direction": "pro",
+          "score": 0.4746443033218384
+        },
+        {
+          "name": "devoting time to amusements",
+          "direction": "pro",
+          "score": 0.44711199402809143
+        }
+      ]
+    },
+    {
+      "reason": "It gives me a safer long-term path.",
+      "polarity": "benefit",
+      "top_5": [
+        {
+          "name": "security",
+          "direction": "pro",
+          "score": 0.5697342753410339
+        },
+        {
+          "name": "feeling safe and secure",
+          "direction": "pro",
+          "score": 0.49988609552383423
+        },
+        {
+          "name": "safety vs. risk",
+          "direction": "pro",
+          "score": 0.4903689920902252
+        },
+        {
+          "name": "providing my family with financial security",
+          "direction": "pro",
+          "score": 0.48869308829307556
+        },
+        {
+          "name": "protecting my wellbeing",
+          "direction": "pro",
+          "score": 0.4752465486526489
+        }
+      ]
+    }
+  ]
+}

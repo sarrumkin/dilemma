@@ -1,0 +1,2915 @@
+{
+  "asset_version": 1,
+  "attributes": [
+    {
+      "direction": "pro",
+      "name": "gains vs. losses",
+      "row_index": 0,
+      "source": "decision theory ",
+      "vector_offset": 0
+    },
+    {
+      "direction": "con",
+      "name": "gains vs. losses",
+      "row_index": 1,
+      "source": "decision theory ",
+      "vector_offset": 384
+    },
+    {
+      "direction": "pro",
+      "name": "safety vs. risk",
+      "row_index": 2,
+      "source": "decision theory ",
+      "vector_offset": 768
+    },
+    {
+      "direction": "con",
+      "name": "safety vs. risk",
+      "row_index": 3,
+      "source": "decision theory ",
+      "vector_offset": 1152
+    },
+    {
+      "direction": "pro",
+      "name": "immediacy vs. delay",
+      "row_index": 4,
+      "source": "decision theory ",
+      "vector_offset": 1536
+    },
+    {
+      "direction": "con",
+      "name": "immediacy vs. delay",
+      "row_index": 5,
+      "source": "decision theory ",
+      "vector_offset": 1920
+    },
+    {
+      "direction": "pro",
+      "name": "altruism and morality",
+      "row_index": 6,
+      "source": "decision theory ",
+      "vector_offset": 2304
+    },
+    {
+      "direction": "con",
+      "name": "altruism and morality",
+      "row_index": 7,
+      "source": "decision theory ",
+      "vector_offset": 2688
+    },
+    {
+      "direction": "pro",
+      "name": "complexity and effort",
+      "row_index": 8,
+      "source": "decision theory ",
+      "vector_offset": 3072
+    },
+    {
+      "direction": "con",
+      "name": "complexity and effort",
+      "row_index": 9,
+      "source": "decision theory ",
+      "vector_offset": 3456
+    },
+    {
+      "direction": "pro",
+      "name": "money",
+      "row_index": 10,
+      "source": "decision outcomes ",
+      "vector_offset": 3840
+    },
+    {
+      "direction": "con",
+      "name": "money",
+      "row_index": 11,
+      "source": "decision outcomes ",
+      "vector_offset": 4224
+    },
+    {
+      "direction": "pro",
+      "name": "social",
+      "row_index": 12,
+      "source": "decision outcomes ",
+      "vector_offset": 4608
+    },
+    {
+      "direction": "con",
+      "name": "social",
+      "row_index": 13,
+      "source": "decision outcomes ",
+      "vector_offset": 4992
+    },
+    {
+      "direction": "pro",
+      "name": "health",
+      "row_index": 14,
+      "source": "decision outcomes ",
+      "vector_offset": 5376
+    },
+    {
+      "direction": "con",
+      "name": "health",
+      "row_index": 15,
+      "source": "decision outcomes ",
+      "vector_offset": 5760
+    },
+    {
+      "direction": "pro",
+      "name": "mood",
+      "row_index": 16,
+      "source": "decision outcomes ",
+      "vector_offset": 6144
+    },
+    {
+      "direction": "con",
+      "name": "mood",
+      "row_index": 17,
+      "source": "decision outcomes ",
+      "vector_offset": 6528
+    },
+    {
+      "direction": "pro",
+      "name": "pleasure",
+      "row_index": 18,
+      "source": "decision outcomes ",
+      "vector_offset": 6912
+    },
+    {
+      "direction": "con",
+      "name": "pleasure",
+      "row_index": 19,
+      "source": "decision outcomes ",
+      "vector_offset": 7296
+    },
+    {
+      "direction": "pro",
+      "name": "existential concerns",
+      "row_index": 20,
+      "source": "decision outcomes ",
+      "vector_offset": 7680
+    },
+    {
+      "direction": "con",
+      "name": "existential concerns",
+      "row_index": 21,
+      "source": "decision outcomes ",
+      "vector_offset": 8064
+    },
+    {
+      "direction": "pro",
+      "name": "career",
+      "row_index": 22,
+      "source": "decision outcomes ",
+      "vector_offset": 8448
+    },
+    {
+      "direction": "con",
+      "name": "career",
+      "row_index": 23,
+      "source": "decision outcomes ",
+      "vector_offset": 8832
+    },
+    {
+      "direction": "pro",
+      "name": "personal development",
+      "row_index": 24,
+      "source": "decision outcomes ",
+      "vector_offset": 9216
+    },
+    {
+      "direction": "con",
+      "name": "personal development",
+      "row_index": 25,
+      "source": "decision outcomes ",
+      "vector_offset": 9600
+    },
+    {
+      "direction": "pro",
+      "name": "romance",
+      "row_index": 26,
+      "source": "decision outcomes ",
+      "vector_offset": 9984
+    },
+    {
+      "direction": "con",
+      "name": "romance",
+      "row_index": 27,
+      "source": "decision outcomes ",
+      "vector_offset": 10368
+    },
+    {
+      "direction": "pro",
+      "name": "knowledge",
+      "row_index": 28,
+      "source": "decision outcomes ",
+      "vector_offset": 10752
+    },
+    {
+      "direction": "con",
+      "name": "knowledge",
+      "row_index": 29,
+      "source": "decision outcomes ",
+      "vector_offset": 11136
+    },
+    {
+      "direction": "pro",
+      "name": "laws and institutions",
+      "row_index": 30,
+      "source": "decision outcomes ",
+      "vector_offset": 11520
+    },
+    {
+      "direction": "con",
+      "name": "laws and institutions",
+      "row_index": 31,
+      "source": "decision outcomes ",
+      "vector_offset": 11904
+    },
+    {
+      "direction": "pro",
+      "name": "utilitarian consumption",
+      "row_index": 32,
+      "source": "consumer dimensions ",
+      "vector_offset": 12288
+    },
+    {
+      "direction": "con",
+      "name": "utilitarian consumption",
+      "row_index": 33,
+      "source": "consumer dimensions ",
+      "vector_offset": 12672
+    },
+    {
+      "direction": "pro",
+      "name": "hedonic consumption",
+      "row_index": 34,
+      "source": "consumer dimensions ",
+      "vector_offset": 13056
+    },
+    {
+      "direction": "con",
+      "name": "hedonic consumption",
+      "row_index": 35,
+      "source": "consumer dimensions ",
+      "vector_offset": 13440
+    },
+    {
+      "direction": "pro",
+      "name": "material consumption",
+      "row_index": 36,
+      "source": "consumer dimensions ",
+      "vector_offset": 13824
+    },
+    {
+      "direction": "con",
+      "name": "material consumption",
+      "row_index": 37,
+      "source": "consumer dimensions ",
+      "vector_offset": 14208
+    },
+    {
+      "direction": "pro",
+      "name": "experiential consumption",
+      "row_index": 38,
+      "source": "consumer dimensions ",
+      "vector_offset": 14592
+    },
+    {
+      "direction": "con",
+      "name": "experiential consumption",
+      "row_index": 39,
+      "source": "consumer dimensions ",
+      "vector_offset": 14976
+    },
+    {
+      "direction": "pro",
+      "name": "valence",
+      "row_index": 40,
+      "source": "emotions ",
+      "vector_offset": 15360
+    },
+    {
+      "direction": "con",
+      "name": "valence",
+      "row_index": 41,
+      "source": "emotions ",
+      "vector_offset": 15744
+    },
+    {
+      "direction": "pro",
+      "name": "arousal",
+      "row_index": 42,
+      "source": "emotions ",
+      "vector_offset": 16128
+    },
+    {
+      "direction": "con",
+      "name": "arousal",
+      "row_index": 43,
+      "source": "emotions ",
+      "vector_offset": 16512
+    },
+    {
+      "direction": "pro",
+      "name": "anger",
+      "row_index": 44,
+      "source": "emotions ",
+      "vector_offset": 16896
+    },
+    {
+      "direction": "con",
+      "name": "anger",
+      "row_index": 45,
+      "source": "emotions ",
+      "vector_offset": 17280
+    },
+    {
+      "direction": "pro",
+      "name": "fear",
+      "row_index": 46,
+      "source": "emotions ",
+      "vector_offset": 17664
+    },
+    {
+      "direction": "con",
+      "name": "fear",
+      "row_index": 47,
+      "source": "emotions ",
+      "vector_offset": 18048
+    },
+    {
+      "direction": "pro",
+      "name": "happiness",
+      "row_index": 48,
+      "source": "emotions ",
+      "vector_offset": 18432
+    },
+    {
+      "direction": "con",
+      "name": "happiness",
+      "row_index": 49,
+      "source": "emotions ",
+      "vector_offset": 18816
+    },
+    {
+      "direction": "pro",
+      "name": "disgust",
+      "row_index": 50,
+      "source": "emotions ",
+      "vector_offset": 19200
+    },
+    {
+      "direction": "con",
+      "name": "disgust",
+      "row_index": 51,
+      "source": "emotions ",
+      "vector_offset": 19584
+    },
+    {
+      "direction": "pro",
+      "name": "autonomy",
+      "row_index": 52,
+      "source": "self determination ",
+      "vector_offset": 19968
+    },
+    {
+      "direction": "con",
+      "name": "autonomy",
+      "row_index": 53,
+      "source": "self determination ",
+      "vector_offset": 20352
+    },
+    {
+      "direction": "pro",
+      "name": "competence",
+      "row_index": 54,
+      "source": "self determination ",
+      "vector_offset": 20736
+    },
+    {
+      "direction": "con",
+      "name": "competence",
+      "row_index": 55,
+      "source": "self determination ",
+      "vector_offset": 21120
+    },
+    {
+      "direction": "pro",
+      "name": "social relatedness",
+      "row_index": 56,
+      "source": "self determination ",
+      "vector_offset": 21504
+    },
+    {
+      "direction": "con",
+      "name": "social relatedness",
+      "row_index": 57,
+      "source": "self determination ",
+      "vector_offset": 21888
+    },
+    {
+      "direction": "pro",
+      "name": "self direction",
+      "row_index": 58,
+      "source": "values ",
+      "vector_offset": 22272
+    },
+    {
+      "direction": "con",
+      "name": "self direction",
+      "row_index": 59,
+      "source": "values ",
+      "vector_offset": 22656
+    },
+    {
+      "direction": "pro",
+      "name": "stimulation",
+      "row_index": 60,
+      "source": "values ",
+      "vector_offset": 23040
+    },
+    {
+      "direction": "con",
+      "name": "stimulation",
+      "row_index": 61,
+      "source": "values ",
+      "vector_offset": 23424
+    },
+    {
+      "direction": "pro",
+      "name": "hedonism",
+      "row_index": 62,
+      "source": "values ",
+      "vector_offset": 23808
+    },
+    {
+      "direction": "con",
+      "name": "hedonism",
+      "row_index": 63,
+      "source": "values ",
+      "vector_offset": 24192
+    },
+    {
+      "direction": "pro",
+      "name": "achievement",
+      "row_index": 64,
+      "source": "values ",
+      "vector_offset": 24576
+    },
+    {
+      "direction": "con",
+      "name": "achievement",
+      "row_index": 65,
+      "source": "values ",
+      "vector_offset": 24960
+    },
+    {
+      "direction": "pro",
+      "name": "power",
+      "row_index": 66,
+      "source": "values ",
+      "vector_offset": 25344
+    },
+    {
+      "direction": "con",
+      "name": "power",
+      "row_index": 67,
+      "source": "values ",
+      "vector_offset": 25728
+    },
+    {
+      "direction": "pro",
+      "name": "security",
+      "row_index": 68,
+      "source": "values ",
+      "vector_offset": 26112
+    },
+    {
+      "direction": "con",
+      "name": "security",
+      "row_index": 69,
+      "source": "values ",
+      "vector_offset": 26496
+    },
+    {
+      "direction": "pro",
+      "name": "conformity",
+      "row_index": 70,
+      "source": "values ",
+      "vector_offset": 26880
+    },
+    {
+      "direction": "con",
+      "name": "conformity",
+      "row_index": 71,
+      "source": "values ",
+      "vector_offset": 27264
+    },
+    {
+      "direction": "pro",
+      "name": "tradition",
+      "row_index": 72,
+      "source": "values ",
+      "vector_offset": 27648
+    },
+    {
+      "direction": "con",
+      "name": "tradition",
+      "row_index": 73,
+      "source": "values ",
+      "vector_offset": 28032
+    },
+    {
+      "direction": "pro",
+      "name": "benevolence",
+      "row_index": 74,
+      "source": "values ",
+      "vector_offset": 28416
+    },
+    {
+      "direction": "con",
+      "name": "benevolence",
+      "row_index": 75,
+      "source": "values ",
+      "vector_offset": 28800
+    },
+    {
+      "direction": "pro",
+      "name": "universalism",
+      "row_index": 76,
+      "source": "values ",
+      "vector_offset": 29184
+    },
+    {
+      "direction": "con",
+      "name": "universalism",
+      "row_index": 77,
+      "source": "values ",
+      "vector_offset": 29568
+    },
+    {
+      "direction": "pro",
+      "name": "achieving salvation",
+      "row_index": 78,
+      "source": "goals ",
+      "vector_offset": 29952
+    },
+    {
+      "direction": "con",
+      "name": "achieving salvation",
+      "row_index": 79,
+      "source": "goals ",
+      "vector_offset": 30336
+    },
+    {
+      "direction": "pro",
+      "name": "appreciating the arts",
+      "row_index": 80,
+      "source": "goals ",
+      "vector_offset": 30720
+    },
+    {
+      "direction": "con",
+      "name": "appreciating the arts",
+      "row_index": 81,
+      "source": "goals ",
+      "vector_offset": 31104
+    },
+    {
+      "direction": "pro",
+      "name": "achieving my aspirations",
+      "row_index": 82,
+      "source": "goals ",
+      "vector_offset": 31488
+    },
+    {
+      "direction": "con",
+      "name": "achieving my aspirations",
+      "row_index": 83,
+      "source": "goals ",
+      "vector_offset": 31872
+    },
+    {
+      "direction": "pro",
+      "name": "sexual desirability",
+      "row_index": 84,
+      "source": "goals ",
+      "vector_offset": 32256
+    },
+    {
+      "direction": "con",
+      "name": "sexual desirability",
+      "row_index": 85,
+      "source": "goals ",
+      "vector_offset": 32640
+    },
+    {
+      "direction": "pro",
+      "name": "avoiding failure",
+      "row_index": 86,
+      "source": "goals ",
+      "vector_offset": 33024
+    },
+    {
+      "direction": "con",
+      "name": "avoiding failure",
+      "row_index": 87,
+      "source": "goals ",
+      "vector_offset": 33408
+    },
+    {
+      "direction": "pro",
+      "name": "avoiding feelings of guilt",
+      "row_index": 88,
+      "source": "goals ",
+      "vector_offset": 33792
+    },
+    {
+      "direction": "con",
+      "name": "avoiding feelings of guilt",
+      "row_index": 89,
+      "source": "goals ",
+      "vector_offset": 34176
+    },
+    {
+      "direction": "pro",
+      "name": "avoiding rejection by others",
+      "row_index": 90,
+      "source": "goals ",
+      "vector_offset": 34560
+    },
+    {
+      "direction": "con",
+      "name": "avoiding rejection by others",
+      "row_index": 91,
+      "source": "goals ",
+      "vector_offset": 34944
+    },
+    {
+      "direction": "pro",
+      "name": "avoiding stress",
+      "row_index": 92,
+      "source": "goals ",
+      "vector_offset": 35328
+    },
+    {
+      "direction": "con",
+      "name": "avoiding stress",
+      "row_index": 93,
+      "source": "goals ",
+      "vector_offset": 35712
+    },
+    {
+      "direction": "pro",
+      "name": "being able to fantasize",
+      "row_index": 94,
+      "source": "goals ",
+      "vector_offset": 36096
+    },
+    {
+      "direction": "con",
+      "name": "being able to fantasize",
+      "row_index": 95,
+      "source": "goals ",
+      "vector_offset": 36480
+    },
+    {
+      "direction": "pro",
+      "name": "being affectionate toward others",
+      "row_index": 96,
+      "source": "goals ",
+      "vector_offset": 36864
+    },
+    {
+      "direction": "con",
+      "name": "being affectionate toward others",
+      "row_index": 97,
+      "source": "goals ",
+      "vector_offset": 37248
+    },
+    {
+      "direction": "pro",
+      "name": "being ambitious",
+      "row_index": 98,
+      "source": "goals ",
+      "vector_offset": 37632
+    },
+    {
+      "direction": "con",
+      "name": "being ambitious",
+      "row_index": 99,
+      "source": "goals ",
+      "vector_offset": 38016
+    },
+    {
+      "direction": "pro",
+      "name": "being better than others",
+      "row_index": 100,
+      "source": "goals ",
+      "vector_offset": 38400
+    },
+    {
+      "direction": "con",
+      "name": "being better than others",
+      "row_index": 101,
+      "source": "goals ",
+      "vector_offset": 38784
+    },
+    {
+      "direction": "pro",
+      "name": "being lighthearted",
+      "row_index": 102,
+      "source": "goals ",
+      "vector_offset": 39168
+    },
+    {
+      "direction": "con",
+      "name": "being lighthearted",
+      "row_index": 103,
+      "source": "goals ",
+      "vector_offset": 39552
+    },
+    {
+      "direction": "pro",
+      "name": "being clean",
+      "row_index": 104,
+      "source": "goals ",
+      "vector_offset": 39936
+    },
+    {
+      "direction": "con",
+      "name": "being clean",
+      "row_index": 105,
+      "source": "goals ",
+      "vector_offset": 40320
+    },
+    {
+      "direction": "pro",
+      "name": "maintaining conventional views",
+      "row_index": 106,
+      "source": "goals ",
+      "vector_offset": 40704
+    },
+    {
+      "direction": "con",
+      "name": "maintaining conventional views",
+      "row_index": 107,
+      "source": "goals ",
+      "vector_offset": 41088
+    },
+    {
+      "direction": "pro",
+      "name": "being creative",
+      "row_index": 108,
+      "source": "goals ",
+      "vector_offset": 41472
+    },
+    {
+      "direction": "con",
+      "name": "being creative",
+      "row_index": 109,
+      "source": "goals ",
+      "vector_offset": 41856
+    },
+    {
+      "direction": "pro",
+      "name": "being curious",
+      "row_index": 110,
+      "source": "goals ",
+      "vector_offset": 42240
+    },
+    {
+      "direction": "con",
+      "name": "being curious",
+      "row_index": 111,
+      "source": "goals ",
+      "vector_offset": 42624
+    },
+    {
+      "direction": "pro",
+      "name": "being disciplined",
+      "row_index": 112,
+      "source": "goals ",
+      "vector_offset": 43008
+    },
+    {
+      "direction": "con",
+      "name": "being disciplined",
+      "row_index": 113,
+      "source": "goals ",
+      "vector_offset": 43392
+    },
+    {
+      "direction": "pro",
+      "name": "having freedom",
+      "row_index": 114,
+      "source": "goals ",
+      "vector_offset": 43776
+    },
+    {
+      "direction": "con",
+      "name": "having freedom",
+      "row_index": 115,
+      "source": "goals ",
+      "vector_offset": 44160
+    },
+    {
+      "direction": "pro",
+      "name": "being good looking",
+      "row_index": 116,
+      "source": "goals ",
+      "vector_offset": 44544
+    },
+    {
+      "direction": "con",
+      "name": "being good looking",
+      "row_index": 117,
+      "source": "goals ",
+      "vector_offset": 44928
+    },
+    {
+      "direction": "pro",
+      "name": "being honest",
+      "row_index": 118,
+      "source": "goals ",
+      "vector_offset": 45312
+    },
+    {
+      "direction": "con",
+      "name": "being honest",
+      "row_index": 119,
+      "source": "goals ",
+      "vector_offset": 45696
+    },
+    {
+      "direction": "pro",
+      "name": "being in love",
+      "row_index": 120,
+      "source": "goals ",
+      "vector_offset": 46080
+    },
+    {
+      "direction": "con",
+      "name": "being in love",
+      "row_index": 121,
+      "source": "goals ",
+      "vector_offset": 46464
+    },
+    {
+      "direction": "pro",
+      "name": "changing my ways",
+      "row_index": 122,
+      "source": "goals ",
+      "vector_offset": 46848
+    },
+    {
+      "direction": "con",
+      "name": "changing my ways",
+      "row_index": 123,
+      "source": "goals ",
+      "vector_offset": 47232
+    },
+    {
+      "direction": "pro",
+      "name": "being intelligent",
+      "row_index": 124,
+      "source": "goals ",
+      "vector_offset": 47616
+    },
+    {
+      "direction": "con",
+      "name": "being intelligent",
+      "row_index": 125,
+      "source": "goals ",
+      "vector_offset": 48000
+    },
+    {
+      "direction": "pro",
+      "name": "being likeable",
+      "row_index": 126,
+      "source": "goals ",
+      "vector_offset": 48384
+    },
+    {
+      "direction": "con",
+      "name": "being likeable",
+      "row_index": 127,
+      "source": "goals ",
+      "vector_offset": 48768
+    },
+    {
+      "direction": "pro",
+      "name": "being logical",
+      "row_index": 128,
+      "source": "goals ",
+      "vector_offset": 49152
+    },
+    {
+      "direction": "con",
+      "name": "being logical",
+      "row_index": 129,
+      "source": "goals ",
+      "vector_offset": 49536
+    },
+    {
+      "direction": "pro",
+      "name": "being really passionate ",
+      "row_index": 130,
+      "source": "goals ",
+      "vector_offset": 49920
+    },
+    {
+      "direction": "con",
+      "name": "being really passionate ",
+      "row_index": 131,
+      "source": "goals ",
+      "vector_offset": 50304
+    },
+    {
+      "direction": "pro",
+      "name": "being playful",
+      "row_index": 132,
+      "source": "goals ",
+      "vector_offset": 50688
+    },
+    {
+      "direction": "con",
+      "name": "being playful",
+      "row_index": 133,
+      "source": "goals ",
+      "vector_offset": 51072
+    },
+    {
+      "direction": "pro",
+      "name": "being in the center of things",
+      "row_index": 134,
+      "source": "goals ",
+      "vector_offset": 51456
+    },
+    {
+      "direction": "con",
+      "name": "being in the center of things",
+      "row_index": 135,
+      "source": "goals ",
+      "vector_offset": 51840
+    },
+    {
+      "direction": "pro",
+      "name": "being practical",
+      "row_index": 136,
+      "source": "goals ",
+      "vector_offset": 52224
+    },
+    {
+      "direction": "con",
+      "name": "being practical",
+      "row_index": 137,
+      "source": "goals ",
+      "vector_offset": 52608
+    },
+    {
+      "direction": "pro",
+      "name": "keeping to myself",
+      "row_index": 138,
+      "source": "goals ",
+      "vector_offset": 52992
+    },
+    {
+      "direction": "con",
+      "name": "keeping to myself",
+      "row_index": 139,
+      "source": "goals ",
+      "vector_offset": 53376
+    },
+    {
+      "direction": "pro",
+      "name": "being admired",
+      "row_index": 140,
+      "source": "goals ",
+      "vector_offset": 53760
+    },
+    {
+      "direction": "con",
+      "name": "being admired",
+      "row_index": 141,
+      "source": "goals ",
+      "vector_offset": 54144
+    },
+    {
+      "direction": "pro",
+      "name": "being reflective",
+      "row_index": 142,
+      "source": "goals ",
+      "vector_offset": 54528
+    },
+    {
+      "direction": "con",
+      "name": "being reflective",
+      "row_index": 143,
+      "source": "goals ",
+      "vector_offset": 54912
+    },
+    {
+      "direction": "pro",
+      "name": "being respected by others",
+      "row_index": 144,
+      "source": "goals ",
+      "vector_offset": 55296
+    },
+    {
+      "direction": "con",
+      "name": "being respected by others",
+      "row_index": 145,
+      "source": "goals ",
+      "vector_offset": 55680
+    },
+    {
+      "direction": "pro",
+      "name": "being responsible",
+      "row_index": 146,
+      "source": "goals ",
+      "vector_offset": 56064
+    },
+    {
+      "direction": "con",
+      "name": "being responsible",
+      "row_index": 147,
+      "source": "goals ",
+      "vector_offset": 56448
+    },
+    {
+      "direction": "pro",
+      "name": "being independent",
+      "row_index": 148,
+      "source": "goals ",
+      "vector_offset": 56832
+    },
+    {
+      "direction": "con",
+      "name": "being independent",
+      "row_index": 149,
+      "source": "goals ",
+      "vector_offset": 57216
+    },
+    {
+      "direction": "pro",
+      "name": "being socially attractive",
+      "row_index": 150,
+      "source": "goals ",
+      "vector_offset": 57600
+    },
+    {
+      "direction": "con",
+      "name": "being socially attractive",
+      "row_index": 151,
+      "source": "goals ",
+      "vector_offset": 57984
+    },
+    {
+      "direction": "pro",
+      "name": "being spontaneous",
+      "row_index": 152,
+      "source": "goals ",
+      "vector_offset": 58368
+    },
+    {
+      "direction": "con",
+      "name": "being spontaneous",
+      "row_index": 153,
+      "source": "goals ",
+      "vector_offset": 58752
+    },
+    {
+      "direction": "pro",
+      "name": "being unique",
+      "row_index": 154,
+      "source": "goals ",
+      "vector_offset": 59136
+    },
+    {
+      "direction": "con",
+      "name": "being unique",
+      "row_index": 155,
+      "source": "goals ",
+      "vector_offset": 59520
+    },
+    {
+      "direction": "pro",
+      "name": "belonging to social groups",
+      "row_index": 156,
+      "source": "goals ",
+      "vector_offset": 59904
+    },
+    {
+      "direction": "con",
+      "name": "belonging to social groups",
+      "row_index": 157,
+      "source": "goals ",
+      "vector_offset": 60288
+    },
+    {
+      "direction": "pro",
+      "name": "being able to meet my financial needs",
+      "row_index": 158,
+      "source": "goals ",
+      "vector_offset": 60672
+    },
+    {
+      "direction": "con",
+      "name": "being able to meet my financial needs",
+      "row_index": 159,
+      "source": "goals ",
+      "vector_offset": 61056
+    },
+    {
+      "direction": "pro",
+      "name": "buying things i want",
+      "row_index": 160,
+      "source": "goals ",
+      "vector_offset": 61440
+    },
+    {
+      "direction": "con",
+      "name": "buying things i want",
+      "row_index": 161,
+      "source": "goals ",
+      "vector_offset": 61824
+    },
+    {
+      "direction": "pro",
+      "name": "being taken care of",
+      "row_index": 162,
+      "source": "goals ",
+      "vector_offset": 62208
+    },
+    {
+      "direction": "con",
+      "name": "being taken care of",
+      "row_index": 163,
+      "source": "goals ",
+      "vector_offset": 62592
+    },
+    {
+      "direction": "pro",
+      "name": "having a career",
+      "row_index": 164,
+      "source": "goals ",
+      "vector_offset": 62976
+    },
+    {
+      "direction": "con",
+      "name": "having a career",
+      "row_index": 165,
+      "source": "goals ",
+      "vector_offset": 63360
+    },
+    {
+      "direction": "pro",
+      "name": "keeping up to date with career-related knowledge",
+      "row_index": 166,
+      "source": "goals ",
+      "vector_offset": 63744
+    },
+    {
+      "direction": "con",
+      "name": "keeping up to date with career-related knowledge",
+      "row_index": 167,
+      "source": "goals ",
+      "vector_offset": 64128
+    },
+    {
+      "direction": "pro",
+      "name": "being committed to a cause",
+      "row_index": 168,
+      "source": "goals ",
+      "vector_offset": 64512
+    },
+    {
+      "direction": "con",
+      "name": "being committed to a cause",
+      "row_index": 169,
+      "source": "goals ",
+      "vector_offset": 64896
+    },
+    {
+      "direction": "pro",
+      "name": "being charitable",
+      "row_index": 170,
+      "source": "goals ",
+      "vector_offset": 65280
+    },
+    {
+      "direction": "con",
+      "name": "being charitable",
+      "row_index": 171,
+      "source": "goals ",
+      "vector_offset": 65664
+    },
+    {
+      "direction": "pro",
+      "name": "being close to my children",
+      "row_index": 172,
+      "source": "goals ",
+      "vector_offset": 66048
+    },
+    {
+      "direction": "con",
+      "name": "being close to my children",
+      "row_index": 173,
+      "source": "goals ",
+      "vector_offset": 66432
+    },
+    {
+      "direction": "pro",
+      "name": "being close to my spouse",
+      "row_index": 174,
+      "source": "goals ",
+      "vector_offset": 66816
+    },
+    {
+      "direction": "con",
+      "name": "being close to my spouse",
+      "row_index": 175,
+      "source": "goals ",
+      "vector_offset": 67200
+    },
+    {
+      "direction": "pro",
+      "name": "being happy",
+      "row_index": 176,
+      "source": "goals ",
+      "vector_offset": 67584
+    },
+    {
+      "direction": "con",
+      "name": "being happy",
+      "row_index": 177,
+      "source": "goals ",
+      "vector_offset": 67968
+    },
+    {
+      "direction": "pro",
+      "name": "making a lasting contribution to society",
+      "row_index": 178,
+      "source": "goals ",
+      "vector_offset": 68352
+    },
+    {
+      "direction": "con",
+      "name": "making a lasting contribution to society",
+      "row_index": 179,
+      "source": "goals ",
+      "vector_offset": 68736
+    },
+    {
+      "direction": "pro",
+      "name": "being in control of the environment",
+      "row_index": 180,
+      "source": "goals ",
+      "vector_offset": 69120
+    },
+    {
+      "direction": "con",
+      "name": "being in control of the environment",
+      "row_index": 181,
+      "source": "goals ",
+      "vector_offset": 69504
+    },
+    {
+      "direction": "pro",
+      "name": "having control over others",
+      "row_index": 182,
+      "source": "goals ",
+      "vector_offset": 69888
+    },
+    {
+      "direction": "con",
+      "name": "having control over others",
+      "row_index": 183,
+      "source": "goals ",
+      "vector_offset": 70272
+    },
+    {
+      "direction": "pro",
+      "name": "being in a position to make decisions for others",
+      "row_index": 184,
+      "source": "goals ",
+      "vector_offset": 70656
+    },
+    {
+      "direction": "con",
+      "name": "being in a position to make decisions for others",
+      "row_index": 185,
+      "source": "goals ",
+      "vector_offset": 71040
+    },
+    {
+      "direction": "pro",
+      "name": "defending myself against others’ criticisms or attacks",
+      "row_index": 186,
+      "source": "goals ",
+      "vector_offset": 71424
+    },
+    {
+      "direction": "con",
+      "name": "defending myself against others’ criticisms or attacks",
+      "row_index": 187,
+      "source": "goals ",
+      "vector_offset": 71808
+    },
+    {
+      "direction": "pro",
+      "name": "having enough money to leave for my descendants",
+      "row_index": 188,
+      "source": "goals ",
+      "vector_offset": 72192
+    },
+    {
+      "direction": "con",
+      "name": "having enough money to leave for my descendants",
+      "row_index": 189,
+      "source": "goals ",
+      "vector_offset": 72576
+    },
+    {
+      "direction": "pro",
+      "name": "having new and different experiences",
+      "row_index": 190,
+      "source": "goals ",
+      "vector_offset": 72960
+    },
+    {
+      "direction": "con",
+      "name": "having new and different experiences",
+      "row_index": 191,
+      "source": "goals ",
+      "vector_offset": 73344
+    },
+    {
+      "direction": "pro",
+      "name": "accomplishing difficult things",
+      "row_index": 192,
+      "source": "goals ",
+      "vector_offset": 73728
+    },
+    {
+      "direction": "con",
+      "name": "accomplishing difficult things",
+      "row_index": 193,
+      "source": "goals ",
+      "vector_offset": 74112
+    },
+    {
+      "direction": "pro",
+      "name": "having an easy and comfortable life",
+      "row_index": 194,
+      "source": "goals ",
+      "vector_offset": 74496
+    },
+    {
+      "direction": "con",
+      "name": "having an easy and comfortable life",
+      "row_index": 195,
+      "source": "goals ",
+      "vector_offset": 74880
+    },
+    {
+      "direction": "pro",
+      "name": "getting an education",
+      "row_index": 196,
+      "source": "goals ",
+      "vector_offset": 75264
+    },
+    {
+      "direction": "con",
+      "name": "getting an education",
+      "row_index": 197,
+      "source": "goals ",
+      "vector_offset": 75648
+    },
+    {
+      "direction": "pro",
+      "name": "obtaining an advanced educational degree",
+      "row_index": 198,
+      "source": "goals ",
+      "vector_offset": 76032
+    },
+    {
+      "direction": "con",
+      "name": "obtaining an advanced educational degree",
+      "row_index": 199,
+      "source": "goals ",
+      "vector_offset": 76416
+    },
+    {
+      "direction": "pro",
+      "name": "amusing others",
+      "row_index": 200,
+      "source": "goals ",
+      "vector_offset": 76800
+    },
+    {
+      "direction": "con",
+      "name": "amusing others",
+      "row_index": 201,
+      "source": "goals ",
+      "vector_offset": 77184
+    },
+    {
+      "direction": "pro",
+      "name": "having an erotic relationship",
+      "row_index": 202,
+      "source": "goals ",
+      "vector_offset": 77568
+    },
+    {
+      "direction": "con",
+      "name": "having an erotic relationship",
+      "row_index": 203,
+      "source": "goals ",
+      "vector_offset": 77952
+    },
+    {
+      "direction": "pro",
+      "name": "being an ethical person",
+      "row_index": 204,
+      "source": "goals ",
+      "vector_offset": 78336
+    },
+    {
+      "direction": "con",
+      "name": "being an ethical person",
+      "row_index": 205,
+      "source": "goals ",
+      "vector_offset": 78720
+    },
+    {
+      "direction": "pro",
+      "name": "having an exciting life",
+      "row_index": 206,
+      "source": "goals ",
+      "vector_offset": 79104
+    },
+    {
+      "direction": "con",
+      "name": "having an exciting life",
+      "row_index": 207,
+      "source": "goals ",
+      "vector_offset": 79488
+    },
+    {
+      "direction": "pro",
+      "name": "being physically active",
+      "row_index": 208,
+      "source": "goals ",
+      "vector_offset": 79872
+    },
+    {
+      "direction": "con",
+      "name": "being physically active",
+      "row_index": 209,
+      "source": "goals ",
+      "vector_offset": 80256
+    },
+    {
+      "direction": "pro",
+      "name": "seeking new things",
+      "row_index": 210,
+      "source": "goals ",
+      "vector_offset": 80640
+    },
+    {
+      "direction": "con",
+      "name": "seeking new things",
+      "row_index": 211,
+      "source": "goals ",
+      "vector_offset": 81024
+    },
+    {
+      "direction": "pro",
+      "name": "keeping up with fashion",
+      "row_index": 212,
+      "source": "goals ",
+      "vector_offset": 81408
+    },
+    {
+      "direction": "con",
+      "name": "keeping up with fashion",
+      "row_index": 213,
+      "source": "goals ",
+      "vector_offset": 81792
+    },
+    {
+      "direction": "pro",
+      "name": "feeling close to my parents",
+      "row_index": 214,
+      "source": "goals ",
+      "vector_offset": 82176
+    },
+    {
+      "direction": "con",
+      "name": "feeling close to my parents",
+      "row_index": 215,
+      "source": "goals ",
+      "vector_offset": 82560
+    },
+    {
+      "direction": "pro",
+      "name": "having emotional intimacy",
+      "row_index": 216,
+      "source": "goals ",
+      "vector_offset": 82944
+    },
+    {
+      "direction": "con",
+      "name": "having emotional intimacy",
+      "row_index": 217,
+      "source": "goals ",
+      "vector_offset": 83328
+    },
+    {
+      "direction": "pro",
+      "name": "feeling safe and secure",
+      "row_index": 218,
+      "source": "goals ",
+      "vector_offset": 83712
+    },
+    {
+      "direction": "con",
+      "name": "feeling safe and secure",
+      "row_index": 219,
+      "source": "goals ",
+      "vector_offset": 84096
+    },
+    {
+      "direction": "pro",
+      "name": "finding higher meaning in life",
+      "row_index": 220,
+      "source": "goals ",
+      "vector_offset": 84480
+    },
+    {
+      "direction": "con",
+      "name": "finding higher meaning in life",
+      "row_index": 221,
+      "source": "goals ",
+      "vector_offset": 84864
+    },
+    {
+      "direction": "pro",
+      "name": "having firm values",
+      "row_index": 222,
+      "source": "goals ",
+      "vector_offset": 85248
+    },
+    {
+      "direction": "con",
+      "name": "having firm values",
+      "row_index": 223,
+      "source": "goals ",
+      "vector_offset": 85632
+    },
+    {
+      "direction": "pro",
+      "name": "having flexibility of viewpoint",
+      "row_index": 224,
+      "source": "goals ",
+      "vector_offset": 86016
+    },
+    {
+      "direction": "con",
+      "name": "having flexibility of viewpoint",
+      "row_index": 225,
+      "source": "goals ",
+      "vector_offset": 86400
+    },
+    {
+      "direction": "pro",
+      "name": "having freedom of choice",
+      "row_index": 226,
+      "source": "goals ",
+      "vector_offset": 86784
+    },
+    {
+      "direction": "con",
+      "name": "having freedom of choice",
+      "row_index": 227,
+      "source": "goals ",
+      "vector_offset": 87168
+    },
+    {
+      "direction": "pro",
+      "name": "having a good marriage",
+      "row_index": 228,
+      "source": "goals ",
+      "vector_offset": 87552
+    },
+    {
+      "direction": "con",
+      "name": "having a good marriage",
+      "row_index": 229,
+      "source": "goals ",
+      "vector_offset": 87936
+    },
+    {
+      "direction": "pro",
+      "name": "being a good parent",
+      "row_index": 230,
+      "source": "goals ",
+      "vector_offset": 88320
+    },
+    {
+      "direction": "con",
+      "name": "being a good parent",
+      "row_index": 231,
+      "source": "goals ",
+      "vector_offset": 88704
+    },
+    {
+      "direction": "pro",
+      "name": "having friends i love",
+      "row_index": 232,
+      "source": "goals ",
+      "vector_offset": 89088
+    },
+    {
+      "direction": "con",
+      "name": "having friends i love",
+      "row_index": 233,
+      "source": "goals ",
+      "vector_offset": 89472
+    },
+    {
+      "direction": "pro",
+      "name": "receiving help from my parents",
+      "row_index": 234,
+      "source": "goals ",
+      "vector_offset": 89856
+    },
+    {
+      "direction": "con",
+      "name": "receiving help from my parents",
+      "row_index": 235,
+      "source": "goals ",
+      "vector_offset": 90240
+    },
+    {
+      "direction": "pro",
+      "name": "helping others",
+      "row_index": 236,
+      "source": "goals ",
+      "vector_offset": 90624
+    },
+    {
+      "direction": "con",
+      "name": "helping others",
+      "row_index": 237,
+      "source": "goals ",
+      "vector_offset": 91008
+    },
+    {
+      "direction": "pro",
+      "name": "devoting time to amusements",
+      "row_index": 238,
+      "source": "goals ",
+      "vector_offset": 91392
+    },
+    {
+      "direction": "con",
+      "name": "devoting time to amusements",
+      "row_index": 239,
+      "source": "goals ",
+      "vector_offset": 91776
+    },
+    {
+      "direction": "pro",
+      "name": "having intellectual experiences",
+      "row_index": 240,
+      "source": "goals ",
+      "vector_offset": 92160
+    },
+    {
+      "direction": "con",
+      "name": "having intellectual experiences",
+      "row_index": 241,
+      "source": "goals ",
+      "vector_offset": 92544
+    },
+    {
+      "direction": "pro",
+      "name": "having a job i really like",
+      "row_index": 242,
+      "source": "goals ",
+      "vector_offset": 92928
+    },
+    {
+      "direction": "con",
+      "name": "having a job i really like",
+      "row_index": 243,
+      "source": "goals ",
+      "vector_offset": 93312
+    },
+    {
+      "direction": "pro",
+      "name": "knowing and being on familiar terms with many others",
+      "row_index": 244,
+      "source": "goals ",
+      "vector_offset": 93696
+    },
+    {
+      "direction": "con",
+      "name": "knowing and being on familiar terms with many others",
+      "row_index": 245,
+      "source": "goals ",
+      "vector_offset": 94080
+    },
+    {
+      "direction": "pro",
+      "name": "knowing myself",
+      "row_index": 246,
+      "source": "goals ",
+      "vector_offset": 94464
+    },
+    {
+      "direction": "con",
+      "name": "knowing myself",
+      "row_index": 247,
+      "source": "goals ",
+      "vector_offset": 94848
+    },
+    {
+      "direction": "pro",
+      "name": "being a leader",
+      "row_index": 248,
+      "source": "goals ",
+      "vector_offset": 95232
+    },
+    {
+      "direction": "con",
+      "name": "being a leader",
+      "row_index": 249,
+      "source": "goals ",
+      "vector_offset": 95616
+    },
+    {
+      "direction": "pro",
+      "name": "learning more about art",
+      "row_index": 250,
+      "source": "goals ",
+      "vector_offset": 96000
+    },
+    {
+      "direction": "con",
+      "name": "learning more about art",
+      "row_index": 251,
+      "source": "goals ",
+      "vector_offset": 96384
+    },
+    {
+      "direction": "pro",
+      "name": "accepting life’s limitations",
+      "row_index": 252,
+      "source": "goals ",
+      "vector_offset": 96768
+    },
+    {
+      "direction": "con",
+      "name": "accepting life’s limitations",
+      "row_index": 253,
+      "source": "goals ",
+      "vector_offset": 97152
+    },
+    {
+      "direction": "pro",
+      "name": "living close to my parents",
+      "row_index": 254,
+      "source": "goals ",
+      "vector_offset": 97536
+    },
+    {
+      "direction": "con",
+      "name": "living close to my parents",
+      "row_index": 255,
+      "source": "goals ",
+      "vector_offset": 97920
+    },
+    {
+      "direction": "pro",
+      "name": "carrying myself well",
+      "row_index": 256,
+      "source": "goals ",
+      "vector_offset": 98304
+    },
+    {
+      "direction": "con",
+      "name": "carrying myself well",
+      "row_index": 257,
+      "source": "goals ",
+      "vector_offset": 98688
+    },
+    {
+      "direction": "pro",
+      "name": "looking physically fit",
+      "row_index": 258,
+      "source": "goals ",
+      "vector_offset": 99072
+    },
+    {
+      "direction": "con",
+      "name": "looking physically fit",
+      "row_index": 259,
+      "source": "goals ",
+      "vector_offset": 99456
+    },
+    {
+      "direction": "pro",
+      "name": "looking young",
+      "row_index": 260,
+      "source": "goals ",
+      "vector_offset": 99840
+    },
+    {
+      "direction": "con",
+      "name": "looking young",
+      "row_index": 261,
+      "source": "goals ",
+      "vector_offset": 100224
+    },
+    {
+      "direction": "pro",
+      "name": "having a mature romantic relationship",
+      "row_index": 262,
+      "source": "goals ",
+      "vector_offset": 100608
+    },
+    {
+      "direction": "con",
+      "name": "having a mature romantic relationship",
+      "row_index": 263,
+      "source": "goals ",
+      "vector_offset": 100992
+    },
+    {
+      "direction": "pro",
+      "name": "having a mature understanding of life",
+      "row_index": 264,
+      "source": "goals ",
+      "vector_offset": 101376
+    },
+    {
+      "direction": "con",
+      "name": "having a mature understanding of life",
+      "row_index": 265,
+      "source": "goals ",
+      "vector_offset": 101760
+    },
+    {
+      "direction": "pro",
+      "name": "having mechanical ability",
+      "row_index": 266,
+      "source": "goals ",
+      "vector_offset": 102144
+    },
+    {
+      "direction": "con",
+      "name": "having mechanical ability",
+      "row_index": 267,
+      "source": "goals ",
+      "vector_offset": 102528
+    },
+    {
+      "direction": "pro",
+      "name": "being mentally healthy",
+      "row_index": 268,
+      "source": "goals ",
+      "vector_offset": 102912
+    },
+    {
+      "direction": "con",
+      "name": "being mentally healthy",
+      "row_index": 269,
+      "source": "goals ",
+      "vector_offset": 103296
+    },
+    {
+      "direction": "pro",
+      "name": "having a mentor",
+      "row_index": 270,
+      "source": "goals ",
+      "vector_offset": 103680
+    },
+    {
+      "direction": "con",
+      "name": "having a mentor",
+      "row_index": 271,
+      "source": "goals ",
+      "vector_offset": 104064
+    },
+    {
+      "direction": "pro",
+      "name": "making a lot of money",
+      "row_index": 272,
+      "source": "goals ",
+      "vector_offset": 104448
+    },
+    {
+      "direction": "con",
+      "name": "making a lot of money",
+      "row_index": 273,
+      "source": "goals ",
+      "vector_offset": 104832
+    },
+    {
+      "direction": "pro",
+      "name": "having original ideas",
+      "row_index": 274,
+      "source": "goals ",
+      "vector_offset": 105216
+    },
+    {
+      "direction": "con",
+      "name": "having original ideas",
+      "row_index": 275,
+      "source": "goals ",
+      "vector_offset": 105600
+    },
+    {
+      "direction": "pro",
+      "name": "being physiologically healthy",
+      "row_index": 276,
+      "source": "goals ",
+      "vector_offset": 105984
+    },
+    {
+      "direction": "con",
+      "name": "being physiologically healthy",
+      "row_index": 277,
+      "source": "goals ",
+      "vector_offset": 106368
+    },
+    {
+      "direction": "pro",
+      "name": "having others to rely on",
+      "row_index": 278,
+      "source": "goals ",
+      "vector_offset": 106752
+    },
+    {
+      "direction": "con",
+      "name": "having others to rely on",
+      "row_index": 279,
+      "source": "goals ",
+      "vector_offset": 107136
+    },
+    {
+      "direction": "pro",
+      "name": "having others’ trust",
+      "row_index": 280,
+      "source": "goals ",
+      "vector_offset": 107520
+    },
+    {
+      "direction": "con",
+      "name": "having others’ trust",
+      "row_index": 281,
+      "source": "goals ",
+      "vector_offset": 107904
+    },
+    {
+      "direction": "pro",
+      "name": "overcoming failure",
+      "row_index": 282,
+      "source": "goals ",
+      "vector_offset": 108288
+    },
+    {
+      "direction": "con",
+      "name": "overcoming failure",
+      "row_index": 283,
+      "source": "goals ",
+      "vector_offset": 108672
+    },
+    {
+      "direction": "pro",
+      "name": "setting and following my own guidelines",
+      "row_index": 284,
+      "source": "goals ",
+      "vector_offset": 109056
+    },
+    {
+      "direction": "con",
+      "name": "setting and following my own guidelines",
+      "row_index": 285,
+      "source": "goals ",
+      "vector_offset": 109440
+    },
+    {
+      "direction": "pro",
+      "name": "having peace of mind",
+      "row_index": 286,
+      "source": "goals ",
+      "vector_offset": 109824
+    },
+    {
+      "direction": "con",
+      "name": "having peace of mind",
+      "row_index": 287,
+      "source": "goals ",
+      "vector_offset": 110208
+    },
+    {
+      "direction": "pro",
+      "name": "experiencing personal growth",
+      "row_index": 288,
+      "source": "goals ",
+      "vector_offset": 110592
+    },
+    {
+      "direction": "con",
+      "name": "experiencing personal growth",
+      "row_index": 289,
+      "source": "goals ",
+      "vector_offset": 110976
+    },
+    {
+      "direction": "pro",
+      "name": "influencing others",
+      "row_index": 290,
+      "source": "goals ",
+      "vector_offset": 111360
+    },
+    {
+      "direction": "con",
+      "name": "influencing others",
+      "row_index": 291,
+      "source": "goals ",
+      "vector_offset": 111744
+    },
+    {
+      "direction": "pro",
+      "name": "having physical ability",
+      "row_index": 292,
+      "source": "goals ",
+      "vector_offset": 112128
+    },
+    {
+      "direction": "con",
+      "name": "having physical ability",
+      "row_index": 293,
+      "source": "goals ",
+      "vector_offset": 112512
+    },
+    {
+      "direction": "pro",
+      "name": "being in good physical condition",
+      "row_index": 294,
+      "source": "goals ",
+      "vector_offset": 112896
+    },
+    {
+      "direction": "con",
+      "name": "being in good physical condition",
+      "row_index": 295,
+      "source": "goals ",
+      "vector_offset": 113280
+    },
+    {
+      "direction": "pro",
+      "name": "pleasing god",
+      "row_index": 296,
+      "source": "goals ",
+      "vector_offset": 113664
+    },
+    {
+      "direction": "con",
+      "name": "pleasing god",
+      "row_index": 297,
+      "source": "goals ",
+      "vector_offset": 114048
+    },
+    {
+      "direction": "pro",
+      "name": "providing my family with financial security",
+      "row_index": 298,
+      "source": "goals ",
+      "vector_offset": 114432
+    },
+    {
+      "direction": "con",
+      "name": "providing my family with financial security",
+      "row_index": 299,
+      "source": "goals ",
+      "vector_offset": 114816
+    },
+    {
+      "direction": "pro",
+      "name": "pursuing my ideals",
+      "row_index": 300,
+      "source": "goals ",
+      "vector_offset": 115200
+    },
+    {
+      "direction": "con",
+      "name": "pursuing my ideals",
+      "row_index": 301,
+      "source": "goals ",
+      "vector_offset": 115584
+    },
+    {
+      "direction": "pro",
+      "name": "maintaining religious faith",
+      "row_index": 302,
+      "source": "goals ",
+      "vector_offset": 115968
+    },
+    {
+      "direction": "con",
+      "name": "maintaining religious faith",
+      "row_index": 303,
+      "source": "goals ",
+      "vector_offset": 116352
+    },
+    {
+      "direction": "pro",
+      "name": "engaging in religious traditions",
+      "row_index": 304,
+      "source": "goals ",
+      "vector_offset": 116736
+    },
+    {
+      "direction": "con",
+      "name": "engaging in religious traditions",
+      "row_index": 305,
+      "source": "goals ",
+      "vector_offset": 117120
+    },
+    {
+      "direction": "pro",
+      "name": "having a rich social life",
+      "row_index": 306,
+      "source": "goals ",
+      "vector_offset": 117504
+    },
+    {
+      "direction": "con",
+      "name": "having a rich social life",
+      "row_index": 307,
+      "source": "goals ",
+      "vector_offset": 117888
+    },
+    {
+      "direction": "pro",
+      "name": "having romantic experiences",
+      "row_index": 308,
+      "source": "goals ",
+      "vector_offset": 118272
+    },
+    {
+      "direction": "con",
+      "name": "having romantic experiences",
+      "row_index": 309,
+      "source": "goals ",
+      "vector_offset": 118656
+    },
+    {
+      "direction": "pro",
+      "name": "being involved in seeking equality",
+      "row_index": 310,
+      "source": "goals ",
+      "vector_offset": 119040
+    },
+    {
+      "direction": "con",
+      "name": "being involved in seeking equality",
+      "row_index": 311,
+      "source": "goals ",
+      "vector_offset": 119424
+    },
+    {
+      "direction": "pro",
+      "name": "seeking fairness",
+      "row_index": 312,
+      "source": "goals ",
+      "vector_offset": 119808
+    },
+    {
+      "direction": "con",
+      "name": "seeking fairness",
+      "row_index": 313,
+      "source": "goals ",
+      "vector_offset": 120192
+    },
+    {
+      "direction": "pro",
+      "name": "seeking justice",
+      "row_index": 314,
+      "source": "goals ",
+      "vector_offset": 120576
+    },
+    {
+      "direction": "con",
+      "name": "seeking justice",
+      "row_index": 315,
+      "source": "goals ",
+      "vector_offset": 120960
+    },
+    {
+      "direction": "pro",
+      "name": "having high self-esteem",
+      "row_index": 316,
+      "source": "goals ",
+      "vector_offset": 121344
+    },
+    {
+      "direction": "con",
+      "name": "having high self-esteem",
+      "row_index": 317,
+      "source": "goals ",
+      "vector_offset": 121728
+    },
+    {
+      "direction": "pro",
+      "name": "setting good examples",
+      "row_index": 318,
+      "source": "goals ",
+      "vector_offset": 122112
+    },
+    {
+      "direction": "con",
+      "name": "setting good examples",
+      "row_index": 319,
+      "source": "goals ",
+      "vector_offset": 122496
+    },
+    {
+      "direction": "pro",
+      "name": "enjoying sexual experiences",
+      "row_index": 320,
+      "source": "goals ",
+      "vector_offset": 122880
+    },
+    {
+      "direction": "con",
+      "name": "enjoying sexual experiences",
+      "row_index": 321,
+      "source": "goals ",
+      "vector_offset": 123264
+    },
+    {
+      "direction": "pro",
+      "name": "sharing feelings with close friends",
+      "row_index": 322,
+      "source": "goals ",
+      "vector_offset": 123648
+    },
+    {
+      "direction": "con",
+      "name": "sharing feelings with close friends",
+      "row_index": 323,
+      "source": "goals ",
+      "vector_offset": 124032
+    },
+    {
+      "direction": "pro",
+      "name": "having stability in life",
+      "row_index": 324,
+      "source": "goals ",
+      "vector_offset": 124416
+    },
+    {
+      "direction": "con",
+      "name": "having stability in life",
+      "row_index": 325,
+      "source": "goals ",
+      "vector_offset": 124800
+    },
+    {
+      "direction": "pro",
+      "name": "having a stable family life",
+      "row_index": 326,
+      "source": "goals ",
+      "vector_offset": 125184
+    },
+    {
+      "direction": "con",
+      "name": "having a stable family life",
+      "row_index": 327,
+      "source": "goals ",
+      "vector_offset": 125568
+    },
+    {
+      "direction": "pro",
+      "name": "standing up for my beliefs",
+      "row_index": 328,
+      "source": "goals ",
+      "vector_offset": 125952
+    },
+    {
+      "direction": "con",
+      "name": "standing up for my beliefs",
+      "row_index": 329,
+      "source": "goals ",
+      "vector_offset": 126336
+    },
+    {
+      "direction": "pro",
+      "name": "receiving support from others on projects i believe in",
+      "row_index": 330,
+      "source": "goals ",
+      "vector_offset": 126720
+    },
+    {
+      "direction": "con",
+      "name": "receiving support from others on projects i believe in",
+      "row_index": 331,
+      "source": "goals ",
+      "vector_offset": 127104
+    },
+    {
+      "direction": "pro",
+      "name": "taking care of my parents and siblings",
+      "row_index": 332,
+      "source": "goals ",
+      "vector_offset": 127488
+    },
+    {
+      "direction": "con",
+      "name": "taking care of my parents and siblings",
+      "row_index": 333,
+      "source": "goals ",
+      "vector_offset": 127872
+    },
+    {
+      "direction": "pro",
+      "name": "not being fearful",
+      "row_index": 334,
+      "source": "goals ",
+      "vector_offset": 128256
+    },
+    {
+      "direction": "con",
+      "name": "not being fearful",
+      "row_index": 335,
+      "source": "goals ",
+      "vector_offset": 128640
+    },
+    {
+      "direction": "pro",
+      "name": "developing others",
+      "row_index": 336,
+      "source": "goals ",
+      "vector_offset": 129024
+    },
+    {
+      "direction": "con",
+      "name": "developing others",
+      "row_index": 337,
+      "source": "goals ",
+      "vector_offset": 129408
+    },
+    {
+      "direction": "pro",
+      "name": "keeping things in order",
+      "row_index": 338,
+      "source": "goals ",
+      "vector_offset": 129792
+    },
+    {
+      "direction": "con",
+      "name": "keeping things in order",
+      "row_index": 339,
+      "source": "goals ",
+      "vector_offset": 130176
+    },
+    {
+      "direction": "pro",
+      "name": "being able to think intellectually",
+      "row_index": 340,
+      "source": "goals ",
+      "vector_offset": 130560
+    },
+    {
+      "direction": "con",
+      "name": "being able to think intellectually",
+      "row_index": 341,
+      "source": "goals ",
+      "vector_offset": 130944
+    },
+    {
+      "direction": "pro",
+      "name": "protecting my wellbeing",
+      "row_index": 342,
+      "source": "goals ",
+      "vector_offset": 131328
+    },
+    {
+      "direction": "con",
+      "name": "protecting my wellbeing",
+      "row_index": 343,
+      "source": "goals ",
+      "vector_offset": 131712
+    },
+    {
+      "direction": "pro",
+      "name": "having wisdom",
+      "row_index": 344,
+      "source": "goals ",
+      "vector_offset": 132096
+    },
+    {
+      "direction": "con",
+      "name": "having wisdom",
+      "row_index": 345,
+      "source": "goals ",
+      "vector_offset": 132480
+    },
+    {
+      "direction": "pro",
+      "name": "experiencing a world of beauty",
+      "row_index": 346,
+      "source": "goals ",
+      "vector_offset": 132864
+    },
+    {
+      "direction": "con",
+      "name": "experiencing a world of beauty",
+      "row_index": 347,
+      "source": "goals ",
+      "vector_offset": 133248
+    },
+    {
+      "direction": "pro",
+      "name": "harm",
+      "row_index": 348,
+      "source": "moral foundations ",
+      "vector_offset": 133632
+    },
+    {
+      "direction": "con",
+      "name": "harm",
+      "row_index": 349,
+      "source": "moral foundations ",
+      "vector_offset": 134016
+    },
+    {
+      "direction": "pro",
+      "name": "fairness",
+      "row_index": 350,
+      "source": "moral foundations ",
+      "vector_offset": 134400
+    },
+    {
+      "direction": "con",
+      "name": "fairness",
+      "row_index": 351,
+      "source": "moral foundations ",
+      "vector_offset": 134784
+    },
+    {
+      "direction": "pro",
+      "name": "ingroup morality",
+      "row_index": 352,
+      "source": "moral foundations ",
+      "vector_offset": 135168
+    },
+    {
+      "direction": "con",
+      "name": "ingroup morality",
+      "row_index": 353,
+      "source": "moral foundations ",
+      "vector_offset": 135552
+    },
+    {
+      "direction": "pro",
+      "name": "authority",
+      "row_index": 354,
+      "source": "moral foundations ",
+      "vector_offset": 135936
+    },
+    {
+      "direction": "con",
+      "name": "authority",
+      "row_index": 355,
+      "source": "moral foundations ",
+      "vector_offset": 136320
+    },
+    {
+      "direction": "pro",
+      "name": "purity",
+      "row_index": 356,
+      "source": "moral foundations ",
+      "vector_offset": 136704
+    },
+    {
+      "direction": "con",
+      "name": "purity",
+      "row_index": 357,
+      "source": "moral foundations ",
+      "vector_offset": 137088
+    },
+    {
+      "direction": "pro",
+      "name": "character perception",
+      "row_index": 358,
+      "source": "person perception ",
+      "vector_offset": 137472
+    },
+    {
+      "direction": "con",
+      "name": "character perception",
+      "row_index": 359,
+      "source": "person perception ",
+      "vector_offset": 137856
+    },
+    {
+      "direction": "pro",
+      "name": "personality perception",
+      "row_index": 360,
+      "source": "person perception ",
+      "vector_offset": 138240
+    },
+    {
+      "direction": "con",
+      "name": "personality perception",
+      "row_index": 361,
+      "source": "person perception ",
+      "vector_offset": 138624
+    },
+    {
+      "direction": "pro",
+      "name": "ability perception",
+      "row_index": 362,
+      "source": "person perception ",
+      "vector_offset": 139008
+    },
+    {
+      "direction": "con",
+      "name": "ability perception",
+      "row_index": 363,
+      "source": "person perception ",
+      "vector_offset": 139392
+    },
+    {
+      "direction": "pro",
+      "name": "goodness perception",
+      "row_index": 364,
+      "source": "person perception ",
+      "vector_offset": 139776
+    },
+    {
+      "direction": "con",
+      "name": "goodness perception",
+      "row_index": 365,
+      "source": "person perception ",
+      "vector_offset": 140160
+    },
+    {
+      "direction": "pro",
+      "name": "morality perception",
+      "row_index": 366,
+      "source": "person perception ",
+      "vector_offset": 140544
+    },
+    {
+      "direction": "con",
+      "name": "morality perception",
+      "row_index": 367,
+      "source": "person perception ",
+      "vector_offset": 140928
+    },
+    {
+      "direction": "pro",
+      "name": "strength perception",
+      "row_index": 368,
+      "source": "person perception ",
+      "vector_offset": 141312
+    },
+    {
+      "direction": "con",
+      "name": "strength perception",
+      "row_index": 369,
+      "source": "person perception ",
+      "vector_offset": 141696
+    },
+    {
+      "direction": "pro",
+      "name": "grit perception",
+      "row_index": 370,
+      "source": "person perception ",
+      "vector_offset": 142080
+    },
+    {
+      "direction": "con",
+      "name": "grit perception",
+      "row_index": 371,
+      "source": "person perception ",
+      "vector_offset": 142464
+    },
+    {
+      "direction": "pro",
+      "name": "agency perception",
+      "row_index": 372,
+      "source": "person perception ",
+      "vector_offset": 142848
+    },
+    {
+      "direction": "con",
+      "name": "agency perception",
+      "row_index": 373,
+      "source": "person perception ",
+      "vector_offset": 143232
+    },
+    {
+      "direction": "pro",
+      "name": "communion perception",
+      "row_index": 374,
+      "source": "person perception ",
+      "vector_offset": 143616
+    },
+    {
+      "direction": "con",
+      "name": "communion perception",
+      "row_index": 375,
+      "source": "person perception ",
+      "vector_offset": 144000
+    },
+    {
+      "direction": "pro",
+      "name": "warmth perception",
+      "row_index": 376,
+      "source": "person perception ",
+      "vector_offset": 144384
+    },
+    {
+      "direction": "con",
+      "name": "warmth perception",
+      "row_index": 377,
+      "source": "person perception ",
+      "vector_offset": 144768
+    },
+    {
+      "direction": "pro",
+      "name": "pleasure-based consumption",
+      "row_index": 378,
+      "source": "consumer behavior ",
+      "vector_offset": 145152
+    },
+    {
+      "direction": "con",
+      "name": "pleasure-based consumption",
+      "row_index": 379,
+      "source": "consumer behavior ",
+      "vector_offset": 145536
+    },
+    {
+      "direction": "pro",
+      "name": "functional consumption",
+      "row_index": 380,
+      "source": "consumer behavior ",
+      "vector_offset": 145920
+    },
+    {
+      "direction": "con",
+      "name": "functional consumption",
+      "row_index": 381,
+      "source": "consumer behavior ",
+      "vector_offset": 146304
+    },
+    {
+      "direction": "pro",
+      "name": "altruism",
+      "row_index": 382,
+      "source": "social value orientation",
+      "vector_offset": 146688
+    },
+    {
+      "direction": "con",
+      "name": "altruism",
+      "row_index": 383,
+      "source": "social value orientation",
+      "vector_offset": 147072
+    },
+    {
+      "direction": "pro",
+      "name": "individualism",
+      "row_index": 384,
+      "source": "social value orientation",
+      "vector_offset": 147456
+    },
+    {
+      "direction": "con",
+      "name": "individualism",
+      "row_index": 385,
+      "source": "social value orientation",
+      "vector_offset": 147840
+    },
+    {
+      "direction": "pro",
+      "name": "prosociality",
+      "row_index": 386,
+      "source": "social value orientation",
+      "vector_offset": 148224
+    },
+    {
+      "direction": "con",
+      "name": "prosociality",
+      "row_index": 387,
+      "source": "social value orientation",
+      "vector_offset": 148608
+    },
+    {
+      "direction": "pro",
+      "name": "competitiveness",
+      "row_index": 388,
+      "source": "social value orientation",
+      "vector_offset": 148992
+    },
+    {
+      "direction": "con",
+      "name": "competitiveness",
+      "row_index": 389,
+      "source": "social value orientation",
+      "vector_offset": 149376
+    },
+    {
+      "direction": "pro",
+      "name": "efficiency",
+      "row_index": 390,
+      "source": "altruism considerations ",
+      "vector_offset": 149760
+    },
+    {
+      "direction": "con",
+      "name": "efficiency",
+      "row_index": 391,
+      "source": "altruism considerations ",
+      "vector_offset": 150144
+    },
+    {
+      "direction": "pro",
+      "name": "equality",
+      "row_index": 392,
+      "source": "altruism considerations ",
+      "vector_offset": 150528
+    },
+    {
+      "direction": "con",
+      "name": "equality",
+      "row_index": 393,
+      "source": "altruism considerations ",
+      "vector_offset": 150912
+    },
+    {
+      "direction": "pro",
+      "name": "personal connection",
+      "row_index": 394,
+      "source": "altruism considerations ",
+      "vector_offset": 151296
+    },
+    {
+      "direction": "con",
+      "name": "personal connection",
+      "row_index": 395,
+      "source": "altruism considerations ",
+      "vector_offset": 151680
+    },
+    {
+      "direction": "pro",
+      "name": "altruism at scale",
+      "row_index": 396,
+      "source": "altruism considerations ",
+      "vector_offset": 152064
+    },
+    {
+      "direction": "con",
+      "name": "altruism at scale",
+      "row_index": 397,
+      "source": "altruism considerations ",
+      "vector_offset": 152448
+    },
+    {
+      "direction": "pro",
+      "name": "tractability",
+      "row_index": 398,
+      "source": "altruism considerations ",
+      "vector_offset": 152832
+    },
+    {
+      "direction": "con",
+      "name": "tractability",
+      "row_index": 399,
+      "source": "altruism considerations ",
+      "vector_offset": 153216
+    },
+    {
+      "direction": "pro",
+      "name": "altruism neglectedness",
+      "row_index": 400,
+      "source": "altruism considerations ",
+      "vector_offset": 153600
+    },
+    {
+      "direction": "con",
+      "name": "altruism neglectedness",
+      "row_index": 401,
+      "source": "altruism considerations ",
+      "vector_offset": 153984
+    },
+    {
+      "direction": "pro",
+      "name": "human wellbeing",
+      "row_index": 402,
+      "source": "altruism areas ",
+      "vector_offset": 154368
+    },
+    {
+      "direction": "con",
+      "name": "human wellbeing",
+      "row_index": 403,
+      "source": "altruism areas ",
+      "vector_offset": 154752
+    },
+    {
+      "direction": "pro",
+      "name": "non-human animal welfare",
+      "row_index": 404,
+      "source": "altruism areas ",
+      "vector_offset": 155136
+    },
+    {
+      "direction": "con",
+      "name": "non-human animal welfare",
+      "row_index": 405,
+      "source": "altruism areas ",
+      "vector_offset": 155520
+    },
+    {
+      "direction": "pro",
+      "name": "achieving a better future",
+      "row_index": 406,
+      "source": "altruism areas ",
+      "vector_offset": 155904
+    },
+    {
+      "direction": "con",
+      "name": "achieving a better future",
+      "row_index": 407,
+      "source": "altruism areas ",
+      "vector_offset": 156288
+    },
+    {
+      "direction": "pro",
+      "name": "procedural fairness",
+      "row_index": 408,
+      "source": "fairness ",
+      "vector_offset": 156672
+    },
+    {
+      "direction": "con",
+      "name": "procedural fairness",
+      "row_index": 409,
+      "source": "fairness ",
+      "vector_offset": 157056
+    },
+    {
+      "direction": "pro",
+      "name": "distributive fairness",
+      "row_index": 410,
+      "source": "fairness ",
+      "vector_offset": 157440
+    },
+    {
+      "direction": "con",
+      "name": "distributive fairness",
+      "row_index": 411,
+      "source": "fairness ",
+      "vector_offset": 157824
+    },
+    {
+      "direction": "pro",
+      "name": "reciprocal fairness",
+      "row_index": 412,
+      "source": "fairness ",
+      "vector_offset": 158208
+    },
+    {
+      "direction": "con",
+      "name": "reciprocal fairness",
+      "row_index": 413,
+      "source": "fairness ",
+      "vector_offset": 158592
+    }
+  ],
+  "model": {
+    "embedding_dimension": 384,
+    "id": "sentence-transformers/all-MiniLM-L6-v2",
+    "short_name": "l6"
+  },
+  "source_doi": "10.1073/pnas.2406489122",
+  "vectors": {
+    "dtype": "float16",
+    "file": "attribute_embeddings_l6.f16",
+    "layout": "row-major",
+    "normalized": true
+  }
+}

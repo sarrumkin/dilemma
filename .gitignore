@@ -3,6 +3,11 @@
 # Xcode / Swift build output
 DerivedData/
 build/
+/dilemma.xcodeproj/
+/dilemma.xcworkspace/
+Derived/
+.tuist/
+.swiftpm/
 *.xcuserstate
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
