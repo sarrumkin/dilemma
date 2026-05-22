@@ -1,7 +1,7 @@
 import Accelerate
 import Foundation
 
-enum BhatiaScoring {
+enum AttributeScoring {
   static func topMatches(
     reasonVector: [Float],
     reasonPolarity: ReasonPolarity,
@@ -13,8 +13,8 @@ enum BhatiaScoring {
     var ranked = [AttributeScore]()
     ranked.reserveCapacity(candidateIndices.count)
 
-    // Bhatia compares benefits to pro vectors and costs to con vectors.
-    // Both sides are normalized, so cosine similarity is a dot product.
+    // Benefits are scored against pro vectors, while costs are scored against
+    // con vectors. Both sides are normalized, so cosine similarity is dot.
     for index in candidateIndices {
       let score = store.dot(normalizedReasonVector: reasonVector, attributeIndex: index)
       directionScores[index] = score

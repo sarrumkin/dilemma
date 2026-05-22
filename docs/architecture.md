@@ -74,7 +74,7 @@ DecisionKernel/
 | `Schema` | Domain value types: draft, options, reasons, scores, analysis metadata. |
 | `Core` | Чистая математика analysis без UI/storage/runtime details. |
 | `Runtime` | Локальная embedding-модель; единственное место для `swift-embeddings`. |
-| `Assets` | Read-only Bhatia assets; production format уточняется в Slice 2. |
+| `Assets` | Read-only reference attribute assets; production format уточняется в Slice 2. |
 | `Pipeline` | Оркестрация от structured input до `DecisionAnalysis`. |
 
 ```text

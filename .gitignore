@@ -25,9 +25,9 @@ __pycache__/
 # measurement, but lean git keeps those large files outside version control.
 .hf_cache/
 /models/
-dilemma/Resources/Models/**
-!dilemma/Resources/Models/
-!dilemma/Resources/Models/.gitkeep
+DecisionKernel/Resources/Models/**
+!DecisionKernel/Resources/Models/
+!DecisionKernel/Resources/Models/.gitkeep
 
 # Keep the local Bhatia source available on disk, but only track the small
 # source artifacts needed by the prototype.

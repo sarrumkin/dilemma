@@ -1,10 +1,10 @@
 import Foundation
 import Testing
 
-@testable import dilemma
+@testable import DecisionKernel
 
 @Suite
-struct BhatiaScoringTests {
+struct AttributeScoringTests {
   @Test
   func float16VectorLoaderExpandsLittleEndianValues() throws {
     let url = FileManager.default.temporaryDirectory
@@ -30,7 +30,7 @@ struct BhatiaScoringTests {
   func benefitScoresOnlyProAndCostScoresOnlyCon() {
     let store = makeStore()
 
-    let benefit = BhatiaScoring.topMatches(
+    let benefit = AttributeScoring.topMatches(
       reasonVector: [1, 0],
       reasonPolarity: .benefit,
       store: store,
@@ -39,7 +39,7 @@ struct BhatiaScoringTests {
     #expect(benefit.top.map(\.attribute.direction) == [.pro, .pro])
     #expect(benefit.top.first?.attribute.name == "money")
 
-    let cost = BhatiaScoring.topMatches(
+    let cost = AttributeScoring.topMatches(
       reasonVector: [0, 1],
       reasonPolarity: .cost,
       store: store,
@@ -53,7 +53,7 @@ struct BhatiaScoringTests {
   func rowCenterAndOptionProfileAggregation() {
     let reason1 = ReasonInput(text: "benefit", optionIndex: 1, polarity: .benefit)
     let reason2 = ReasonInput(text: "cost", optionIndex: 1, polarity: .cost)
-    let centered = BhatiaScoring.rowCenter([1, 2, .nan])
+    let centered = AttributeScoring.rowCenter([1, 2, .nan])
     #expect(abs(centered[0] + 0.5) < 0.0001)
     #expect(abs(centered[1] - 0.5) < 0.0001)
     #expect(centered[2].isNaN)
@@ -73,7 +73,7 @@ struct BhatiaScoringTests {
       ),
     ]
 
-    let profiles = BhatiaScoring.optionProfiles(from: results, attributeCount: 2)
+    let profiles = AttributeScoring.optionProfiles(from: results, attributeCount: 2)
     #expect(profiles[1] == [1, 1])
   }
 

@@ -22,10 +22,6 @@ let project = Project(
       bundleId: "com.local.dilemma",
       deploymentTargets: deploymentTarget,
       infoPlist: .file(path: "dilemma/Sources/Info.plist"),
-      resources: .resources([
-        .folderReference(path: "dilemma/Resources/Attributes"),
-        .folderReference(path: "dilemma/Resources/Models"),
-      ]),
       // Buildable folders keep source membership synchronized in Xcode:
       // adding a Swift file under dilemma/Sources does not require
       // regenerating the project just to add a file reference.
@@ -41,23 +37,49 @@ let project = Project(
         ),
       ],
       dependencies: [
+        .target(name: "DecisionKernel"),
+      ]
+    ),
+    .target(
+      name: "DecisionKernel",
+      destinations: .iOS,
+      product: .framework,
+      bundleId: "com.local.dilemma.DecisionKernel",
+      deploymentTargets: deploymentTarget,
+      infoPlist: .default,
+      resources: .resources([
+        .folderReference(path: "DecisionKernel/Resources/Attributes"),
+        .folderReference(path: "DecisionKernel/Resources/Models"),
+      ]),
+      buildableFolders: [
+        "DecisionKernel/Sources",
+      ],
+      dependencies: [
         .package(product: "Embeddings"),
         .package(product: "MLTensorUtils"),
       ]
     ),
     .target(
-      name: "dilemmaTests",
+      name: "DecisionKernelTests",
       destinations: .iOS,
       product: .unitTests,
-      bundleId: "com.local.dilemmaTests",
+      bundleId: "com.local.dilemma.DecisionKernelTests",
       deploymentTargets: deploymentTarget,
       infoPlist: .default,
       buildableFolders: [
-        "dilemmaTests",
+        "DecisionKernelTests",
       ],
       dependencies: [
-        .target(name: "dilemma"),
+        .target(name: "DecisionKernel"),
       ]
+    ),
+  ],
+  schemes: [
+    .scheme(
+      name: "dilemma",
+      shared: true,
+      buildAction: .buildAction(targets: ["dilemma"]),
+      testAction: .targets(["DecisionKernelTests"])
     ),
   ]
 )

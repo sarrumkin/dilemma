@@ -5,7 +5,7 @@ import json
 import numpy as np
 
 CSV_PATH = Path("Bhatia/Code and Data/2 - Vectorize Reasons/attributes.csv")
-ASSET_DIR = Path("dilemma/Resources/Attributes")
+ASSET_DIR = Path("DecisionKernel/Resources/Attributes")
 REFERENCE_DIR = Path("reports/reference_assets")
 QUALITY_REPORTS = [
     Path("reports/quality_l6.json"),

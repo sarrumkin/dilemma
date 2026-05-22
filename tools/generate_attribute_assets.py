@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate deterministic Bhatia attribute assets for the iOS prototype."""
+"""Generate deterministic reference attribute assets for the iOS prototype."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from sentence_transformers import SentenceTransformer
 
 SOURCE_DOI = "10.1073/pnas.2406489122"
 DEFAULT_CSV = Path("Bhatia/Code and Data/2 - Vectorize Reasons/attributes.csv")
-DEFAULT_OUTPUT_DIR = Path("dilemma/Resources/Attributes")
+DEFAULT_OUTPUT_DIR = Path("DecisionKernel/Resources/Attributes")
 
 MODELS = {
     "all-MiniLM-L6-v2": "sentence-transformers/all-MiniLM-L6-v2",
@@ -66,12 +66,12 @@ def parse_args() -> argparse.Namespace:
 def load_attribute_rows(path: Path) -> list[AttributeRow]:
     rows: list[AttributeRow] = []
 
-    # Bhatia's CSV is cp1252 encoded. Reading as UTF-8 fails on curly quotes in
-    # several attributes, so keep the source encoding explicit and tested.
+    # The source CSV is cp1252 encoded. Reading as UTF-8 fails on curly quotes
+    # in several attributes, so keep the encoding explicit and tested.
     with path.open(newline="", encoding="cp1252") as handle:
         reader = csv.DictReader(handle)
         for row_index, row in enumerate(reader):
-            # This sentence split intentionally mirrors the Bhatia notebook:
+            # This sentence split intentionally mirrors the reference notebook:
             # remove periods, then split on semicolon-space.
             sentences = [part for part in row["Sentences"].replace(".", "").split("; ") if part]
             rows.append(

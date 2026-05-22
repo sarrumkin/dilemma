@@ -27,7 +27,7 @@ struct AttributeEmbeddingStore: Sendable {
 
   static func load(
     resourceName: String,
-    bundle: Bundle = .main,
+    bundle: Bundle = DecisionKernelResources.bundle,
     subdirectory: String? = "Attributes"
   ) throws -> AttributeEmbeddingStore {
     guard let metadataURL = bundle.url(
@@ -38,7 +38,7 @@ struct AttributeEmbeddingStore: Sendable {
       throw StoreError.missingResource("\(resourceName).json")
     }
 
-    let metadata = try JSONDecoder.bhatia.decode(
+    let metadata = try JSONDecoder.attributeAsset.decode(
       AttributeAssetMetadata.self,
       from: Data(contentsOf: metadataURL)
     )
@@ -132,7 +132,7 @@ extension Array {
 }
 
 extension JSONDecoder {
-  static var bhatia: JSONDecoder {
+  static var attributeAsset: JSONDecoder {
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase
     return decoder

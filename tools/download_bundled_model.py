@@ -27,7 +27,7 @@ ALLOW_PATTERNS = [
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", choices=sorted(MODELS), default="all-MiniLM-L6-v2")
-    parser.add_argument("--output-root", type=Path, default=Path("dilemma/Resources/Models"))
+    parser.add_argument("--output-root", type=Path, default=Path("DecisionKernel/Resources/Models"))
     return parser.parse_args()
 
 

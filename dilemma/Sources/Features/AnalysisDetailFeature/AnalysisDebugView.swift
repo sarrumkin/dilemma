@@ -1,9 +1,11 @@
+import DecisionKernel
 import SwiftUI
 
-@available(iOS 18.0, *)
-struct BhatiaMappingDebugView: View {
+struct AnalysisDebugView: View {
+  let runAnalysis: RunDecisionAnalysisUseCase
+
   @State private var isRunning = false
-  @State private var result: MappingResult?
+  @State private var result: DecisionAnalysisResult?
   @State private var errorMessage: String?
 
   var body: some View {
@@ -16,7 +18,7 @@ struct BhatiaMappingDebugView: View {
             if isRunning {
               ProgressView()
             } else {
-              Text("Run Bhatia Mapping")
+              Text("Run Analysis")
             }
           }
           .buttonStyle(.borderedProminent)
@@ -44,11 +46,11 @@ struct BhatiaMappingDebugView: View {
     isRunning = true
     errorMessage = nil
     result = nil
+    let runAnalysis = self.runAnalysis
 
     Task {
       do {
-        let runner = BhatiaMappingRunner()
-        let output = try await runner.run()
+        let output = try await runAnalysis()
         await MainActor.run {
           result = output
           isRunning = false
@@ -63,9 +65,8 @@ struct BhatiaMappingDebugView: View {
   }
 }
 
-@available(iOS 18.0, *)
 private struct ResultView: View {
-  let result: MappingResult
+  let result: DecisionAnalysisResult
 
   var body: some View {
     VStack(alignment: .leading, spacing: 18) {

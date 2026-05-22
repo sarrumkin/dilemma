@@ -1,10 +1,10 @@
 import SwiftUI
 
 @main
-struct dilemmaApp: App {
+struct DilemmaApp: App {
   var body: some Scene {
     WindowGroup {
-      BhatiaMappingDebugView()
+      AppRootView()
     }
   }
 }

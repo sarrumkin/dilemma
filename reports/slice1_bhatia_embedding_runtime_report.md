@@ -1,4 +1,4 @@
-# Slice 1 Report: Bhatia-Style Embedding Runtime для iOS
+# Slice 1 Report: Reference-Study Embedding Runtime для iOS
 
 Дата: 2026-05-20  
 Проект: `dilemma`  
@@ -14,9 +14,9 @@ Branch: `slice-1/bhatia-embedding-runtime`
 - L12 дает более устойчивые top matches на obvious examples: `money` top-1, `career` top-1, relationship/family/independence/security попадают ожидаемо.
 - L6 остается fallback, если размер app bundle станет главным ограничением.
 - Core ML conversion пока **не нужен как основной путь**, но остается fallback, если real-device validation покажет проблемы с памятью, загрузкой или latency.
-- Debug screen `Run Bhatia Mapping` теперь запускает L12 path по умолчанию; L6 покрыт integration test как fallback.
+- Debug screen `Run Analysis` теперь запускает L12 path по умолчанию; L6 покрыт integration test как fallback.
 
-## Что Воспроизведено Из Bhatia Pipeline
+## Что Воспроизведено Из Reference Pipeline
 
 - `attributes.csv` читается offline как `cp1252`.
 - Проверяется структура: `414 rows`, `207 unique attribute names`, `207 pro`, `207 con`.
@@ -37,7 +37,7 @@ Branch: `slice-1/bhatia-embedding-runtime`
 
 - `output - attributesdict.pkl` не используется в app runtime.
 - Все app vectors пересчитаны под конкретную runtime model.
-- Runtime model грузится только из bundled folder `Resources/Models/<model>`.
+- Runtime model грузится только из bundled folder `Models/<model>` в `DecisionKernel` resource bundle.
 - Не используется `ModelBundle.encode`, потому что текущий BERT wrapper возвращает CLS vector; в app реализован masked mean pooling + normalization для SentenceTransformers parity.
 - Attribute vectors хранятся как Float16 row-major binary, а в runtime разворачиваются в Float и score считаются через Accelerate/vDSP.
 - Cluster output не реализован: готовый `attribute -> cluster` mapping в workspace не подключен.
@@ -52,7 +52,7 @@ Branch: `slice-1/bhatia-embedding-runtime`
 - `vocab.txt`
 - `special_tokens_map.json`
 
-Runtime path: `Bundle.main/Models/<model-name>/...`.  
+Runtime path: `DecisionKernel` resource bundle, `Models/<model-name>/...`.
 Download/generation scripts остаются offline tooling и не вызываются из app.
 
 ## Simulator Measurements
@@ -89,7 +89,7 @@ mpnet reference:
 
 Passed:
 - `tuist generate --no-open`
-- `.venv/bin/pytest tools/test_bhatia_assets.py` -> `4 passed`
+- `.venv/bin/pytest tools/test_attribute_assets.py` -> `4 passed`
 - `xcodebuild test -workspace dilemma.xcworkspace -scheme dilemma -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2'` -> `5 Swift Testing tests passed`
 - `xcrun simctl install` + `xcrun simctl launch ... com.local.dilemma` -> app launched on iPhone 16 simulator
 
