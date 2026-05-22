@@ -15,6 +15,7 @@ Current prototype default: `swift-embeddings + all-MiniLM-L12-v2`.
 - `dilemmaTests/` - Swift tests for scoring, F16 loading, and aggregation.
 - `tools/` - offline Python tooling for regenerating Bhatia attribute assets.
 - `reports/` - measured prototype output and recommendation.
+- `docs/architecture.md` - concise Russian architecture document.
 - `Bhatia/` - local reference materials; raw large datasets are ignored by git.
 - `Project.swift` - Tuist manifest; generated `.xcodeproj`/`.xcworkspace` are ignored.
 
