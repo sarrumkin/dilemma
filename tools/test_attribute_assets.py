@@ -1,11 +1,13 @@
 from pathlib import Path
 import csv
 import json
+import sqlite3
 
 import numpy as np
 
 CSV_PATH = Path("Bhatia/Code and Data/2 - Vectorize Reasons/attributes.csv")
 ASSET_DIR = Path("DecisionKernel/Resources/Attributes")
+PRODUCTION_SQLITE = ASSET_DIR / "DilemmaAssets.sqlite"
 REFERENCE_DIR = Path("reports/reference_assets")
 QUALITY_REPORTS = [
     Path("reports/quality_l6.json"),
@@ -42,6 +44,45 @@ def test_generated_mpnet_reference_asset_if_present():
         return
 
     assert_normalized_asset(metadata_path, vector_path, 768)
+
+
+def test_production_sqlite_asset_if_present():
+    if not PRODUCTION_SQLITE.exists():
+        return
+
+    connection = sqlite3.connect(f"file:{PRODUCTION_SQLITE}?mode=ro", uri=True)
+    counts = {
+        table: connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+        for table in [
+            "attributes",
+            "attribute_directions",
+            "attribute_embeddings",
+            "clusters",
+            "attribute_cluster",
+            "asset_metadata",
+        ]
+    }
+    metadata = dict(connection.execute("SELECT key, value FROM asset_metadata"))
+    first_embedding = connection.execute(
+        """
+        SELECT embedding
+        FROM attribute_embeddings
+        ORDER BY direction_id
+        LIMIT 1
+        """
+    ).fetchone()[0]
+    connection.close()
+
+    assert counts["attributes"] == 207
+    assert counts["attribute_directions"] == 414
+    assert counts["attribute_embeddings"] == 414
+    assert counts["clusters"] == 25
+    assert counts["attribute_cluster"] == 207
+    assert metadata["asset_version"] == "1"
+    assert metadata["source_doi"] == "10.1073/pnas.2406489122"
+    assert metadata["model_short_name"] == "l12"
+    assert int(metadata["embedding_dimension"]) == 384
+    assert len(first_embedding) == 384 * 4
 
 
 def test_quality_smoke_reports_if_present():

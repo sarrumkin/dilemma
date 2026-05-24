@@ -4,3 +4,4 @@ sentence-transformers>=3.0
 torch>=2.2
 transformers>=4.40
 pytest>=8.0
+scikit-learn>=1.5
