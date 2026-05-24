@@ -1,10 +1,11 @@
 import Foundation
 import SQLite3
 
-public final class DiaryVault {
+public final class DiaryVault: @unchecked Sendable {
   public let databaseURL: URL
   private let keyProvider: DatabaseKeyProvider
   private let authenticator: VaultAuthenticator
+  // SQLite access and the cached handle are isolated through this serial queue.
   private let queue = DispatchQueue(label: "com.local.dilemma.diary-vault")
   private var database: SQLiteDatabase?
 

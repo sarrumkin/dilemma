@@ -14,10 +14,15 @@ struct AppRootView: View {
         .tabItem {
           Label("Stats", systemImage: "chart.bar")
         }
+
+      SettingsView()
+        .tabItem {
+          Label("Privacy", systemImage: "lock.shield")
+        }
     }
     .environmentObject(model)
       .task {
-        model.prepare()
+        await model.unlockIfNeededAndPrepare()
       }
   }
 }

@@ -16,9 +16,15 @@ final class DilemmaAppModel: ObservableObject {
   )
   @Published var errorMessage: String?
   @Published var isBusy = false
+  @Published var requiresDeviceUnlock: Bool {
+    didSet {
+      UserDefaults.standard.set(requiresDeviceUnlock, forKey: Self.requiresDeviceUnlockKey)
+    }
+  }
 
   private let vault: DiaryVault
   private let runAnalysis: RunDecisionAnalysisUseCase
+  private static let requiresDeviceUnlockKey = "requiresDeviceUnlock"
 
   init(
     vault: DiaryVault = DiaryVault(),
@@ -26,12 +32,28 @@ final class DilemmaAppModel: ObservableObject {
   ) {
     self.vault = vault
     self.runAnalysis = runAnalysis
+    self.requiresDeviceUnlock = UserDefaults.standard.bool(forKey: Self.requiresDeviceUnlockKey)
   }
 
-  func prepare() {
+  func unlockIfNeededAndPrepare() async {
     do {
-      try vault.prepare()
-      try reload()
+      if requiresDeviceUnlock {
+        try await vault.unlock()
+      }
+      try prepare()
+    } catch {
+      errorMessage = error.localizedDescription
+    }
+  }
+
+  func prepare() throws {
+    try vault.prepare()
+    try reload()
+  }
+
+  func prepareForViewLifecycle() {
+    do {
+      try prepare()
     } catch {
       errorMessage = error.localizedDescription
     }
@@ -97,6 +119,28 @@ final class DilemmaAppModel: ObservableObject {
         )
       )
       try reload()
+    } catch {
+      errorMessage = error.localizedDescription
+    }
+  }
+
+  func makeExportFile() throws -> URL {
+    let data = try vault.exportJSONData()
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [.withInternetDateTime]
+    let timestamp = formatter.string(from: Date())
+      .replacingOccurrences(of: ":", with: "-")
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent("dilemma-export-\(timestamp)")
+      .appendingPathExtension("json")
+    try data.write(to: url, options: .atomic)
+    return url
+  }
+
+  func deleteAllUserData() {
+    do {
+      try vault.deleteAllData()
+      try prepare()
     } catch {
       errorMessage = error.localizedDescription
     }
