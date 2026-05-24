@@ -25,7 +25,7 @@ struct DiaryListView: View {
           Section("Diary") {
             ForEach(model.entries) { entry in
               NavigationLink {
-                EntrySummaryView(entry: entry, analysis: model.latestAnalysis(for: entry))
+                AnalysisDetailView(entry: entry, analysis: model.latestAnalysis(for: entry))
               } label: {
                 EntryRow(entry: entry, analysis: model.latestAnalysis(for: entry))
               }
@@ -79,46 +79,5 @@ private struct EntryRow: View {
       }
     }
     .padding(.vertical, 4)
-  }
-}
-
-private struct EntrySummaryView: View {
-  let entry: DiaryEntryRecord
-  let analysis: StoredDecisionAnalysis?
-
-  var body: some View {
-    List {
-      Section("Dilemma") {
-        Text(entry.rawText)
-      }
-
-      ForEach(entry.options) { option in
-        Section(option.title) {
-          ForEach(option.reasons) { reason in
-            HStack(alignment: .top) {
-              Text(reason.polarity.rawValue.capitalized)
-                .font(.caption)
-                .foregroundStyle(reason.polarity == .benefit ? .green : .red)
-                .frame(width: 56, alignment: .leading)
-              Text(reason.text)
-            }
-          }
-        }
-      }
-
-      if let analysis {
-        Section("Analysis") {
-          ForEach(analysis.attributeConflicts.prefix(5)) { conflict in
-            VStack(alignment: .leading, spacing: 4) {
-              Text(conflict.attributeName)
-              Text(conflict.difference.formatted(.number.precision(.fractionLength(3))))
-                .font(.caption.monospacedDigit())
-                .foregroundStyle(.secondary)
-            }
-          }
-        }
-      }
-    }
-    .navigationTitle("Entry")
   }
 }

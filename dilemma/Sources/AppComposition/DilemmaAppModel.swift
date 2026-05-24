@@ -74,6 +74,33 @@ final class DilemmaAppModel: ObservableObject {
   func latestAnalysis(for entry: DiaryEntryRecord) -> StoredDecisionAnalysis? {
     latestAnalyses[entry.id]
   }
+
+  func saveFeedback(
+    entry: DiaryEntryRecord,
+    analysis: StoredDecisionAnalysis?,
+    conflictWasUseful: Bool,
+    correctedClusterID: Int?,
+    correctedAttributeName: String?,
+    chosenOptionIndex: Int?,
+    note: String
+  ) {
+    do {
+      try vault.saveFeedback(
+        FeedbackRecord(
+          entryID: entry.id,
+          analysisID: analysis?.id,
+          conflictWasUseful: conflictWasUseful,
+          correctedClusterID: correctedClusterID,
+          correctedAttributeName: correctedAttributeName?.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty,
+          chosenOptionIndex: chosenOptionIndex,
+          note: note.trimmingCharacters(in: .whitespacesAndNewlines)
+        )
+      )
+      try reload()
+    } catch {
+      errorMessage = error.localizedDescription
+    }
+  }
 }
 
 struct EntryFormInput: Equatable {
@@ -178,5 +205,9 @@ extension StoredDecisionAnalysis {
 private extension String {
   var trimmed: String {
     trimmingCharacters(in: .whitespacesAndNewlines)
+  }
+
+  var nilIfEmpty: String? {
+    isEmpty ? nil : self
   }
 }
