@@ -1,9 +1,13 @@
 import SwiftUI
 
 struct AppRootView: View {
-  private let runAnalysis = RunDecisionAnalysisUseCase()
+  @StateObject private var model = DilemmaAppModel()
 
   var body: some View {
-    AnalysisDebugView(runAnalysis: runAnalysis)
+    DiaryListView()
+      .environmentObject(model)
+      .task {
+        model.prepare()
+      }
   }
 }
