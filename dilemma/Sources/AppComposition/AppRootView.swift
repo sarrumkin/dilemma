@@ -4,8 +4,18 @@ struct AppRootView: View {
   @StateObject private var model = DilemmaAppModel()
 
   var body: some View {
-    DiaryListView()
-      .environmentObject(model)
+    TabView {
+      DiaryListView()
+        .tabItem {
+          Label("Diary", systemImage: "list.bullet")
+        }
+
+      StatisticsView()
+        .tabItem {
+          Label("Stats", systemImage: "chart.bar")
+        }
+    }
+    .environmentObject(model)
       .task {
         model.prepare()
       }
