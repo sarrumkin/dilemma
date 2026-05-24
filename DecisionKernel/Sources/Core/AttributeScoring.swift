@@ -54,9 +54,34 @@ enum AttributeScoring {
     return profiles
   }
 
+  static func optionAttributeProfiles(
+    from results: [ReasonMatchResult],
+    store: AttributeEmbeddingStore
+  ) -> [Int: [Float]] {
+    let options = Set(results.map(\.reason.optionIndex))
+    var profiles: [Int: [Float]] = [:]
+
+    for option in options {
+      let benefits = results.filter {
+        $0.reason.optionIndex == option && $0.reason.polarity == .benefit
+      }
+      let costs = results.filter {
+        $0.reason.optionIndex == option && $0.reason.polarity == .cost
+      }
+
+      let benefitMean = meanAttributeRows(benefits, store: store)
+      let costMean = meanAttributeRows(costs, store: store)
+      profiles[option] = zip(benefitMean, costMean).map { benefit, cost in
+        benefit - cost
+      }
+    }
+
+    return profiles
+  }
+
   static func conflictDimensions(
     optionProfiles: [Int: [Float]],
-    attributes: [AttributeMetadata],
+    attributes: [AttributeDefinition],
     topK: Int
   ) -> [ConflictDimension] {
     guard
@@ -79,6 +104,22 @@ enum AttributeScoring {
       .sorted { abs($0.difference) > abs($1.difference) }
       .prefix(topK)
       .map { $0 }
+  }
+
+  static func topAttributes(
+    optionProfiles: [Int: [Float]],
+    attributes: [AttributeDefinition],
+    topK: Int
+  ) -> [Int: [AttributeProfileScore]] {
+    optionProfiles.mapValues { profile in
+      profile.indices
+        .map { index in
+          AttributeProfileScore(attribute: attributes[index], score: profile[index])
+        }
+        .sorted { abs($0.score) > abs($1.score) }
+        .prefix(topK)
+        .map { $0 }
+    }
   }
 
   static func dot(_ lhs: [Float], _ rhs: [Float]) -> Float {
@@ -111,6 +152,30 @@ enum AttributeScoring {
       for index in 0..<Swift.min(row.count, width) where row[index].isFinite {
         totals[index] += row[index]
         counts[index] += 1
+      }
+    }
+
+    return totals.indices.map { index in
+      counts[index] == 0 ? 0 : totals[index] / counts[index]
+    }
+  }
+
+  private static func meanAttributeRows(
+    _ results: [ReasonMatchResult],
+    store: AttributeEmbeddingStore
+  ) -> [Float] {
+    guard !results.isEmpty else { return Array(repeating: 0, count: store.attributeCount) }
+    var totals = Array(repeating: Float(0), count: store.attributeCount)
+    var counts = Array(repeating: Float(0), count: store.attributeCount)
+
+    for result in results {
+      for rowIndex in 0..<Swift.min(result.centeredScores.count, store.metadata.attributes.count) {
+        let score = result.centeredScores[rowIndex]
+        guard score.isFinite, let attributeOrdinal = store.attributeOrdinal(forRowIndex: rowIndex) else {
+          continue
+        }
+        totals[attributeOrdinal] += score
+        counts[attributeOrdinal] += 1
       }
     }
 

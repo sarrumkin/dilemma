@@ -57,6 +57,7 @@ let project = Project(
       dependencies: [
         .package(product: "Embeddings"),
         .package(product: "MLTensorUtils"),
+        .sdk(name: "sqlite3", type: .library),
       ]
     ),
     .target(
