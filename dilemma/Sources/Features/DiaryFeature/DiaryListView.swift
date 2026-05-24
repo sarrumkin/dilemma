@@ -41,6 +41,7 @@ struct DiaryListView: View {
           } label: {
             Label("New entry", systemImage: "plus")
           }
+          .accessibilityIdentifier("new-entry-button")
         }
       }
       .sheet(isPresented: $isCreatingEntry) {

@@ -1,22 +1,26 @@
 # dilemma
 
-Minimal iOS research prototype for local reference-study embedding mapping.
+Local iOS decision diary for structured, offline dilemma analysis.
 
-Slice 1 checks whether an iOS 18+ app can run `swift-embeddings` fully offline,
-load a bundled SentenceTransformers-compatible model, map 12 hardcoded English
-reasons to decision attributes, and produce enough latency/quality data
-to choose the runtime path before Slice 2.
+The app stores private diary data locally, maps structured benefits/costs to
+Bhatia-style attribute directions, shows descriptive analysis and feedback, and
+keeps export/delete flows inside the local privacy boundary.
 
 Current prototype default: `swift-embeddings + all-MiniLM-L12-v2`.
 
 ## Local shape
 
-- `dilemma/` - SwiftUI app target with composition, use cases, and debug feature UI.
+- `dilemma/` - SwiftUI app target with composition, use cases, diary, entry,
+  analysis, statistics, and privacy UI.
 - `DecisionKernel/` - local analysis framework with schema, core math, runtime, assets, and pipeline.
+- `DiaryVault/` - local private storage boundary for entries, analyses,
+  feedback, JSON export, and delete-all-data.
 - `DecisionKernelTests/` - Swift Testing tests for scoring, F16 loading, aggregation, and bundled runtime.
+- `DiaryVaultTests/` - Swift Testing tests for save/load/export/delete.
 - `tools/` - offline Python tooling for regenerating reference attribute assets.
 - `reports/` - measured prototype output and recommendation.
 - `docs/architecture.md` - concise Russian architecture document.
+- `docs/mvp_release_prep.md` - MVP hardening checklist, performance baseline, and QA gate.
 - `Bhatia/` - local reference materials; raw large datasets are ignored by git.
 - `Project.swift` - Tuist manifest; generated `.xcodeproj`/`.xcworkspace` are ignored.
 
@@ -29,10 +33,13 @@ Use Python 3.12:
 .venv/bin/pip install -r tools/requirements.txt
 .venv/bin/python tools/generate_attribute_assets.py --model all-MiniLM-L6-v2
 .venv/bin/python tools/generate_attribute_assets.py --model all-MiniLM-L12-v2
+.venv/bin/python tools/generate_production_assets.py
+.venv/bin/python -m pytest tools/test_attribute_assets.py
 ```
 
 The app runtime must not download from Hugging Face. Model files are prepared by
-offline tooling and loaded from the app bundle.
+offline tooling and loaded from the app bundle. `DilemmaAssets.sqlite` is the
+production read-only attribute asset used by the app.
 
 ## Local app workflow
 
@@ -49,7 +56,6 @@ xcodebuild test -workspace dilemma.xcworkspace -scheme dilemma -destination 'pla
 large. Regenerate or download them locally before running integration tests.
 
 Tuist uses buildable folders for `dilemma/Sources`, `DecisionKernel/Sources`,
-and `DecisionKernelTests`, so adding
-new Swift files under those folders does not require regenerating only to update
-file references. Regenerate when targets, packages, resources, or settings
-change.
+`DecisionKernelTests`, `DiaryVault/Sources`, and `DiaryVaultTests`, so adding new
+Swift files under those folders does not require regenerating only to update file
+references. Regenerate when targets, packages, resources, or settings change.

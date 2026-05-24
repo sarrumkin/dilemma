@@ -64,14 +64,22 @@ struct DiaryVaultTests {
     #expect(statistics.chosenOptionCounts[1] == 1)
 
     let export = try vault.exportData()
+    #expect(export.schemaVersion == 1)
     #expect(export.entries.count == 1)
     #expect(export.analyses.count == 1)
     #expect(export.feedback.count == 1)
     let exportData = try vault.exportJSONData()
     #expect(!exportData.isEmpty)
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .iso8601
+    let decodedExport = try decoder.decode(DiaryExport.self, from: exportData)
+    #expect(decodedExport.schemaVersion == 1)
+    #expect(decodedExport.entries.first?.options.flatMap(\.reasons).count ?? 0 == 12)
 
     try vault.deleteAllData()
     #expect(!FileManager.default.fileExists(atPath: url.path))
+    try vault.prepare()
+    #expect(try vault.entries().isEmpty)
   }
 
   private func sampleEntry() -> DiaryEntryRecord {

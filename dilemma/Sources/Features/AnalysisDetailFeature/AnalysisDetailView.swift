@@ -120,6 +120,7 @@ struct AnalysisDetailView: View {
       } label: {
         Label("Save feedback", systemImage: "checkmark.circle")
       }
+      .accessibilityIdentifier("save-feedback-button")
 
       if didSaveFeedback {
         Text("Feedback saved locally.")

@@ -209,17 +209,20 @@ public struct ClusterFrequency: Codable, Identifiable, Equatable, Sendable {
 }
 
 public struct DiaryExport: Codable, Equatable, Sendable {
+  public var schemaVersion: Int
   public var exportedAt: Date
   public var entries: [DiaryEntryRecord]
   public var analyses: [StoredDecisionAnalysis]
   public var feedback: [FeedbackRecord]
 
   public init(
+    schemaVersion: Int = 1,
     exportedAt: Date = Date(),
     entries: [DiaryEntryRecord],
     analyses: [StoredDecisionAnalysis],
     feedback: [FeedbackRecord]
   ) {
+    self.schemaVersion = schemaVersion
     self.exportedAt = exportedAt
     self.entries = entries
     self.analyses = analyses

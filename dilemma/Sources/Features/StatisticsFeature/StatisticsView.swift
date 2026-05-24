@@ -60,6 +60,7 @@ struct StatisticsView: View {
           } label: {
             Label("Refresh", systemImage: "arrow.clockwise")
           }
+          .accessibilityIdentifier("refresh-statistics-button")
         }
       }
     }

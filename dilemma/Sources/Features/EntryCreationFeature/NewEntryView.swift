@@ -42,6 +42,7 @@ struct NewEntryView: View {
           Button("Cancel") {
             isPresented = false
           }
+          .accessibilityIdentifier("cancel-entry-button")
         }
         ToolbarItem(placement: .confirmationAction) {
           Button {
@@ -55,6 +56,7 @@ struct NewEntryView: View {
             Label("Analyze", systemImage: "waveform.path.ecg")
           }
           .disabled(!input.isValid || model.isBusy)
+          .accessibilityIdentifier("analyze-entry-button")
         }
       }
     }

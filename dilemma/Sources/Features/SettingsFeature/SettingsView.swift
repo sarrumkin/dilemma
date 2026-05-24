@@ -22,11 +22,13 @@ struct SettingsView: View {
           } label: {
             Label("Prepare JSON export", systemImage: "square.and.arrow.up")
           }
+          .accessibilityIdentifier("prepare-export-button")
 
           if let exportURL {
             ShareLink(item: exportURL) {
               Label("Share export", systemImage: "doc")
             }
+            .accessibilityIdentifier("share-export-button")
           }
         }
 
@@ -36,6 +38,7 @@ struct SettingsView: View {
           } label: {
             Label("Delete all user data", systemImage: "trash")
           }
+          .accessibilityIdentifier("delete-all-data-button")
         }
 
         Section("Privacy") {
@@ -61,6 +64,7 @@ struct SettingsView: View {
           model.deleteAllUserData()
           exportURL = nil
         }
+        .accessibilityIdentifier("confirm-delete-all-data-button")
         Button("Cancel", role: .cancel) {}
       }
     }
