@@ -1,4 +1,5 @@
 import DecisionKernel
+import DecisionUseCases
 import DiaryVault
 import Foundation
 

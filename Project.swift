@@ -37,6 +37,22 @@ let project = Project(
         "dilemma/Sources",
       ],
       dependencies: [
+        .target(name: "DecisionUseCases"),
+        .target(name: "DecisionKernel"),
+        .target(name: "DiaryVault"),
+      ]
+    ),
+    .target(
+      name: "DecisionUseCases",
+      destinations: .iOS,
+      product: .framework,
+      bundleId: "com.local.dilemma.DecisionUseCases",
+      deploymentTargets: deploymentTarget,
+      infoPlist: targetInfoPlist("DecisionUseCases"),
+      buildableFolders: [
+        "DecisionUseCases/Sources",
+      ],
+      dependencies: [
         .target(name: "DecisionKernel"),
         .target(name: "DiaryVault"),
       ]
@@ -105,13 +121,29 @@ let project = Project(
         .target(name: "DiaryVault"),
       ]
     ),
+    .target(
+      name: "DecisionUseCasesTests",
+      destinations: .iOS,
+      product: .unitTests,
+      bundleId: "com.local.dilemma.DecisionUseCasesTests",
+      deploymentTargets: deploymentTarget,
+      infoPlist: targetInfoPlist("DecisionUseCasesTests"),
+      buildableFolders: [
+        "DecisionUseCasesTests/Sources",
+      ],
+      dependencies: [
+        .target(name: "DecisionUseCases"),
+        .target(name: "DecisionKernel"),
+        .target(name: "DiaryVault"),
+      ]
+    ),
   ],
   schemes: [
     .scheme(
       name: "dilemma",
       shared: true,
       buildAction: .buildAction(targets: ["dilemma"]),
-      testAction: .targets(["DecisionKernelTests", "DiaryVaultTests"])
+      testAction: .targets(["DecisionKernelTests", "DiaryVaultTests", "DecisionUseCasesTests"])
     ),
   ]
 )

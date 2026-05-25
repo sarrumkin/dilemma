@@ -1,4 +1,5 @@
 import DecisionKernel
+import DecisionUseCases
 import SwiftUI
 
 struct AnalysisDebugView: View {
