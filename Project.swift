@@ -38,6 +38,7 @@ let project = Project(
       ],
       dependencies: [
         .target(name: "DecisionKernel"),
+        .target(name: "DiaryVault"),
       ]
     ),
     .target(
@@ -57,6 +58,7 @@ let project = Project(
       dependencies: [
         .package(product: "Embeddings"),
         .package(product: "MLTensorUtils"),
+        .sdk(name: "sqlite3", type: .library),
       ]
     ),
     .target(
@@ -73,13 +75,43 @@ let project = Project(
         .target(name: "DecisionKernel"),
       ]
     ),
+    .target(
+      name: "DiaryVault",
+      destinations: .iOS,
+      product: .framework,
+      bundleId: "com.local.dilemma.DiaryVault",
+      deploymentTargets: deploymentTarget,
+      infoPlist: targetInfoPlist("DiaryVault"),
+      buildableFolders: [
+        "DiaryVault/Sources",
+      ],
+      dependencies: [
+        .sdk(name: "sqlite3", type: .library),
+        .sdk(name: "Security", type: .framework),
+        .sdk(name: "LocalAuthentication", type: .framework),
+      ]
+    ),
+    .target(
+      name: "DiaryVaultTests",
+      destinations: .iOS,
+      product: .unitTests,
+      bundleId: "com.local.dilemma.DiaryVaultTests",
+      deploymentTargets: deploymentTarget,
+      infoPlist: targetInfoPlist("DiaryVaultTests"),
+      buildableFolders: [
+        "DiaryVaultTests/Sources",
+      ],
+      dependencies: [
+        .target(name: "DiaryVault"),
+      ]
+    ),
   ],
   schemes: [
     .scheme(
       name: "dilemma",
       shared: true,
       buildAction: .buildAction(targets: ["dilemma"]),
-      testAction: .targets(["DecisionKernelTests"])
+      testAction: .targets(["DecisionKernelTests", "DiaryVaultTests"])
     ),
   ]
 )

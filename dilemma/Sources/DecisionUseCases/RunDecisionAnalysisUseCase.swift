@@ -2,13 +2,17 @@ import DecisionKernel
 import Foundation
 
 struct RunDecisionAnalysisUseCase: Sendable {
-  private let runner: DecisionAnalysisRunner
+  private let service: DecisionAnalysisService
 
-  init(runner: DecisionAnalysisRunner = DecisionAnalysisRunner()) {
-    self.runner = runner
+  init(service: DecisionAnalysisService = DecisionAnalysisService()) {
+    self.service = service
+  }
+
+  func callAsFunction(_ draft: DecisionDraft) async throws -> DecisionAnalysisResult {
+    try await service.analyze(draft)
   }
 
   func callAsFunction() async throws -> DecisionAnalysisResult {
-    try await runner.run()
+    try await DecisionAnalysisRunner().run()
   }
 }

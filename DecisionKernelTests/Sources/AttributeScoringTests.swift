@@ -77,12 +77,71 @@ struct AttributeScoringTests {
     #expect(profiles[1] == [1, 1])
   }
 
+  @Test
+  func attributeProfilesCollapseProAndConRowsToUniqueAttributes() {
+    let store = makeStore()
+    let results = [
+      ReasonMatchResult(
+        reason: ReasonInput(text: "benefit", optionIndex: 1, polarity: .benefit),
+        rawScores: [],
+        centeredScores: [2, 4, .nan, .nan],
+        topMatches: []
+      ),
+      ReasonMatchResult(
+        reason: ReasonInput(text: "cost", optionIndex: 1, polarity: .cost),
+        rawScores: [],
+        centeredScores: [.nan, .nan, 1, 3],
+        topMatches: []
+      ),
+    ]
+
+    let profiles = AttributeScoring.optionAttributeProfiles(from: results, store: store)
+
+    #expect(profiles[1] == [1, 1])
+    #expect(store.attributeDefinitions.map(\.name) == ["money", "risk"])
+  }
+
+  @Test
+  func decisionDraftValidationRequiresStructuredReasons() throws {
+    let valid = DecisionAnalysisRunner.defaultDraft
+
+    _ = try valid.validated()
+
+    let invalid = DecisionDraft(rawText: "", options: [])
+    do {
+      _ = try invalid.validated()
+      Issue.record("Expected missing dilemma text validation error.")
+    } catch let error as DecisionDraftValidationError {
+      #expect(error == .missingDilemmaText)
+    } catch {
+      Issue.record("Unexpected error: \(error)")
+    }
+  }
+
+  @Test
+  func productionSQLiteAssetLoadsIfPresent() throws {
+    let assetURL = DecisionKernelResourceBundle.bundle.url(
+      forResource: "DilemmaAssets",
+      withExtension: "sqlite",
+      subdirectory: "Attributes"
+    )
+    guard assetURL != nil else { return }
+
+    let store = try AttributeEmbeddingStore.loadSQLite()
+
+    #expect(store.attributeDefinitions.count == 207)
+    #expect(store.metadata.attributes.count == 414)
+    #expect(store.clusters.count == 25)
+    #expect(store.assetVersion == 1)
+    #expect(store.dimension == 384)
+  }
+
   private func makeStore() -> AttributeEmbeddingStore {
     let attributes = [
-      AttributeMetadata(rowIndex: 0, name: "money", source: "test", direction: .pro, vectorOffset: 0),
-      AttributeMetadata(rowIndex: 1, name: "risk", source: "test", direction: .pro, vectorOffset: 2),
-      AttributeMetadata(rowIndex: 2, name: "money", source: "test", direction: .con, vectorOffset: 4),
-      AttributeMetadata(rowIndex: 3, name: "risk", source: "test", direction: .con, vectorOffset: 6),
+      AttributeMetadata(attributeID: 1, rowIndex: 0, name: "money", source: "test", direction: .pro, vectorOffset: 0, clusterID: 1),
+      AttributeMetadata(attributeID: 2, rowIndex: 1, name: "risk", source: "test", direction: .pro, vectorOffset: 2, clusterID: 2),
+      AttributeMetadata(attributeID: 1, rowIndex: 2, name: "money", source: "test", direction: .con, vectorOffset: 4, clusterID: 1),
+      AttributeMetadata(attributeID: 2, rowIndex: 3, name: "risk", source: "test", direction: .con, vectorOffset: 6, clusterID: 2),
     ]
     let metadata = AttributeAssetMetadata(
       assetVersion: 1,
