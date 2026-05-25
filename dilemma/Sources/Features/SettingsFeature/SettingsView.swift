@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct SettingsView: View {
-  @EnvironmentObject private var model: DilemmaAppModel
-  @State private var exportURL: URL?
+  @Bindable var model: PrivacySettingsModel
+  let onDeleted: () -> Void
   @State private var showingDeleteConfirmation = false
 
   var body: some View {
@@ -14,17 +14,13 @@ struct SettingsView: View {
 
         Section("Export") {
           Button {
-            do {
-              exportURL = try model.makeExportFile()
-            } catch {
-              model.errorMessage = error.localizedDescription
-            }
+            model.prepareExportFile()
           } label: {
             Label("Prepare JSON export", systemImage: "square.and.arrow.up")
           }
           .accessibilityIdentifier("prepare-export-button")
 
-          if let exportURL {
+          if let exportURL = model.exportURL {
             ShareLink(item: exportURL) {
               Label("Share export", systemImage: "doc")
             }
@@ -61,8 +57,9 @@ struct SettingsView: View {
         titleVisibility: .visible
       ) {
         Button("Delete all user data", role: .destructive) {
-          model.deleteAllUserData()
-          exportURL = nil
+          if model.deleteAllUserData() {
+            onDeleted()
+          }
         }
         .accessibilityIdentifier("confirm-delete-all-data-button")
         Button("Cancel", role: .cancel) {}

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct StatisticsView: View {
-  @EnvironmentObject private var model: DilemmaAppModel
+  let model: StatisticsModel
 
   var body: some View {
     NavigationStack {
@@ -47,16 +47,19 @@ struct StatisticsView: View {
             }
           }
         }
+
+        if let errorMessage = model.errorMessage {
+          Section {
+            Text(errorMessage)
+              .foregroundStyle(.red)
+          }
+        }
       }
       .navigationTitle("Statistics")
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            do {
-              try model.reload()
-            } catch {
-              model.errorMessage = error.localizedDescription
-            }
+            model.reload()
           } label: {
             Label("Refresh", systemImage: "arrow.clockwise")
           }

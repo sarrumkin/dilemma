@@ -1,8 +1,10 @@
-import DiaryVault
+import DecisionUseCases
 import SwiftUI
 
 struct DiaryListView: View {
-  @EnvironmentObject private var model: DilemmaAppModel
+  let model: DiaryListModel
+  let makeNewEntryModel: () -> NewEntryModel
+  let makeAnalysisDetailModel: (DiaryEntrySnapshot, AnalysisSnapshot?) -> AnalysisDetailModel
   @State private var isCreatingEntry = false
 
   var body: some View {
@@ -25,7 +27,9 @@ struct DiaryListView: View {
           Section("Diary") {
             ForEach(model.entries) { entry in
               NavigationLink {
-                AnalysisDetailView(entry: entry, analysis: model.latestAnalysis(for: entry))
+                AnalysisDetailView(
+                  model: makeAnalysisDetailModel(entry, model.latestAnalysis(for: entry))
+                )
               } label: {
                 EntryRow(entry: entry, analysis: model.latestAnalysis(for: entry))
               }
@@ -45,23 +49,29 @@ struct DiaryListView: View {
         }
       }
       .sheet(isPresented: $isCreatingEntry) {
-        NewEntryView(isPresented: $isCreatingEntry)
-          .environmentObject(model)
-      }
-      .overlay {
-        if model.isBusy {
-          ProgressView("Analyzing locally")
-            .padding()
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
-        }
+        NewEntrySheet(isPresented: $isCreatingEntry, model: makeNewEntryModel())
       }
     }
   }
 }
 
+private struct NewEntrySheet: View {
+  @Binding var isPresented: Bool
+  @State private var model: NewEntryModel
+
+  init(isPresented: Binding<Bool>, model: NewEntryModel) {
+    self._isPresented = isPresented
+    self._model = State(initialValue: model)
+  }
+
+  var body: some View {
+    NewEntryView(model: model, isPresented: $isPresented)
+  }
+}
+
 private struct EntryRow: View {
-  let entry: DiaryEntryRecord
-  let analysis: StoredDecisionAnalysis?
+  let entry: DiaryEntrySnapshot
+  let analysis: AnalysisSnapshot?
 
   var body: some View {
     VStack(alignment: .leading, spacing: 6) {

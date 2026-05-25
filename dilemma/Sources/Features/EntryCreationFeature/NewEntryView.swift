@@ -1,38 +1,44 @@
 import SwiftUI
 
 struct NewEntryView: View {
-  @EnvironmentObject private var model: DilemmaAppModel
+  @Bindable var model: NewEntryModel
   @Binding var isPresented: Bool
-  @State private var input = EntryFormInput()
 
   var body: some View {
     NavigationStack {
       Form {
         Section("Dilemma") {
-          TextEditor(text: $input.rawText)
+          TextEditor(text: $model.command.rawText)
             .frame(minHeight: 96)
             .accessibilityLabel("Dilemma text")
         }
 
         OptionEditorSection(
           title: "Option 1",
-          optionTitle: $input.option1Title,
-          benefits: $input.option1Benefits,
-          costs: $input.option1Costs
+          optionTitle: $model.command.option1Title,
+          benefits: $model.command.option1Benefits,
+          costs: $model.command.option1Costs
         )
 
         OptionEditorSection(
           title: "Option 2",
-          optionTitle: $input.option2Title,
-          benefits: $input.option2Benefits,
-          costs: $input.option2Costs
+          optionTitle: $model.command.option2Title,
+          benefits: $model.command.option2Benefits,
+          costs: $model.command.option2Costs
         )
 
-        if !input.isValid {
+        if !model.command.isValid {
           Section {
             Text("Fill the dilemma, both options, and three benefits and costs for each option.")
               .font(.callout)
               .foregroundStyle(.secondary)
+          }
+        }
+
+        if let errorMessage = model.errorMessage {
+          Section {
+            Text(errorMessage)
+              .foregroundStyle(.red)
           }
         }
       }
@@ -47,16 +53,22 @@ struct NewEntryView: View {
         ToolbarItem(placement: .confirmationAction) {
           Button {
             Task {
-              await model.createAnalyzeAndSave(input)
-              if model.errorMessage == nil {
+              if await model.analyze() {
                 isPresented = false
               }
             }
           } label: {
             Label("Analyze", systemImage: "waveform.path.ecg")
           }
-          .disabled(!input.isValid || model.isBusy)
+          .disabled(!model.command.isValid || model.isBusy)
           .accessibilityIdentifier("analyze-entry-button")
+        }
+      }
+      .overlay {
+        if model.isBusy {
+          ProgressView("Analyzing locally")
+            .padding()
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
         }
       }
     }

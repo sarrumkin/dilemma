@@ -1,25 +1,16 @@
-import DiaryVault
+import DecisionUseCases
 import SwiftUI
 
 struct AnalysisDetailView: View {
-  @EnvironmentObject private var model: DilemmaAppModel
-  let entry: DiaryEntryRecord
-  let analysis: StoredDecisionAnalysis?
-
-  @State private var conflictWasUseful = true
-  @State private var correctedClusterID: Int?
-  @State private var correctedAttributeName = ""
-  @State private var chosenOptionIndex: Int?
-  @State private var note = ""
-  @State private var didSaveFeedback = false
+  @Bindable var model: AnalysisDetailModel
 
   var body: some View {
     List {
       Section("Dilemma") {
-        Text(entry.rawText)
+        Text(model.entry.rawText)
       }
 
-      ForEach(entry.options) { option in
+      ForEach(model.entry.options) { option in
         Section(option.title) {
           ForEach(option.reasons) { reason in
             HStack(alignment: .top, spacing: 12) {
@@ -31,7 +22,7 @@ struct AnalysisDetailView: View {
         }
       }
 
-      if let analysis {
+      if let analysis = model.analysis {
         Section("Likely Attribute Conflict") {
           ForEach(analysis.attributeConflicts.prefix(8)) { conflict in
             VStack(alignment: .leading, spacing: 4) {
@@ -48,7 +39,7 @@ struct AnalysisDetailView: View {
         }
 
         Section("Top Clusters") {
-          ForEach(entry.options) { option in
+          ForEach(model.entry.options) { option in
             let clusters = analysis.clusterProfiles
               .filter { $0.optionIndex == option.index }
               .sorted { abs($0.score) > abs($1.score) }
@@ -71,69 +62,61 @@ struct AnalysisDetailView: View {
           }
         }
 
-        feedbackSection(analysis: analysis)
+        feedbackSection()
       } else {
         Section("Analysis") {
           Text("No saved analysis is available for this entry.")
             .foregroundStyle(.secondary)
         }
       }
+
+      if let errorMessage = model.errorMessage {
+        Section {
+          Text(errorMessage)
+            .foregroundStyle(.red)
+        }
+      }
     }
     .navigationTitle("Analysis")
   }
 
-  private func feedbackSection(analysis: StoredDecisionAnalysis) -> some View {
+  private func feedbackSection() -> some View {
     Section("Feedback") {
-      Toggle("Conflict was useful", isOn: $conflictWasUseful)
+      Toggle("Conflict was useful", isOn: $model.conflictWasUseful)
 
-      Picker("Corrected cluster", selection: $correctedClusterID) {
+      Picker("Corrected cluster", selection: $model.correctedClusterID) {
         Text("None").tag(Int?.none)
-        ForEach(uniqueClusters(in: analysis), id: \.clusterID) { cluster in
+        ForEach(model.uniqueClusters(), id: \.clusterID) { cluster in
           Text(cluster.label).tag(Optional(cluster.clusterID))
         }
       }
 
-      TextField("Corrected attribute", text: $correctedAttributeName)
+      TextField("Corrected attribute", text: $model.correctedAttributeName)
         .textInputAutocapitalization(.sentences)
 
-      Picker("Recorded choice", selection: $chosenOptionIndex) {
+      Picker("Recorded choice", selection: $model.chosenOptionIndex) {
         Text("None").tag(Int?.none)
-        ForEach(entry.options) { option in
+        ForEach(model.entry.options) { option in
           Text(option.title).tag(Optional(option.index))
         }
       }
 
-      TextField("Note", text: $note, axis: .vertical)
+      TextField("Note", text: $model.note, axis: .vertical)
         .lineLimit(1...4)
 
       Button {
-        model.saveFeedback(
-          entry: entry,
-          analysis: analysis,
-          conflictWasUseful: conflictWasUseful,
-          correctedClusterID: correctedClusterID,
-          correctedAttributeName: correctedAttributeName,
-          chosenOptionIndex: chosenOptionIndex,
-          note: note
-        )
-        didSaveFeedback = true
+        model.saveFeedback()
       } label: {
         Label("Save feedback", systemImage: "checkmark.circle")
       }
       .accessibilityIdentifier("save-feedback-button")
 
-      if didSaveFeedback {
+      if model.didSaveFeedback {
         Text("Feedback saved locally.")
           .font(.caption)
           .foregroundStyle(.secondary)
       }
     }
-  }
-
-  private func uniqueClusters(in analysis: StoredDecisionAnalysis) -> [StoredClusterProfile] {
-    Dictionary(grouping: analysis.clusterProfiles, by: \.clusterID)
-      .compactMap { $0.value.first }
-      .sorted { $0.clusterID < $1.clusterID }
   }
 
   private func format(_ value: Double) -> String {

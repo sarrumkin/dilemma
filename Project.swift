@@ -38,8 +38,6 @@ let project = Project(
       ],
       dependencies: [
         .target(name: "DecisionUseCases"),
-        .target(name: "DecisionKernel"),
-        .target(name: "DiaryVault"),
       ]
     ),
     .target(
