@@ -10,11 +10,14 @@ Current prototype default: `swift-embeddings + all-MiniLM-L12-v2`.
 
 ## Local shape
 
-- `dilemma/` - SwiftUI app target with composition, use cases, diary, entry,
-  analysis, statistics, and privacy UI.
+- `dilemma/` - SwiftUI app target with composition and feature-level
+  Observation models for diary, entry, analysis, statistics, and privacy UI.
+- `DecisionUseCases/` - application layer target with UI-safe commands,
+  snapshots, and use-case orchestration between the app, kernel, and vault.
 - `DecisionKernel/` - local analysis framework with schema, core math, runtime, assets, and pipeline.
 - `DiaryVault/` - local private storage boundary for entries, analyses,
   feedback, JSON export, and delete-all-data.
+- `DecisionUseCasesTests/` - Swift Testing tests for full use-case roundtrips.
 - `DecisionKernelTests/` - Swift Testing tests for scoring, F16 loading, aggregation, and bundled runtime.
 - `DiaryVaultTests/` - Swift Testing tests for save/load/export/delete.
 - `tools/` - offline Python tooling for regenerating reference attribute assets.
@@ -56,6 +59,11 @@ xcodebuild test -workspace dilemma.xcworkspace -scheme dilemma -destination 'pla
 large. Regenerate or download them locally before running integration tests.
 
 Tuist uses buildable folders for `dilemma/Sources`, `DecisionKernel/Sources`,
-`DecisionKernelTests`, `DiaryVault/Sources`, and `DiaryVaultTests`, so adding new
-Swift files under those folders does not require regenerating only to update file
-references. Regenerate when targets, packages, resources, or settings change.
+`DecisionUseCases/Sources`, `DecisionKernelTests`,
+`DecisionUseCasesTests/Sources`, `DiaryVault/Sources`, and `DiaryVaultTests`, so
+adding new Swift files under those folders does not require regenerating only to
+update file references. Regenerate when targets, packages, resources, or
+settings change.
+
+The app target imports `DecisionUseCases` as its business boundary. UI code does
+not import `DecisionKernel` or `DiaryVault` directly.

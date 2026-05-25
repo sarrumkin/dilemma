@@ -4,16 +4,22 @@
 должна поддерживать плавный roadmap по слайсам: сначала production assets и
 analysis engine, затем storage, UI, feedback, statistics и privacy controls.
 
-Главная идея: `DecisionKernel` локально считает analysis, а долговременное
-хранение пользовательских данных остаётся отдельной зоной ответственности.
+Главная идея: `DecisionUseCases` является application layer для UI,
+`DecisionKernel` локально считает analysis, а долговременное хранение
+пользовательских данных остаётся отдельной зоной ответственности.
 
 ## Базовые Решения
 
 - `DecisionKernel` — локальное аналитическое ядро.
 - Для MVP `DecisionKernel` остаётся одним Tuist target с внутренними папками.
-- `DiaryVault` появляется позже как отдельный приватный storage layer.
-- UI features работают через use cases, а не напрямую через kernel/database.
-- Документ фиксирует направление, а не финальную реализацию всех targets.
+- `DiaryVault` — отдельный приватный storage layer.
+- `DecisionUseCases` — физический Tuist target между UI, kernel и vault.
+- UI features работают через use cases и UI-safe DTO, а не напрямую через
+  kernel/database.
+- UI state держится в feature-level Observation models, без глобального
+  `ObservableObject`/`EnvironmentObject` фасада.
+- Документ фиксирует направление, а не финальную реализацию всех feature
+  boundaries.
 
 ## Граф
 
@@ -45,10 +51,48 @@ DiaryVault
 | `EntryCreationFeature` | Flow создания dilemma. |
 | `AnalysisDetailFeature` | Просмотр analysis и feedback. |
 | `DiaryFeature` | Список и просмотр сохранённых entries. |
-| `DecisionUseCases` | Application layer между UI, kernel и vault. |
+| `DecisionUseCases` | Application layer, public commands/DTO and orchestration. |
 | `DecisionKernel` | Локальный analysis engine. |
-| `DiaryVault` | Приватное долговременное хранилище, начиная с Slice 4. |
+| `DiaryVault` | Приватное долговременное хранилище entries, analyses и feedback. |
 | `DesignSystem` | Общие UI primitives без business logic. |
+
+## Application Layer
+
+`DecisionUseCases` — единственный app-facing target для business workflows.
+App target импортирует `DecisionUseCases`, но не импортирует `DecisionKernel`
+или `DiaryVault` напрямую.
+
+Публичный контракт слоя:
+
+- commands: `EntryDraftCommand`, `FeedbackCommand`;
+- snapshots: `DiarySnapshot`, `DiaryEntrySnapshot`, `AnalysisSnapshot`,
+  `PreferenceStatisticsSnapshot`;
+- use cases: prepare/unlock diary, create analyzed entry, load diary snapshot,
+  save feedback, load statistics, export data, delete data.
+
+Маппинг между kernel result и persisted analysis остаётся внутри
+`DecisionUseCases`. UI получает только данные, безопасные для отображения и
+форм, без storage/kernel models.
+
+## UI State And Observation
+
+App composition создаёт live use cases и long-lived feature models:
+
+```text
+AppDependencies
+  -> DecisionUseCases.live()
+  -> DiaryListModel
+  -> StatisticsModel
+  -> PrivacySettingsModel
+```
+
+Feature models объявлены как `@MainActor @Observable` и держат локальные
+loading/error состояния. SwiftUI root владеет долгоживущими моделями через
+`@State`, child views получают models через init parameters, а mutable form
+bindings используют `@Bindable`.
+
+Cross-feature refresh выполняется closures из composition root. Общего
+`DilemmaAppModel` больше нет.
 
 ## DecisionKernel
 
@@ -112,6 +156,7 @@ Features express user intent.
 - kernel не зависит от vault;
 - UI не пишет private data на диск напрямую;
 - runtime/core не логируют raw dilemma text, reasons или feedback notes.
+- feature models не импортируют storage/kernel targets напрямую.
 
 ## Что Не Фиксируем Сейчас
 
