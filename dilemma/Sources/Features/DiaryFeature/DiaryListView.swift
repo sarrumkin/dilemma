@@ -1,10 +1,10 @@
-import DecisionUseCases
+import DecisionModels
 import SwiftUI
 
 struct DiaryListView: View {
   let model: DiaryListModel
   let makeNewEntryModel: () -> NewEntryModel
-  let makeAnalysisDetailModel: (DiaryEntrySnapshot, AnalysisSnapshot?) -> AnalysisDetailModel
+  let makeAnalysisDetailModel: (DiaryEntry, DiaryAnalysis?) -> AnalysisDetailModel
   @State private var isCreatingEntry = false
 
   var body: some View {
@@ -70,8 +70,8 @@ private struct NewEntrySheet: View {
 }
 
 private struct EntryRow: View {
-  let entry: DiaryEntrySnapshot
-  let analysis: AnalysisSnapshot?
+  let entry: DiaryEntry
+  let analysis: DiaryAnalysis?
 
   var body: some View {
     VStack(alignment: .leading, spacing: 6) {

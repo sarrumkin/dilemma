@@ -1,3 +1,4 @@
+import DecisionModels
 import DecisionUseCases
 import Foundation
 import Observation
@@ -5,8 +6,8 @@ import Observation
 @MainActor
 @Observable
 final class AnalysisDetailModel {
-  let entry: DiaryEntrySnapshot
-  let analysis: AnalysisSnapshot?
+  let entry: DiaryEntry
+  let analysis: DiaryAnalysis?
   var conflictWasUseful = true
   var correctedClusterID: Int?
   var correctedAttributeName = ""
@@ -19,8 +20,8 @@ final class AnalysisDetailModel {
   @ObservationIgnored private let onFeedbackSaved: @MainActor () -> Void
 
   init(
-    entry: DiaryEntrySnapshot,
-    analysis: AnalysisSnapshot?,
+    entry: DiaryEntry,
+    analysis: DiaryAnalysis?,
     saveFeedback: SaveFeedbackUseCase,
     onFeedbackSaved: @escaping @MainActor () -> Void
   ) {
@@ -52,7 +53,7 @@ final class AnalysisDetailModel {
     }
   }
 
-  func uniqueClusters() -> [ClusterProfileSnapshot] {
+  func uniqueClusters() -> [ClusterProfile] {
     guard let analysis else { return [] }
     return Dictionary(grouping: analysis.clusterProfiles, by: \.clusterID)
       .compactMap { $0.value.first }

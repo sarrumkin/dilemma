@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 
+@testable import DecisionModels
 @testable import DecisionUseCases
 import DiaryVault
 
@@ -64,14 +65,14 @@ struct DecisionUseCasesTests {
 }
 
 private struct StubAnalysisGenerator: EntryAnalysisGenerating {
-  func analysis(for command: EntryDraftCommand, entryID: UUID) async throws -> StoredDecisionAnalysis {
-    StoredDecisionAnalysis(
+  func analysis(for command: EntryDraftCommand, entryID: UUID) async throws -> DiaryAnalysis {
+    DiaryAnalysis(
       entryID: entryID,
       assetVersion: 1,
       modelID: "stub-model",
       sourceDOI: "stub-doi",
       attributeConflicts: [
-        StoredAttributeConflict(
+        AttributeConflict(
           attributeName: "money",
           option1Score: 0.8,
           option2Score: -0.1,
@@ -80,8 +81,8 @@ private struct StubAnalysisGenerator: EntryAnalysisGenerating {
         ),
       ],
       clusterProfiles: [
-        StoredClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.7),
-        StoredClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.5),
+        ClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.7),
+        ClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.5),
       ]
     )
   }

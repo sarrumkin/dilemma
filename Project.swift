@@ -37,8 +37,21 @@ let project = Project(
         "dilemma/Sources",
       ],
       dependencies: [
+        .target(name: "DecisionModels"),
         .target(name: "DecisionUseCases"),
       ]
+    ),
+    .target(
+      name: "DecisionModels",
+      destinations: .iOS,
+      product: .framework,
+      bundleId: "com.local.dilemma.DecisionModels",
+      deploymentTargets: deploymentTarget,
+      infoPlist: targetInfoPlist("DecisionModels"),
+      buildableFolders: [
+        "DecisionModels/Sources",
+      ],
+      dependencies: []
     ),
     .target(
       name: "DecisionUseCases",
@@ -51,6 +64,7 @@ let project = Project(
         "DecisionUseCases/Sources",
       ],
       dependencies: [
+        .target(name: "DecisionModels"),
         .target(name: "DecisionKernel"),
         .target(name: "DiaryVault"),
       ]
@@ -100,6 +114,7 @@ let project = Project(
         "DiaryVault/Sources",
       ],
       dependencies: [
+        .target(name: "DecisionModels"),
         .sdk(name: "sqlite3", type: .library),
         .sdk(name: "Security", type: .framework),
         .sdk(name: "LocalAuthentication", type: .framework),
@@ -116,7 +131,22 @@ let project = Project(
         "DiaryVaultTests/Sources",
       ],
       dependencies: [
+        .target(name: "DecisionModels"),
         .target(name: "DiaryVault"),
+      ]
+    ),
+    .target(
+      name: "DecisionModelsTests",
+      destinations: .iOS,
+      product: .unitTests,
+      bundleId: "com.local.dilemma.DecisionModelsTests",
+      deploymentTargets: deploymentTarget,
+      infoPlist: targetInfoPlist("DecisionModelsTests"),
+      buildableFolders: [
+        "DecisionModelsTests/Sources",
+      ],
+      dependencies: [
+        .target(name: "DecisionModels"),
       ]
     ),
     .target(
@@ -130,6 +160,7 @@ let project = Project(
         "DecisionUseCasesTests/Sources",
       ],
       dependencies: [
+        .target(name: "DecisionModels"),
         .target(name: "DecisionUseCases"),
         .target(name: "DecisionKernel"),
         .target(name: "DiaryVault"),
@@ -141,7 +172,7 @@ let project = Project(
       name: "dilemma",
       shared: true,
       buildAction: .buildAction(targets: ["dilemma"]),
-      testAction: .targets(["DecisionKernelTests", "DiaryVaultTests", "DecisionUseCasesTests"])
+      testAction: .targets(["DecisionModelsTests", "DecisionKernelTests", "DiaryVaultTests", "DecisionUseCasesTests"])
     ),
   ]
 )

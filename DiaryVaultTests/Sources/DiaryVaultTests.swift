@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 
+import DecisionModels
 @testable import DiaryVault
 
 @Suite
@@ -25,13 +26,13 @@ struct DiaryVaultTests {
     #expect(loaded.options.count == 2)
     #expect(loaded.options.flatMap(\.reasons).count == 12)
 
-    let analysis = StoredDecisionAnalysis(
+    let analysis = DiaryAnalysis(
       entryID: entry.id,
       assetVersion: 1,
       modelID: "sentence-transformers/all-MiniLM-L12-v2",
       sourceDOI: "10.1073/pnas.2406489122",
       attributeConflicts: [
-        StoredAttributeConflict(
+        AttributeConflict(
           attributeName: "money",
           option1Score: 0.8,
           option2Score: -0.2,
@@ -40,13 +41,13 @@ struct DiaryVaultTests {
         ),
       ],
       clusterProfiles: [
-        StoredClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.7),
-        StoredClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.6),
+        ClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.7),
+        ClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.6),
       ]
     )
     try vault.saveAnalysis(analysis)
 
-    let feedback = FeedbackRecord(
+    let feedback = Feedback(
       entryID: entry.id,
       analysisID: analysis.id,
       conflictWasUseful: true,
@@ -82,32 +83,32 @@ struct DiaryVaultTests {
     #expect(try vault.entries().isEmpty)
   }
 
-  private func sampleEntry() -> DiaryEntryRecord {
-    DiaryEntryRecord(
+  private func sampleEntry() -> DiaryEntry {
+    DiaryEntry(
       rawText: "Should I stay or leave?",
       options: [
-        StoredDecisionOption(
+        DiaryOption(
           index: 1,
           title: "Stay",
           reasons: [
-            StoredReason(text: "Stable income", polarity: .benefit),
-            StoredReason(text: "Close to family", polarity: .benefit),
-            StoredReason(text: "Lower risk", polarity: .benefit),
-            StoredReason(text: "Less growth", polarity: .cost),
-            StoredReason(text: "Boredom", polarity: .cost),
-            StoredReason(text: "Missed opportunity", polarity: .cost),
+            DiaryReason(text: "Stable income", polarity: .benefit),
+            DiaryReason(text: "Close to family", polarity: .benefit),
+            DiaryReason(text: "Lower risk", polarity: .benefit),
+            DiaryReason(text: "Less growth", polarity: .cost),
+            DiaryReason(text: "Boredom", polarity: .cost),
+            DiaryReason(text: "Missed opportunity", polarity: .cost),
           ]
         ),
-        StoredDecisionOption(
+        DiaryOption(
           index: 2,
           title: "Leave",
           reasons: [
-            StoredReason(text: "Career growth", polarity: .benefit),
-            StoredReason(text: "New skills", polarity: .benefit),
-            StoredReason(text: "Independence", polarity: .benefit),
-            StoredReason(text: "Financial risk", polarity: .cost),
-            StoredReason(text: "Stress", polarity: .cost),
-            StoredReason(text: "Less family time", polarity: .cost),
+            DiaryReason(text: "Career growth", polarity: .benefit),
+            DiaryReason(text: "New skills", polarity: .benefit),
+            DiaryReason(text: "Independence", polarity: .benefit),
+            DiaryReason(text: "Financial risk", polarity: .cost),
+            DiaryReason(text: "Stress", polarity: .cost),
+            DiaryReason(text: "Less family time", polarity: .cost),
           ]
         ),
       ]

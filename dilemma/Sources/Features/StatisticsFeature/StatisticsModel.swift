@@ -1,3 +1,4 @@
+import DecisionModels
 import DecisionUseCases
 import Foundation
 import Observation
@@ -5,7 +6,7 @@ import Observation
 @MainActor
 @Observable
 final class StatisticsModel {
-  private(set) var statistics = PreferenceStatisticsSnapshot.empty
+  private(set) var statistics = PreferenceStatistics.empty
   var errorMessage: String?
 
   @ObservationIgnored private let loadPreferenceStatistics: LoadPreferenceStatisticsUseCase
@@ -21,18 +22,5 @@ final class StatisticsModel {
     } catch {
       errorMessage = error.localizedDescription
     }
-  }
-}
-
-private extension PreferenceStatisticsSnapshot {
-  static var empty: PreferenceStatisticsSnapshot {
-    PreferenceStatisticsSnapshot(
-      entryCount: 0,
-      feedbackCount: 0,
-      acceptedConflictCount: 0,
-      rejectedConflictCount: 0,
-      mostFrequentClusters: [],
-      chosenOptionCounts: [:]
-    )
   }
 }

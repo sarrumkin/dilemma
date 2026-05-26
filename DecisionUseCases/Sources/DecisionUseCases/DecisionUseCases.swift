@@ -1,3 +1,4 @@
+import DecisionModels
 import DecisionKernel
 import DiaryVault
 import Foundation
@@ -45,18 +46,18 @@ public struct DecisionUseCases: Sendable {
   }
 }
 
-public struct RunDecisionAnalysisUseCase: Sendable {
+struct RunDecisionAnalysisUseCase: Sendable {
   private let service: DecisionAnalysisService
 
-  public init(service: DecisionAnalysisService = DecisionAnalysisService()) {
+  init(service: DecisionAnalysisService = DecisionAnalysisService()) {
     self.service = service
   }
 
-  public func callAsFunction(_ draft: DecisionDraft) async throws -> DecisionAnalysisResult {
+  func callAsFunction(_ draft: DecisionDraft) async throws -> DecisionAnalysisResult {
     try await service.analyze(draft)
   }
 
-  public func callAsFunction() async throws -> DecisionAnalysisResult {
+  func callAsFunction() async throws -> DecisionAnalysisResult {
     try await DecisionAnalysisRunner().run()
   }
 }
@@ -94,14 +95,14 @@ public struct LoadDiarySnapshotUseCase: Sendable {
 
   public func callAsFunction() throws -> DiarySnapshot {
     let entries = try vault.entries()
-    var latestAnalyses: [UUID: AnalysisSnapshot] = [:]
+    var latestAnalyses: [UUID: DiaryAnalysis] = [:]
     for entry in entries {
       if let analysis = try vault.analyses(entryID: entry.id).first {
-        latestAnalyses[entry.id] = AnalysisSnapshot(analysis: analysis)
+        latestAnalyses[entry.id] = analysis
       }
     }
     return DiarySnapshot(
-      entries: entries.map(DiaryEntrySnapshot.init(entry:)),
+      entries: entries,
       latestAnalyses: latestAnalyses
     )
   }
@@ -140,7 +141,7 @@ public struct SaveFeedbackUseCase: Sendable {
 
   public func callAsFunction(_ command: FeedbackCommand) throws {
     try vault.saveFeedback(
-      FeedbackRecord(
+      Feedback(
         entryID: command.entryID,
         analysisID: command.analysisID,
         conflictWasUseful: command.conflictWasUseful,
@@ -160,8 +161,8 @@ public struct LoadPreferenceStatisticsUseCase: Sendable {
     self.vault = vault
   }
 
-  public func callAsFunction() throws -> PreferenceStatisticsSnapshot {
-    PreferenceStatisticsSnapshot(statistics: try vault.statistics())
+  public func callAsFunction() throws -> PreferenceStatistics {
+    try vault.statistics()
   }
 }
 
@@ -202,19 +203,70 @@ public struct DeleteDiaryDataUseCase: Sendable {
 }
 
 protocol EntryAnalysisGenerating: Sendable {
-  func analysis(for command: EntryDraftCommand, entryID: UUID) async throws -> StoredDecisionAnalysis
+  func analysis(for command: EntryDraftCommand, entryID: UUID) async throws -> DiaryAnalysis
 }
 
 struct LiveEntryAnalysisGenerator: EntryAnalysisGenerating {
   let runAnalysis: RunDecisionAnalysisUseCase
 
-  func analysis(for command: EntryDraftCommand, entryID: UUID) async throws -> StoredDecisionAnalysis {
+  func analysis(for command: EntryDraftCommand, entryID: UUID) async throws -> DiaryAnalysis {
     let analysis = try await runAnalysis(command.makeDraft(id: entryID))
-    return StoredDecisionAnalysis(analysis: analysis, entryID: entryID)
+    return DiaryAnalysis(analysis: analysis, entryID: entryID)
   }
 }
 
-extension StoredDecisionAnalysis {
+private extension EntryDraftCommand {
+  func makeEntry(createdAt: Date = Date()) -> DiaryEntry {
+    DiaryEntry(
+      rawText: rawText.trimmed,
+      options: [
+        DiaryOption(
+          index: 1,
+          title: option1Title.trimmed,
+          reasons: diaryReasons(benefits: option1Benefits, costs: option1Costs)
+        ),
+        DiaryOption(
+          index: 2,
+          title: option2Title.trimmed,
+          reasons: diaryReasons(benefits: option2Benefits, costs: option2Costs)
+        ),
+      ],
+      createdAt: createdAt,
+      updatedAt: createdAt
+    )
+  }
+
+  func makeDraft(id: UUID) -> DecisionDraft {
+    DecisionDraft(
+      id: id,
+      rawText: rawText.trimmed,
+      options: [
+        DecisionOption(
+          index: 1,
+          title: option1Title.trimmed,
+          reasons: kernelReasons(benefits: option1Benefits, costs: option1Costs)
+        ),
+        DecisionOption(
+          index: 2,
+          title: option2Title.trimmed,
+          reasons: kernelReasons(benefits: option2Benefits, costs: option2Costs)
+        ),
+      ]
+    )
+  }
+
+  private func diaryReasons(benefits: [String], costs: [String]) -> [DiaryReason] {
+    benefits.map { DiaryReason(text: $0.trimmed, polarity: .benefit) }
+      + costs.map { DiaryReason(text: $0.trimmed, polarity: .cost) }
+  }
+
+  private func kernelReasons(benefits: [String], costs: [String]) -> [Reason] {
+    benefits.map { Reason(text: $0.trimmed, polarity: .benefit) }
+      + costs.map { Reason(text: $0.trimmed, polarity: .cost) }
+  }
+}
+
+private extension DiaryAnalysis {
   init(analysis: DecisionAnalysisResult, entryID: UUID) {
     self.init(
       entryID: entryID,
@@ -222,7 +274,7 @@ extension StoredDecisionAnalysis {
       modelID: analysis.modelName,
       sourceDOI: analysis.sourceDOI,
       attributeConflicts: analysis.conflictDimensions.enumerated().map { offset, conflict in
-        StoredAttributeConflict(
+        AttributeConflict(
           attributeName: conflict.attributeName,
           option1Score: Double(conflict.option1Score),
           option2Score: Double(conflict.option2Score),
@@ -232,7 +284,7 @@ extension StoredDecisionAnalysis {
       },
       clusterProfiles: analysis.clusterProfiles.flatMap { optionIndex, clusters in
         clusters.map {
-          StoredClusterProfile(
+          ClusterProfile(
             optionIndex: optionIndex,
             clusterID: $0.cluster.clusterID,
             label: $0.cluster.label,
@@ -241,5 +293,15 @@ extension StoredDecisionAnalysis {
         }
       }
     )
+  }
+}
+
+private extension String {
+  var trimmed: String {
+    trimmingCharacters(in: .whitespacesAndNewlines)
+  }
+
+  var nilIfEmpty: String? {
+    isEmpty ? nil : self
   }
 }

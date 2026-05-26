@@ -4,9 +4,10 @@
 должна поддерживать плавный roadmap по слайсам: сначала production assets и
 analysis engine, затем storage, UI, feedback, statistics и privacy controls.
 
-Главная идея: `DecisionUseCases` является application layer для UI,
-`DecisionKernel` локально считает analysis, а долговременное хранение
-пользовательских данных остаётся отдельной зоной ответственности.
+Главная идея: `DecisionModels` фиксирует общий app/storage-facing контракт,
+`DecisionUseCases` оркестрирует workflows, `DecisionKernel` локально считает
+analysis, а долговременное хранение пользовательских данных остаётся отдельной
+зоной ответственности.
 
 ## Базовые Решения
 
@@ -14,8 +15,10 @@ analysis engine, затем storage, UI, feedback, statistics и privacy control
 - Для MVP `DecisionKernel` остаётся одним Tuist target с внутренними папками.
 - `DiaryVault` — отдельный приватный storage layer.
 - `DecisionUseCases` — физический Tuist target между UI, kernel и vault.
-- UI features работают через use cases и UI-safe DTO, а не напрямую через
-  kernel/database.
+- `DecisionModels` — физический Tuist target с canonical commands, diary
+  records, analysis snapshots, feedback, statistics и export DTO.
+- UI features работают через use cases и `DecisionModels`, а не напрямую через
+  kernel/database/storage models.
 - UI state держится в feature-level Observation models, без глобального
   `ObservableObject`/`EnvironmentObject` фасада.
 - Документ фиксирует направление, а не финальную реализацию всех feature
@@ -27,19 +30,21 @@ analysis engine, затем storage, UI, feedback, statistics и privacy control
 DilemmaApp
   -> AppComposition
       -> Feature modules
+      -> DecisionModels
       -> DecisionUseCases
       -> DesignSystem
 
 DecisionUseCases
+  -> DecisionModels
   -> DecisionKernel
   -> DiaryVault
+
+DiaryVault
+  -> DecisionModels
 
 DecisionKernel
   -> local assets
   -> local embedding runtime
-
-DiaryVault
-  -> local private storage
 ```
 
 ## Модули
@@ -51,28 +56,44 @@ DiaryVault
 | `EntryCreationFeature` | Flow создания dilemma. |
 | `AnalysisDetailFeature` | Просмотр analysis и feedback. |
 | `DiaryFeature` | Список и просмотр сохранённых entries. |
-| `DecisionUseCases` | Application layer, public commands/DTO and orchestration. |
+| `DecisionModels` | Canonical app/storage-facing commands, diary models, feedback, statistics, export. |
+| `DecisionUseCases` | Application layer orchestration между app, kernel и vault. |
 | `DecisionKernel` | Локальный analysis engine. |
 | `DiaryVault` | Приватное долговременное хранилище entries, analyses и feedback. |
 | `DesignSystem` | Общие UI primitives без business logic. |
 
-## Application Layer
+## Model Boundary
 
-`DecisionUseCases` — единственный app-facing target для business workflows.
-App target импортирует `DecisionUseCases`, но не импортирует `DecisionKernel`
-или `DiaryVault` напрямую.
+`DecisionModels` зависит только от `Foundation` и не импортирует
+`DecisionKernel`, `DiaryVault`, `SwiftUI` или `Observation`.
 
-Публичный контракт слоя:
+Публичный контракт target:
 
 - commands: `EntryDraftCommand`, `FeedbackCommand`;
-- snapshots: `DiarySnapshot`, `DiaryEntrySnapshot`, `AnalysisSnapshot`,
-  `PreferenceStatisticsSnapshot`;
+- diary graph: `DiaryEntry`, `DiaryOption`, `DiaryReason`;
+- analysis data: `DiaryAnalysis`, `AttributeConflict`, `ClusterProfile`;
+- aggregate data: `DiarySnapshot`, `PreferenceStatistics`, `ClusterFrequency`,
+  `DiaryExport`.
+
+`DiaryVault` хранит и возвращает эти canonical models напрямую. Отдельных
+`Stored*` storage records и отдельных UI snapshot types больше нет.
+
+## Application Layer
+
+`DecisionUseCases` — app-facing target для business workflows. App target
+импортирует `DecisionUseCases` и `DecisionModels`, но не импортирует
+`DecisionKernel` или `DiaryVault` напрямую.
+
+Слой отвечает за:
+
 - use cases: prepare/unlock diary, create analyzed entry, load diary snapshot,
   save feedback, load statistics, export data, delete data.
+- private mapping: `EntryDraftCommand` -> kernel `DecisionDraft`,
+  `EntryDraftCommand` -> `DiaryEntry`, kernel `DecisionAnalysisResult` ->
+  `DiaryAnalysis`, `FeedbackCommand` -> `Feedback`.
 
-Маппинг между kernel result и persisted analysis остаётся внутри
-`DecisionUseCases`. UI получает только данные, безопасные для отображения и
-форм, без storage/kernel models.
+UI получает models из `DecisionModels`, а kernel/storage implementation details
+остаются внутри `DecisionUseCases` и `DiaryVault`.
 
 ## UI State And Observation
 

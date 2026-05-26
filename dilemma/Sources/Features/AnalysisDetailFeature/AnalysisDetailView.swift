@@ -1,4 +1,4 @@
-import DecisionUseCases
+import DecisionModels
 import SwiftUI
 
 struct AnalysisDetailView: View {

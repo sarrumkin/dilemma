@@ -1,3 +1,4 @@
+import DecisionModels
 import Foundation
 import SQLite3
 
@@ -42,7 +43,7 @@ public final class DiaryVault: @unchecked Sendable {
     }
   }
 
-  public func saveEntry(_ entry: DiaryEntryRecord) throws {
+  public func saveEntry(_ entry: DiaryEntry) throws {
     try queue.sync {
       let database = try openDatabase()
       try database.transaction {
@@ -99,7 +100,7 @@ public final class DiaryVault: @unchecked Sendable {
     }
   }
 
-  public func entries() throws -> [DiaryEntryRecord] {
+  public func entries() throws -> [DiaryEntry] {
     try queue.sync {
       let database = try openDatabase()
       let rows = try database.query(
@@ -115,7 +116,7 @@ public final class DiaryVault: @unchecked Sendable {
     }
   }
 
-  public func entry(id: UUID) throws -> DiaryEntryRecord {
+  public func entry(id: UUID) throws -> DiaryEntry {
     try queue.sync {
       let database = try openDatabase()
       let rows = try database.query(
@@ -131,7 +132,7 @@ public final class DiaryVault: @unchecked Sendable {
     }
   }
 
-  public func saveAnalysis(_ analysis: StoredDecisionAnalysis) throws {
+  public func saveAnalysis(_ analysis: DiaryAnalysis) throws {
     try queue.sync {
       let database = try openDatabase()
       try database.transaction {
@@ -197,7 +198,7 @@ public final class DiaryVault: @unchecked Sendable {
     }
   }
 
-  public func analyses(entryID: UUID? = nil) throws -> [StoredDecisionAnalysis] {
+  public func analyses(entryID: UUID? = nil) throws -> [DiaryAnalysis] {
     try queue.sync {
       let database = try openDatabase()
       let sql: String
@@ -225,7 +226,7 @@ public final class DiaryVault: @unchecked Sendable {
     }
   }
 
-  public func saveFeedback(_ feedback: FeedbackRecord) throws {
+  public func saveFeedback(_ feedback: Feedback) throws {
     try queue.sync {
       let database = try openDatabase()
       try database.execute(
@@ -257,7 +258,7 @@ public final class DiaryVault: @unchecked Sendable {
     }
   }
 
-  public func feedback(entryID: UUID? = nil) throws -> [FeedbackRecord] {
+  public func feedback(entryID: UUID? = nil) throws -> [Feedback] {
     try queue.sync {
       let database = try openDatabase()
       let sql: String
@@ -382,7 +383,7 @@ public final class DiaryVault: @unchecked Sendable {
     return database
   }
 
-  private func entry(from row: SQLiteRow, database: SQLiteDatabase) throws -> DiaryEntryRecord {
+  private func entry(from row: SQLiteRow, database: SQLiteDatabase) throws -> DiaryEntry {
     let entryID = try UUID.parse(row.string(0))
     let optionRows = try database.query(
       """
@@ -405,16 +406,16 @@ public final class DiaryVault: @unchecked Sendable {
         """,
         [.text(optionID.uuidString)]
       )
-      return StoredDecisionOption(
+      return DiaryOption(
         id: optionID,
         index: try optionRow.int(1),
         title: try optionRow.string(2),
         reasons: try reasonRows.map { reasonRow in
           let polarityRaw = try reasonRow.string(1)
-          guard let polarity = StoredReasonPolarity(rawValue: polarityRaw) else {
+          guard let polarity = DiaryReasonPolarity(rawValue: polarityRaw) else {
             throw DiaryVaultError.database("Unknown reason polarity \(polarityRaw)")
           }
-          return StoredReason(
+          return DiaryReason(
             id: try UUID.parse(reasonRow.string(0)),
             text: try reasonRow.string(2),
             polarity: polarity
@@ -423,7 +424,7 @@ public final class DiaryVault: @unchecked Sendable {
       )
     }
 
-    return DiaryEntryRecord(
+    return DiaryEntry(
       id: entryID,
       rawText: try row.string(1),
       options: options,
@@ -432,7 +433,7 @@ public final class DiaryVault: @unchecked Sendable {
     )
   }
 
-  private func analysis(from row: SQLiteRow, database: SQLiteDatabase) throws -> StoredDecisionAnalysis {
+  private func analysis(from row: SQLiteRow, database: SQLiteDatabase) throws -> DiaryAnalysis {
     let analysisID = try UUID.parse(row.string(0))
     let attributeRows = try database.query(
       """
@@ -453,7 +454,7 @@ public final class DiaryVault: @unchecked Sendable {
       [.text(analysisID.uuidString)]
     )
 
-    return StoredDecisionAnalysis(
+    return DiaryAnalysis(
       id: analysisID,
       entryID: try UUID.parse(row.string(1)),
       createdAt: Date(timeIntervalSince1970: try row.double(2)),
@@ -461,7 +462,7 @@ public final class DiaryVault: @unchecked Sendable {
       modelID: try row.string(4),
       sourceDOI: try row.string(5),
       attributeConflicts: try attributeRows.map {
-        StoredAttributeConflict(
+        AttributeConflict(
           id: try UUID.parse($0.string(0)),
           attributeName: try $0.string(1),
           option1Score: try $0.double(2),
@@ -471,7 +472,7 @@ public final class DiaryVault: @unchecked Sendable {
         )
       },
       clusterProfiles: try clusterRows.map {
-        StoredClusterProfile(
+        ClusterProfile(
           id: try UUID.parse($0.string(0)),
           optionIndex: try $0.int(1),
           clusterID: try $0.int(2),
@@ -482,8 +483,8 @@ public final class DiaryVault: @unchecked Sendable {
     )
   }
 
-  private func feedbackRecord(from row: SQLiteRow) throws -> FeedbackRecord {
-    FeedbackRecord(
+  private func feedbackRecord(from row: SQLiteRow) throws -> Feedback {
+    Feedback(
       id: try UUID.parse(row.string(0)),
       entryID: try UUID.parse(row.string(1)),
       analysisID: try row.optionalString(2).map(UUID.parse),
