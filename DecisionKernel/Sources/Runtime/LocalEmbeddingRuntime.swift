@@ -17,7 +17,12 @@ struct LocalEmbeddingRuntime {
       throw RuntimeError.missingBundledModel(modelResourceName)
     }
 
-    return LoadedEmbeddingModel(modelBundle: try await Bert.loadModelBundle(from: url))
+    return LoadedEmbeddingModel(
+      modelBundle: try await Bert.loadModelBundle(
+        from: url,
+        loadConfig: LoadConfig(tokenizerConfig: TokenizerConfig())
+      )
+    )
   }
 
   enum RuntimeError: LocalizedError {
