@@ -1,15 +1,23 @@
 import SwiftUI
 
 struct SettingsView: View {
-  @Bindable var model: PrivacySettingsModel
+  @Bindable var model: SettingsModel
   let onDeleted: () -> Void
   @State private var showingDeleteConfirmation = false
 
   var body: some View {
     NavigationStack {
       List {
-        Section("Lock") {
+        Section("Appearance") {
+          Toggle("Use dark theme", isOn: $model.usesDarkTheme)
+            .accessibilityIdentifier("dark-theme-toggle")
+        }
+
+        Section("Privacy") {
           Toggle("Require Face ID or passcode", isOn: $model.requiresDeviceUnlock)
+          Label("Analysis runs locally.", systemImage: "checkmark.shield")
+          Label("Dilemma text is not sent to a server.", systemImage: "wifi.slash")
+          Label("Model and assets are bundled locally.", systemImage: "shippingbox")
         }
 
         Section("Export") {
@@ -33,14 +41,9 @@ struct SettingsView: View {
             showingDeleteConfirmation = true
           } label: {
             Label("Delete all user data", systemImage: "trash")
+              .foregroundStyle(.red)
           }
           .accessibilityIdentifier("delete-all-data-button")
-        }
-
-        Section("Privacy") {
-          Label("Analysis runs locally.", systemImage: "checkmark.shield")
-          Label("Dilemma text is not sent to a server.", systemImage: "wifi.slash")
-          Label("Model and assets are bundled locally.", systemImage: "shippingbox")
         }
 
         if let errorMessage = model.errorMessage {
@@ -50,7 +53,7 @@ struct SettingsView: View {
           }
         }
       }
-      .navigationTitle("Privacy")
+      .navigationTitle("Settings")
       .confirmationDialog(
         "Delete all entries, analysis results, feedback, and local diary settings?",
         isPresented: $showingDeleteConfirmation,

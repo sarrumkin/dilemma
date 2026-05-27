@@ -4,10 +4,15 @@ import Observation
 
 @MainActor
 @Observable
-final class PrivacySettingsModel {
+final class SettingsModel {
   var requiresDeviceUnlock: Bool {
     didSet {
       userDefaults.set(requiresDeviceUnlock, forKey: Self.requiresDeviceUnlockKey)
+    }
+  }
+  var usesDarkTheme: Bool {
+    didSet {
+      userDefaults.set(usesDarkTheme, forKey: Self.usesDarkThemeKey)
     }
   }
   var exportURL: URL?
@@ -19,6 +24,7 @@ final class PrivacySettingsModel {
   @ObservationIgnored private let deleteDiaryData: DeleteDiaryDataUseCase
   @ObservationIgnored private let userDefaults: UserDefaults
   private static let requiresDeviceUnlockKey = "requiresDeviceUnlock"
+  private static let usesDarkThemeKey = "usesDarkTheme"
 
   init(
     prepareDiary: PrepareDiaryUseCase,
@@ -33,9 +39,10 @@ final class PrivacySettingsModel {
     self.deleteDiaryData = deleteDiaryData
     self.userDefaults = userDefaults
     self.requiresDeviceUnlock = userDefaults.bool(forKey: Self.requiresDeviceUnlockKey)
+    self.usesDarkTheme = userDefaults.bool(forKey: Self.usesDarkThemeKey)
   }
 
-  func unlockIfNeededAndPrepare() async -> Bool {
+  func unlockIfNeededAndPrepare() async -> Bool { 
     do {
       if requiresDeviceUnlock {
         try await unlockDiary()

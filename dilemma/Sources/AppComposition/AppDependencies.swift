@@ -26,8 +26,8 @@ struct AppDependencies {
     StatisticsModel(loadPreferenceStatistics: useCases.loadPreferenceStatistics)
   }
 
-  func makePrivacySettingsModel() -> PrivacySettingsModel {
-    PrivacySettingsModel(
+  func makeSettingsModel() -> SettingsModel {
+    SettingsModel(
       prepareDiary: useCases.prepareDiary,
       unlockDiary: useCases.unlockDiary,
       exportDiaryData: useCases.exportDiaryData,
