@@ -4,13 +4,16 @@
 The script intentionally consumes the already-generated runtime JSON/F16 assets.
 That keeps production packaging deterministic after the model choice has been
 made: the expensive embedding generation remains in generate_attribute_assets.py,
-while this script owns the app-facing SQLite schema and cluster mapping.
+while this script owns the app-facing SQLite schema. The default production
+asset uses the reconstructed Bhatia empirical clusters frozen in CSV; an
+alternate KMeans asset can be generated for offline similarity experiments.
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import os
 import sqlite3
@@ -20,13 +23,16 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
-from sklearn.cluster import KMeans
 
 DEFAULT_CSV = Path("Bhatia/Code and Data/2 - Vectorize Reasons/attributes.csv")
 DEFAULT_METADATA = Path("DecisionKernel/Resources/Attributes/attributes_l12.json")
 DEFAULT_VECTORS = Path("DecisionKernel/Resources/Attributes/attribute_embeddings_l12.f16")
+DEFAULT_CLUSTER_MAPPING = Path("DecisionKernel/Resources/Attributes/bhatia_attribute_clusters.csv")
 DEFAULT_OUTPUT = Path("DecisionKernel/Resources/Attributes/DilemmaAssets.sqlite")
+DEFAULT_KMEANS_OUTPUT = Path("DecisionKernel/Resources/Attributes/DilemmaAssetsKMeans.sqlite")
 CLUSTER_COUNT = 25
+BHATIA_CLUSTER_METHOD = "bhatia_hierarchical_ward_reddit_option_profiles"
+KMEANS_CLUSTER_METHOD = "kmeans_on_mean_pro_con_attribute_embeddings"
 
 
 @dataclass(frozen=True)
@@ -43,9 +49,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--attributes-csv", type=Path, default=DEFAULT_CSV)
     parser.add_argument("--metadata", type=Path, default=DEFAULT_METADATA)
     parser.add_argument("--vectors", type=Path, default=DEFAULT_VECTORS)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--cluster-count", type=int, default=CLUSTER_COUNT)
-    return parser.parse_args()
+    parser.add_argument("--cluster-method", choices=["bhatia", "kmeans"], default="bhatia")
+    parser.add_argument("--cluster-mapping", type=Path, default=DEFAULT_CLUSTER_MAPPING)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--expected-cluster-count", type=int, default=CLUSTER_COUNT)
+    args = parser.parse_args()
+    if args.output is None:
+        args.output = DEFAULT_KMEANS_OUTPUT if args.cluster_method == "kmeans" else DEFAULT_OUTPUT
+    return args
 
 
 def load_source_rows(path: Path) -> list[SourceRow]:
@@ -76,17 +87,17 @@ def load_runtime_asset(metadata_path: Path, vectors_path: Path) -> tuple[dict, n
     return metadata, vectors.reshape(len(metadata["attributes"]), dimension)
 
 
-def normalize(matrix: np.ndarray) -> np.ndarray:
-    norms = np.linalg.norm(matrix, axis=1, keepdims=True)
-    norms[norms == 0] = 1.0
-    return matrix / norms
-
-
 def unique_attributes(rows: list[SourceRow]) -> OrderedDict[str, int]:
     attributes: OrderedDict[str, int] = OrderedDict()
     for row in rows:
         attributes.setdefault(row.name, len(attributes) + 1)
     return attributes
+
+
+def normalize(matrix: np.ndarray) -> np.ndarray:
+    norms = np.linalg.norm(matrix, axis=1, keepdims=True)
+    norms[norms == 0] = 1.0
+    return matrix / norms
 
 
 def build_attribute_vectors(
@@ -105,16 +116,17 @@ def build_attribute_vectors(
     return normalize(matrix / counts)
 
 
-def cluster_attributes(
-    rows: list[SourceRow],
+def cluster_attributes_with_kmeans(
     attribute_ids: OrderedDict[str, int],
     attribute_vectors: np.ndarray,
     cluster_count: int,
 ) -> tuple[dict[int, int], list[tuple[int, str, str]]]:
     if cluster_count <= 0:
-        raise ValueError("cluster-count must be positive")
+        raise ValueError("expected-cluster-count must be positive")
     if cluster_count > len(attribute_ids):
-        raise ValueError("cluster-count cannot exceed unique attribute count")
+        raise ValueError("expected-cluster-count cannot exceed unique attribute count")
+
+    from sklearn.cluster import KMeans
 
     kmeans = KMeans(
         n_clusters=cluster_count,
@@ -155,6 +167,78 @@ def cluster_attributes(
     return assignment, sorted(clusters)
 
 
+def load_cluster_mapping(
+    path: Path,
+    attribute_ids: OrderedDict[str, int],
+    expected_cluster_count: int,
+) -> tuple[dict[int, int], list[tuple[int, str, str]]]:
+    if expected_cluster_count <= 0:
+        raise ValueError("expected-cluster-count must be positive")
+
+    assignment: dict[int, int] = {}
+    labels_by_cluster_id: dict[int, str] = {}
+    representative_by_cluster_id: dict[int, str] = {}
+    seen_attribute_ids: set[int] = set()
+
+    with path.open(newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle)
+        required = {"attribute_id", "attribute_name", "cluster_id", "cluster_label"}
+        missing = required - set(reader.fieldnames or [])
+        if missing:
+            raise ValueError(f"Cluster mapping is missing columns: {sorted(missing)}")
+
+        for row in reader:
+            attribute_name = row["attribute_name"]
+            if attribute_name not in attribute_ids:
+                raise ValueError(f"Unknown attribute in cluster mapping: {attribute_name}")
+
+            attribute_id = int(row["attribute_id"])
+            expected_attribute_id = attribute_ids[attribute_name]
+            if attribute_id != expected_attribute_id:
+                raise ValueError(
+                    f"Attribute id mismatch for {attribute_name}: "
+                    f"{attribute_id} != {expected_attribute_id}"
+                )
+            if attribute_id in seen_attribute_ids:
+                raise ValueError(f"Duplicate attribute id in cluster mapping: {attribute_id}")
+
+            cluster_id = int(row["cluster_id"])
+            if cluster_id <= 0:
+                raise ValueError(f"Invalid cluster id for {attribute_name}: {cluster_id}")
+            cluster_label = row["cluster_label"]
+            if not cluster_label:
+                raise ValueError(f"Missing cluster label for {attribute_name}")
+
+            existing_label = labels_by_cluster_id.get(cluster_id)
+            if existing_label is not None and existing_label != cluster_label:
+                raise ValueError(
+                    f"Cluster {cluster_id} label mismatch: {existing_label} != {cluster_label}"
+                )
+
+            seen_attribute_ids.add(attribute_id)
+            assignment[attribute_id] = cluster_id
+            labels_by_cluster_id[cluster_id] = cluster_label
+            representative_by_cluster_id.setdefault(cluster_id, attribute_name)
+
+    expected_attribute_ids = set(attribute_ids.values())
+    if seen_attribute_ids != expected_attribute_ids:
+        missing_ids = sorted(expected_attribute_ids - seen_attribute_ids)[:10]
+        extra_ids = sorted(seen_attribute_ids - expected_attribute_ids)[:10]
+        raise ValueError(f"Cluster mapping coverage mismatch; missing={missing_ids}, extra={extra_ids}")
+
+    if len(labels_by_cluster_id) != expected_cluster_count:
+        raise ValueError(
+            f"Expected {expected_cluster_count} clusters, got {len(labels_by_cluster_id)}"
+        )
+
+    clusters = [
+        (cluster_id, labels_by_cluster_id[cluster_id], representative_by_cluster_id[cluster_id])
+        for cluster_id in sorted(labels_by_cluster_id)
+    ]
+
+    return assignment, clusters
+
+
 def write_sqlite(
     output_path: Path,
     source_rows: list[SourceRow],
@@ -164,6 +248,9 @@ def write_sqlite(
     cluster_assignment: dict[int, int],
     clusters: list[tuple[int, str, str]],
     cluster_count: int,
+    cluster_method: str,
+    cluster_source_path: Path | None = None,
+    cluster_source_sha256: str | None = None,
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if output_path.exists():
@@ -187,6 +274,9 @@ def write_sqlite(
             cluster_assignment,
             clusters,
             cluster_count,
+            cluster_method,
+            cluster_source_path,
+            cluster_source_sha256,
         )
         connection.execute("PRAGMA user_version = 1")
         connection.commit()
@@ -259,6 +349,9 @@ def insert_rows(
     cluster_assignment: dict[int, int],
     clusters: list[tuple[int, str, str]],
     cluster_count: int,
+    cluster_method: str,
+    cluster_source_path: Path | None,
+    cluster_source_sha256: str | None,
 ) -> None:
     first_row_by_name: dict[str, SourceRow] = {}
     for row in source_rows:
@@ -354,16 +447,23 @@ def insert_rows(
         "attribute_count": str(len(attribute_ids)),
         "attribute_direction_count": str(len(source_rows)),
         "cluster_count": str(cluster_count),
-        "cluster_method": "kmeans_on_mean_pro_con_attribute_embeddings",
-        "cluster_random_state": "42",
+        "cluster_method": cluster_method,
     }
+    if cluster_source_path is not None:
+        metadata_rows["cluster_source_file"] = str(cluster_source_path)
+    if cluster_source_sha256 is not None:
+        metadata_rows["cluster_source_sha256"] = cluster_source_sha256
+    if cluster_method == KMEANS_CLUSTER_METHOD:
+        metadata_rows["cluster_random_state"] = "42"
+        metadata_rows["cluster_n_init"] = "50"
+        metadata_rows["cluster_algorithm"] = "lloyd"
     connection.executemany(
         "INSERT INTO asset_metadata(key, value) VALUES (?, ?)",
         sorted(metadata_rows.items()),
     )
 
 
-def verify_sqlite(path: Path, expected_cluster_count: int) -> None:
+def verify_sqlite(path: Path, expected_cluster_count: int, expected_cluster_method: str) -> None:
     connection = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
     counts = {
         table: connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
@@ -383,7 +483,16 @@ def verify_sqlite(path: Path, expected_cluster_count: int) -> None:
     assert counts["clusters"] == int(metadata["cluster_count"]) == expected_cluster_count, counts
     assert counts["attribute_cluster"] == 207, counts
     assert metadata["source_doi"] == "10.1073/pnas.2406489122"
+    assert metadata["cluster_method"] == expected_cluster_method
     connection.close()
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def main() -> None:
@@ -391,13 +500,28 @@ def main() -> None:
     source_rows = load_source_rows(args.attributes_csv)
     metadata, vectors = load_runtime_asset(args.metadata, args.vectors)
     attribute_ids = unique_attributes(source_rows)
-    attribute_vectors = build_attribute_vectors(source_rows, vectors, attribute_ids)
-    cluster_assignment, clusters = cluster_attributes(
-        source_rows,
-        attribute_ids,
-        attribute_vectors,
-        args.cluster_count,
-    )
+    cluster_source_path = None
+    cluster_source_sha256 = None
+    if args.cluster_method == "bhatia":
+        cluster_method = BHATIA_CLUSTER_METHOD
+        cluster_assignment, clusters = load_cluster_mapping(
+            args.cluster_mapping,
+            attribute_ids,
+            args.expected_cluster_count,
+        )
+        cluster_source_path = args.cluster_mapping
+        cluster_source_sha256 = sha256_file(args.cluster_mapping)
+    elif args.cluster_method == "kmeans":
+        cluster_method = KMEANS_CLUSTER_METHOD
+        attribute_vectors = build_attribute_vectors(source_rows, vectors, attribute_ids)
+        cluster_assignment, clusters = cluster_attributes_with_kmeans(
+            attribute_ids,
+            attribute_vectors,
+            args.expected_cluster_count,
+        )
+    else:
+        raise ValueError(f"Unknown cluster method: {args.cluster_method}")
+
     write_sqlite(
         args.output,
         source_rows,
@@ -406,9 +530,12 @@ def main() -> None:
         attribute_ids,
         cluster_assignment,
         clusters,
-        args.cluster_count,
+        args.expected_cluster_count,
+        cluster_method,
+        cluster_source_path,
+        cluster_source_sha256,
     )
-    verify_sqlite(args.output, args.cluster_count)
+    verify_sqlite(args.output, args.expected_cluster_count, cluster_method)
 
 
 if __name__ == "__main__":

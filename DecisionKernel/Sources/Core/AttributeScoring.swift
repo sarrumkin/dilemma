@@ -106,6 +106,20 @@ enum AttributeScoring {
       .map { $0 }
   }
 
+  static func conflictVector(optionProfiles: [Int: [Float]]) -> [Float] {
+    guard
+      let option1 = optionProfiles[1],
+      let option2 = optionProfiles[2],
+      option1.count == option2.count
+    else {
+      return []
+    }
+
+    return option1.indices.map { index in
+      abs(option1[index] - option2[index])
+    }
+  }
+
   static func topAttributes(
     optionProfiles: [Int: [Float]],
     attributes: [AttributeDefinition],

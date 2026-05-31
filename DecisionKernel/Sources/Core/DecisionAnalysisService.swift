@@ -4,17 +4,32 @@ public struct DecisionAnalysisService: Sendable {
   private let bundle: Bundle
   private let modelResourceName: String
   private let assetResourceName: String
+  private let clusterMethod: DecisionClusterMethod?
   private let topK: Int
 
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
     modelResourceName: String = "all-MiniLM-L12-v2",
-    assetResourceName: String = "DilemmaAssets",
+    clusterMethod: DecisionClusterMethod = .bhatiaWardReddit,
+    topK: Int = 8
+  ) {
+    self.bundle = bundle
+    self.modelResourceName = modelResourceName
+    self.assetResourceName = clusterMethod.assetResourceName
+    self.clusterMethod = clusterMethod
+    self.topK = topK
+  }
+
+  public init(
+    bundle: Bundle = DecisionKernelResourceBundle.bundle,
+    modelResourceName: String = "all-MiniLM-L12-v2",
+    assetResourceName: String,
     topK: Int = 8
   ) {
     self.bundle = bundle
     self.modelResourceName = modelResourceName
     self.assetResourceName = assetResourceName
+    self.clusterMethod = DecisionClusterMethod(assetResourceName: assetResourceName)
     self.topK = topK
   }
 
@@ -68,6 +83,13 @@ public struct DecisionAnalysisService: Sendable {
       modelName: store.metadata.model.id,
       assetVersion: store.assetVersion,
       sourceDOI: store.sourceDOI,
+      assetResourceName: assetResourceName,
+      clusterMethodID: clusterMethod?.rawValue
+        ?? store.assetMetadata["cluster_method"]
+        ?? assetResourceName,
+      clusterMethodLabel: clusterMethod?.label
+        ?? store.assetMetadata["cluster_method"]
+        ?? assetResourceName,
       metrics: metrics,
       reasonResults: reasonResults,
       optionProfiles: optionProfiles,
@@ -126,6 +148,14 @@ struct ClusterAggregator: Sendable {
     optionProfiles.mapValues { profile in
       clusterScores(for: profile)
     }
+  }
+
+  func vector(fromAttributeProfile profile: [Float]) -> [Float] {
+    let scores = clusterScores(for: profile)
+    let scoreByClusterID = Dictionary(uniqueKeysWithValues: scores.map {
+      ($0.cluster.clusterID, $0.score)
+    })
+    return store.clusters.map { scoreByClusterID[$0.clusterID] ?? 0 }
   }
 
   func conflicts(optionProfiles: [Int: [Float]], topK: Int) -> [ClusterConflictDimension] {

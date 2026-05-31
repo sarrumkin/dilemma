@@ -96,6 +96,9 @@ let project = Project(
       bundleId: "com.local.dilemma.DecisionKernelTests",
       deploymentTargets: deploymentTarget,
       infoPlist: targetInfoPlist("DecisionKernelTests"),
+      resources: .resources([
+        .glob(pattern: "DecisionKernelTests/Resources/**"),
+      ]),
       buildableFolders: [
         "DecisionKernelTests/Sources",
       ],

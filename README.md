@@ -45,7 +45,13 @@ Use Python 3.12:
 
 The app runtime must not download from Hugging Face. Model files are prepared by
 offline tooling and loaded from the app bundle. `DilemmaAssets.sqlite` is the
-production read-only attribute asset used by the app.
+production read-only attribute asset used by the app. Its cluster mapping comes
+from `DecisionKernel/Resources/Attributes/bhatia_attribute_clusters.csv`, a
+frozen reconstruction of Bhatia's Ward clustering over Reddit option profiles.
+If the source reconstruction needs to be repeated, use
+`tools/reconstruct_bhatia_clusters.py benchmark`, then `build-matrix`, then
+`cluster`; the large intermediate CSVs stay under ignored
+`outputs/bhatia_reconstruction/`.
 
 ## Local app workflow
 

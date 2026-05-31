@@ -1,0 +1,208 @@
+attribute_id,attribute_name,source,cluster_id,cluster_label
+1,gains vs. losses,decision theory,7,Discipline and Ambition
+2,safety vs. risk,decision theory,1,Risk and Stability
+3,immediacy vs. delay,decision theory,5,Money and Finance
+4,altruism and morality,decision theory,17,Charity and Loyalty
+5,complexity and effort,decision theory,1,Risk and Stability
+6,money,decision outcomes,15,Pragmatism and Financial Prudence
+7,social,decision outcomes,18,Social Desirability
+8,health,decision outcomes,24,Physical Health
+9,mood,decision outcomes,25,Mental Health
+10,pleasure,decision outcomes,3,Happiness and Pleasure
+11,existential concerns,decision outcomes,12,Achievement
+12,career,decision outcomes,6,Professional Skills and Ability
+13,personal development,decision outcomes,12,Achievement
+14,romance,decision outcomes,20,Sex and Romance
+15,knowledge,decision outcomes,12,Achievement
+16,laws and institutions,decision outcomes,9,Justice and Fairness
+17,utilitarian consumption,consumer dimensions,15,Pragmatism and Financial Prudence
+18,hedonic consumption,consumer dimensions,3,Happiness and Pleasure
+19,material consumption,consumer dimensions,5,Money and Finance
+20,experiential consumption,consumer dimensions,21,Art and Entertainment
+21,valence,emotions,3,Happiness and Pleasure
+22,arousal,emotions,3,Happiness and Pleasure
+23,anger,emotions,25,Mental Health
+24,fear,emotions,3,Happiness and Pleasure
+25,happiness,emotions,3,Happiness and Pleasure
+26,disgust,emotions,21,Art and Entertainment
+27,autonomy,self determination,13,Freedom and Courage
+28,competence,self determination,12,Achievement
+29,social relatedness,self determination,19,Social Connection
+30,self direction,values,14,Intellectual Development
+31,stimulation,values,21,Art and Entertainment
+32,hedonism,values,21,Art and Entertainment
+33,achievement,values,12,Achievement
+34,power,values,2,Competence Perception
+35,security,values,10,Security and Dependability
+36,conformity,values,17,Charity and Loyalty
+37,tradition,values,17,Charity and Loyalty
+38,benevolence,values,19,Social Connection
+39,universalism,values,11,Religion and Personal Causes
+40,achieving salvation,goals,11,Religion and Personal Causes
+41,appreciating the arts,goals,21,Art and Entertainment
+42,achieving my aspirations,goals,13,Freedom and Courage
+43,sexual desirability,goals,20,Sex and Romance
+44,avoiding failure,goals,1,Risk and Stability
+45,avoiding feelings of guilt,goals,25,Mental Health
+46,avoiding rejection by others,goals,19,Social Connection
+47,avoiding stress,goals,25,Mental Health
+48,being able to fantasize,goals,21,Art and Entertainment
+49,being affectionate toward others,goals,20,Sex and Romance
+50,being ambitious,goals,7,Discipline and Ambition
+51,being better than others,goals,12,Achievement
+52,being lighthearted,goals,21,Art and Entertainment
+53,being clean,goals,16,Cleanliness and Control
+54,maintaining conventional views,goals,1,Risk and Stability
+55,being creative,goals,14,Intellectual Development
+56,being curious,goals,14,Intellectual Development
+57,being disciplined,goals,7,Discipline and Ambition
+58,having freedom,goals,13,Freedom and Courage
+59,being good looking,goals,18,Social Desirability
+60,being honest,goals,18,Social Desirability
+61,being in love,goals,20,Sex and Romance
+62,changing my ways,goals,14,Intellectual Development
+63,being intelligent,goals,14,Intellectual Development
+64,being likeable,goals,19,Social Connection
+65,being logical,goals,15,Pragmatism and Financial Prudence
+66,being really passionate ,goals,21,Art and Entertainment
+67,being playful,goals,21,Art and Entertainment
+68,being in the center of things,goals,18,Social Desirability
+69,being practical,goals,15,Pragmatism and Financial Prudence
+70,keeping to myself,goals,16,Cleanliness and Control
+71,being admired,goals,18,Social Desirability
+72,being reflective,goals,14,Intellectual Development
+73,being respected by others,goals,18,Social Desirability
+74,being responsible,goals,10,Security and Dependability
+75,being independent,goals,13,Freedom and Courage
+76,being socially attractive,goals,19,Social Connection
+77,being spontaneous,goals,13,Freedom and Courage
+78,being unique,goals,17,Charity and Loyalty
+79,belonging to social groups,goals,17,Charity and Loyalty
+80,being able to meet my financial needs,goals,5,Money and Finance
+81,buying things i want,goals,15,Pragmatism and Financial Prudence
+82,being taken care of,goals,17,Charity and Loyalty
+83,having a career,goals,6,Professional Skills and Ability
+84,keeping up to date with career-related knowledge,goals,6,Professional Skills and Ability
+85,being committed to a cause,goals,11,Religion and Personal Causes
+86,being charitable,goals,17,Charity and Loyalty
+87,being close to my children,goals,23,Family Closeness and Security
+88,being close to my spouse,goals,22,Marital Fulfillment
+89,being happy,goals,25,Mental Health
+90,making a lasting contribution to society,goals,17,Charity and Loyalty
+91,being in control of the environment,goals,16,Cleanliness and Control
+92,having control over others,goals,17,Charity and Loyalty
+93,being in a position to make decisions for others,goals,7,Discipline and Ambition
+94,defending myself against others’ criticisms or attacks,goals,17,Charity and Loyalty
+95,having enough money to leave for my descendants,goals,5,Money and Finance
+96,having new and different experiences,goals,14,Intellectual Development
+97,accomplishing difficult things,goals,7,Discipline and Ambition
+98,having an easy and comfortable life,goals,25,Mental Health
+99,getting an education,goals,14,Intellectual Development
+100,obtaining an advanced educational degree,goals,14,Intellectual Development
+101,amusing others,goals,21,Art and Entertainment
+102,having an erotic relationship,goals,20,Sex and Romance
+103,being an ethical person,goals,17,Charity and Loyalty
+104,having an exciting life,goals,21,Art and Entertainment
+105,being physically active,goals,24,Physical Health
+106,seeking new things,goals,14,Intellectual Development
+107,keeping up with fashion,goals,11,Religion and Personal Causes
+108,feeling close to my parents,goals,23,Family Closeness and Security
+109,having emotional intimacy,goals,19,Social Connection
+110,feeling safe and secure,goals,10,Security and Dependability
+111,finding higher meaning in life,goals,17,Charity and Loyalty
+112,having firm values,goals,9,Justice and Fairness
+113,having flexibility of viewpoint,goals,14,Intellectual Development
+114,having freedom of choice,goals,13,Freedom and Courage
+115,having a good marriage,goals,22,Marital Fulfillment
+116,being a good parent,goals,17,Charity and Loyalty
+117,having friends i love,goals,19,Social Connection
+118,receiving help from my parents,goals,23,Family Closeness and Security
+119,helping others,goals,19,Social Connection
+120,devoting time to amusements,goals,21,Art and Entertainment
+121,having intellectual experiences,goals,14,Intellectual Development
+122,having a job i really like,goals,6,Professional Skills and Ability
+123,knowing and being on familiar terms with many others,goals,19,Social Connection
+124,knowing myself,goals,14,Intellectual Development
+125,being a leader,goals,7,Discipline and Ambition
+126,learning more about art,goals,21,Art and Entertainment
+127,accepting life’s limitations,goals,13,Freedom and Courage
+128,living close to my parents,goals,23,Family Closeness and Security
+129,carrying myself well,goals,18,Social Desirability
+130,looking physically fit,goals,24,Physical Health
+131,looking young,goals,16,Cleanliness and Control
+132,having a mature romantic relationship,goals,22,Marital Fulfillment
+133,having a mature understanding of life,goals,14,Intellectual Development
+134,having mechanical ability,goals,6,Professional Skills and Ability
+135,being mentally healthy,goals,25,Mental Health
+136,having a mentor,goals,14,Intellectual Development
+137,making a lot of money,goals,5,Money and Finance
+138,having original ideas,goals,14,Intellectual Development
+139,being physiologically healthy,goals,24,Physical Health
+140,having others to rely on,goals,19,Social Connection
+141,having others’ trust,goals,10,Security and Dependability
+142,overcoming failure,goals,7,Discipline and Ambition
+143,setting and following my own guidelines,goals,13,Freedom and Courage
+144,having peace of mind,goals,25,Mental Health
+145,experiencing personal growth,goals,13,Freedom and Courage
+146,influencing others,goals,17,Charity and Loyalty
+147,having physical ability,goals,24,Physical Health
+148,being in good physical condition,goals,24,Physical Health
+149,pleasing god,goals,11,Religion and Personal Causes
+150,providing my family with financial security,goals,23,Family Closeness and Security
+151,pursuing my ideals,goals,9,Justice and Fairness
+152,maintaining religious faith,goals,11,Religion and Personal Causes
+153,engaging in religious traditions,goals,11,Religion and Personal Causes
+154,having a rich social life,goals,19,Social Connection
+155,having romantic experiences,goals,20,Sex and Romance
+156,being involved in seeking equality,goals,17,Charity and Loyalty
+157,seeking fairness,goals,9,Justice and Fairness
+158,seeking justice,goals,9,Justice and Fairness
+159,having high self-esteem,goals,18,Social Desirability
+160,setting good examples,goals,17,Charity and Loyalty
+161,enjoying sexual experiences,goals,20,Sex and Romance
+162,sharing feelings with close friends,goals,19,Social Connection
+163,having stability in life,goals,1,Risk and Stability
+164,having a stable family life,goals,23,Family Closeness and Security
+165,standing up for my beliefs,goals,9,Justice and Fairness
+166,receiving support from others on projects i believe in,goals,11,Religion and Personal Causes
+167,taking care of my parents and siblings,goals,23,Family Closeness and Security
+168,not being fearful,goals,13,Freedom and Courage
+169,developing others,goals,14,Intellectual Development
+170,keeping things in order,goals,16,Cleanliness and Control
+171,being able to think intellectually,goals,15,Pragmatism and Financial Prudence
+172,protecting my wellbeing,goals,25,Mental Health
+173,having wisdom,goals,12,Achievement
+174,experiencing a world of beauty,goals,21,Art and Entertainment
+175,harm,moral foundations,4,Harm and Group Morality
+176,fairness,moral foundations,9,Justice and Fairness
+177,ingroup morality,moral foundations,4,Harm and Group Morality
+178,authority,moral foundations,9,Justice and Fairness
+179,purity,moral foundations,9,Justice and Fairness
+180,character perception,person perception,8,Warmth and Morality Perception
+181,personality perception,person perception,8,Warmth and Morality Perception
+182,ability perception,person perception,2,Competence Perception
+183,goodness perception,person perception,8,Warmth and Morality Perception
+184,morality perception,person perception,8,Warmth and Morality Perception
+185,strength perception,person perception,2,Competence Perception
+186,grit perception,person perception,2,Competence Perception
+187,agency perception,person perception,2,Competence Perception
+188,communion perception,person perception,8,Warmth and Morality Perception
+189,warmth perception,person perception,8,Warmth and Morality Perception
+190,pleasure-based consumption,consumer behavior,3,Happiness and Pleasure
+191,functional consumption,consumer behavior,15,Pragmatism and Financial Prudence
+192,altruism,social value orientation,19,Social Connection
+193,individualism,social value orientation,13,Freedom and Courage
+194,prosociality,social value orientation,19,Social Connection
+195,competitiveness,social value orientation,12,Achievement
+196,efficiency,altruism considerations,7,Discipline and Ambition
+197,equality,altruism considerations,17,Charity and Loyalty
+198,personal connection,altruism considerations,19,Social Connection
+199,altruism at scale,altruism considerations,17,Charity and Loyalty
+200,tractability,altruism considerations,7,Discipline and Ambition
+201,altruism neglectedness,altruism considerations,7,Discipline and Ambition
+202,human wellbeing,altruism areas,13,Freedom and Courage
+203,non-human animal welfare,altruism areas,11,Religion and Personal Causes
+204,achieving a better future,altruism areas,17,Charity and Loyalty
+205,procedural fairness,fairness,7,Discipline and Ambition
+206,distributive fairness,fairness,9,Justice and Fairness
+207,reciprocal fairness,fairness,19,Social Connection

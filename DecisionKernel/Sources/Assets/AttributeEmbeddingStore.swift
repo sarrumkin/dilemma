@@ -4,6 +4,7 @@ import SQLite3
 
 struct AttributeEmbeddingStore: Sendable {
   let metadata: AttributeAssetMetadata
+  let assetMetadata: [String: String]
   let attributeDefinitions: [AttributeDefinition]
   let clusters: [ClusterMetadata]
   let flatVectors: [Float]
@@ -18,17 +19,23 @@ struct AttributeEmbeddingStore: Sendable {
   var attributeCount: Int { attributeDefinitions.count }
   var vectors: [[Float]] { flatVectors.chunked(size: dimension) }
 
-  init(metadata: AttributeAssetMetadata, vectors: [[Float]]) {
-    self.init(metadata: metadata, flatVectors: vectors.flatMap { $0 })
+  init(
+    metadata: AttributeAssetMetadata,
+    vectors: [[Float]],
+    clusters: [ClusterMetadata] = []
+  ) {
+    self.init(metadata: metadata, flatVectors: vectors.flatMap { $0 }, clusters: clusters)
   }
 
   private init(
     metadata: AttributeAssetMetadata,
     flatVectors: [Float],
+    assetMetadata: [String: String] = [:],
     attributeDefinitions: [AttributeDefinition]? = nil,
     clusters: [ClusterMetadata] = []
   ) {
     self.metadata = metadata
+    self.assetMetadata = assetMetadata
     self.flatVectors = flatVectors
     self.attributeDefinitions = attributeDefinitions ?? Self.makeAttributeDefinitions(
       from: metadata.attributes
@@ -125,6 +132,7 @@ struct AttributeEmbeddingStore: Sendable {
     return AttributeEmbeddingStore(
       metadata: metadata,
       flatVectors: flatVectors,
+      assetMetadata: metadataRows,
       attributeDefinitions: attributeDefinitions,
       clusters: clusters
     )

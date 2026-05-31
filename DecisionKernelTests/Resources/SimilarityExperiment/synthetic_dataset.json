@@ -1,0 +1,538 @@
+{
+  "corpus": [
+    {
+      "id": "career-family-remote",
+      "label": "career_family_balance",
+      "rawText": "Should I accept a remote promotion or keep my current local role?",
+      "options": [
+        {
+          "title": "Accept the remote promotion",
+          "benefits": [
+            "It would advance my career faster.",
+            "It would increase my income.",
+            "It would let me build stronger leadership skills."
+          ],
+          "costs": [
+            "It would reduce daily time with my family.",
+            "It could make me feel isolated.",
+            "It may add pressure and longer hours."
+          ]
+        },
+        {
+          "title": "Keep the local role",
+          "benefits": [
+            "It preserves a stable family routine.",
+            "It keeps my stress level manageable.",
+            "It lets me stay close to friends and relatives."
+          ],
+          "costs": [
+            "It may slow my career growth.",
+            "It keeps my salary almost unchanged.",
+            "It may feel like I avoided a useful challenge."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "career-family-startup",
+      "label": "career_family_balance",
+      "rawText": "Should I join a demanding startup or remain in my predictable job?",
+      "options": [
+        {
+          "title": "Join the startup",
+          "benefits": [
+            "It could create major career upside.",
+            "It would teach me new product skills.",
+            "It may give me more ownership at work."
+          ],
+          "costs": [
+            "It would take evenings away from my partner.",
+            "It could make my schedule unstable.",
+            "It may risk burnout."
+          ]
+        },
+        {
+          "title": "Remain in the predictable job",
+          "benefits": [
+            "It keeps my home life reliable.",
+            "It protects my health and sleep.",
+            "It provides steady income."
+          ],
+          "costs": [
+            "It may limit my professional growth.",
+            "It gives me fewer chances to lead.",
+            "It may feel too comfortable."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "money-family-support",
+      "label": "money_family_support",
+      "rawText": "Should I lend savings to my sibling or keep the money for my own emergency fund?",
+      "options": [
+        {
+          "title": "Lend the money",
+          "benefits": [
+            "It would help my sibling through a hard period.",
+            "It strengthens family trust.",
+            "It matches my sense of responsibility."
+          ],
+          "costs": [
+            "It weakens my emergency savings.",
+            "It may create resentment if repayment is delayed.",
+            "It could make my own plans less secure."
+          ]
+        },
+        {
+          "title": "Keep the emergency fund",
+          "benefits": [
+            "It protects my financial stability.",
+            "It keeps my rent and bills safe.",
+            "It avoids mixing money with family tension."
+          ],
+          "costs": [
+            "It may leave my sibling unsupported.",
+            "It could damage family closeness.",
+            "It may feel selfish."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "money-family-parent",
+      "label": "money_family_support",
+      "rawText": "Should I pay for my parent's medical bill or keep saving for my apartment deposit?",
+      "options": [
+        {
+          "title": "Pay the medical bill",
+          "benefits": [
+            "It would protect my parent's health.",
+            "It shows loyalty to my family.",
+            "It may reduce everyone's anxiety."
+          ],
+          "costs": [
+            "It delays my apartment plan.",
+            "It uses most of my savings.",
+            "It may make me financially dependent longer."
+          ]
+        },
+        {
+          "title": "Keep saving for the deposit",
+          "benefits": [
+            "It supports my long-term independence.",
+            "It keeps my financial plan on track.",
+            "It avoids taking on new debt."
+          ],
+          "costs": [
+            "It leaves my parent with a serious burden.",
+            "It may hurt family trust.",
+            "It could make me feel guilty."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-work-rest",
+      "label": "health_work_boundary",
+      "rawText": "Should I take sick leave or keep working through exhaustion?",
+      "options": [
+        {
+          "title": "Take sick leave",
+          "benefits": [
+            "It gives my body time to recover.",
+            "It protects my mental health.",
+            "It reduces the chance of making mistakes."
+          ],
+          "costs": [
+            "It may disappoint my team.",
+            "It could delay an important project.",
+            "It may make me look less committed."
+          ]
+        },
+        {
+          "title": "Keep working",
+          "benefits": [
+            "It keeps the project moving.",
+            "It shows reliability to my manager.",
+            "It avoids burdening coworkers."
+          ],
+          "costs": [
+            "It may worsen my health.",
+            "It could extend burnout.",
+            "It leaves no time to rest."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-work-overtime",
+      "label": "health_work_boundary",
+      "rawText": "Should I accept overtime this month or protect my recovery routine?",
+      "options": [
+        {
+          "title": "Accept overtime",
+          "benefits": [
+            "It would help the team meet a deadline.",
+            "It could improve my reputation at work.",
+            "It brings extra pay."
+          ],
+          "costs": [
+            "It disrupts my sleep schedule.",
+            "It leaves less time for exercise.",
+            "It may increase stress."
+          ]
+        },
+        {
+          "title": "Protect the recovery routine",
+          "benefits": [
+            "It keeps my health improving.",
+            "It protects my energy for the long term.",
+            "It helps me stay emotionally stable."
+          ],
+          "costs": [
+            "It may frustrate my manager.",
+            "It means losing extra income.",
+            "It could make me seem less ambitious."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "comfort-learning-language",
+      "label": "comfort_growth_goal",
+      "rawText": "Should I spend evenings learning a language or keep relaxing after work?",
+      "options": [
+        {
+          "title": "Learn the language",
+          "benefits": [
+            "It supports a long-term personal goal.",
+            "It expands my future travel and work options.",
+            "It builds discipline."
+          ],
+          "costs": [
+            "It reduces easy rest after work.",
+            "It may feel frustrating at first.",
+            "It takes consistent effort."
+          ]
+        },
+        {
+          "title": "Keep relaxing",
+          "benefits": [
+            "It gives immediate comfort.",
+            "It helps me decompress quickly.",
+            "It leaves evenings flexible."
+          ],
+          "costs": [
+            "It delays a meaningful goal.",
+            "It may become a habit of avoidance.",
+            "It gives me fewer future opportunities."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "comfort-fitness-training",
+      "label": "comfort_growth_goal",
+      "rawText": "Should I start morning fitness training or keep sleeping later?",
+      "options": [
+        {
+          "title": "Start training",
+          "benefits": [
+            "It improves long-term health.",
+            "It builds discipline and confidence.",
+            "It may increase daily energy."
+          ],
+          "costs": [
+            "It removes the comfort of sleeping late.",
+            "It will be hard in the first weeks.",
+            "It requires planning and effort."
+          ]
+        },
+        {
+          "title": "Keep sleeping later",
+          "benefits": [
+            "It feels pleasant immediately.",
+            "It avoids early morning discomfort.",
+            "It keeps my routine simple."
+          ],
+          "costs": [
+            "It postpones my health goal.",
+            "It may reduce my sense of progress.",
+            "It can leave me less fit over time."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "similar-words-career-no-family",
+      "label": "career_skill_choice",
+      "rawText": "Should I choose a management course or a technical course for my career?",
+      "options": [
+        {
+          "title": "Management course",
+          "benefits": [
+            "It improves leadership prospects.",
+            "It may help me get promoted.",
+            "It builds communication skills."
+          ],
+          "costs": [
+            "It gives less technical depth.",
+            "It may not fit my current tasks.",
+            "It costs a lot of money."
+          ]
+        },
+        {
+          "title": "Technical course",
+          "benefits": [
+            "It deepens practical expertise.",
+            "It helps with current engineering work.",
+            "It may improve job security."
+          ],
+          "costs": [
+            "It gives fewer leadership signals.",
+            "It may be narrower for future roles.",
+            "It still requires time and tuition."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "similar-words-family-no-money",
+      "label": "family_location_choice",
+      "rawText": "Should I visit my parents this weekend or attend my friend's celebration?",
+      "options": [
+        {
+          "title": "Visit my parents",
+          "benefits": [
+            "It strengthens family closeness.",
+            "It supports my parents emotionally.",
+            "It keeps a family promise."
+          ],
+          "costs": [
+            "It means missing my friend's event.",
+            "It may feel repetitive.",
+            "It uses the whole weekend."
+          ]
+        },
+        {
+          "title": "Attend the celebration",
+          "benefits": [
+            "It supports an important friendship.",
+            "It brings joy and social connection.",
+            "It creates a memorable experience."
+          ],
+          "costs": [
+            "It may disappoint my parents.",
+            "It weakens a family routine.",
+            "It could make me feel guilty."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "security-adventure-travel",
+      "label": "security_adventure",
+      "rawText": "Should I take a safe planned vacation or go on a spontaneous adventure trip?",
+      "options": [
+        {
+          "title": "Safe planned vacation",
+          "benefits": [
+            "It keeps costs predictable.",
+            "It reduces travel risk.",
+            "It provides reliable rest."
+          ],
+          "costs": [
+            "It may feel less exciting.",
+            "It gives fewer new experiences.",
+            "It may feel too controlled."
+          ]
+        },
+        {
+          "title": "Adventure trip",
+          "benefits": [
+            "It brings novelty and excitement.",
+            "It could create strong memories.",
+            "It gives a sense of freedom."
+          ],
+          "costs": [
+            "It has more uncertainty.",
+            "It may cost more than expected.",
+            "It could be stressful if plans fail."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ethics-loyalty-work",
+      "label": "ethics_loyalty",
+      "rawText": "Should I report a coworker's mistake or stay silent to protect the relationship?",
+      "options": [
+        {
+          "title": "Report the mistake",
+          "benefits": [
+            "It protects fairness and accountability.",
+            "It may prevent harm to customers.",
+            "It keeps professional standards clear."
+          ],
+          "costs": [
+            "It could damage trust with my coworker.",
+            "It may create conflict at work.",
+            "It could make me look disloyal."
+          ]
+        },
+        {
+          "title": "Stay silent",
+          "benefits": [
+            "It preserves the working relationship.",
+            "It avoids immediate conflict.",
+            "It gives the coworker a chance to fix it privately."
+          ],
+          "costs": [
+            "It may allow unfair consequences.",
+            "It could harm customers.",
+            "It may violate my values."
+          ]
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "id": "query-career-home",
+      "label": "career_family_balance",
+      "relevantRecordIds": ["career-family-remote", "career-family-startup"],
+      "rawText": "Should I take a higher-status job that reduces family time or stay in a calmer role?",
+      "options": [
+        {
+          "title": "Take the higher-status job",
+          "benefits": [
+            "It could accelerate my career.",
+            "It may increase my income.",
+            "It would build valuable leadership experience."
+          ],
+          "costs": [
+            "It leaves less time at home.",
+            "It may increase stress.",
+            "It could make my week feel unstable."
+          ]
+        },
+        {
+          "title": "Stay in the calmer role",
+          "benefits": [
+            "It keeps family life steady.",
+            "It protects my health.",
+            "It gives me predictable evenings."
+          ],
+          "costs": [
+            "It may slow professional progress.",
+            "It means less money.",
+            "It could feel like avoiding growth."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "query-family-savings",
+      "label": "money_family_support",
+      "relevantRecordIds": ["money-family-support", "money-family-parent"],
+      "rawText": "Should I use my savings to help a relative or keep the money for my own security?",
+      "options": [
+        {
+          "title": "Help the relative",
+          "benefits": [
+            "It supports someone I love.",
+            "It strengthens family loyalty.",
+            "It reduces their immediate hardship."
+          ],
+          "costs": [
+            "It weakens my financial safety.",
+            "It delays my personal plans.",
+            "It may create repayment tension."
+          ]
+        },
+        {
+          "title": "Keep the money",
+          "benefits": [
+            "It protects my stability.",
+            "It keeps my plans on schedule.",
+            "It avoids family money conflict."
+          ],
+          "costs": [
+            "It may hurt the relative.",
+            "It could weaken family trust.",
+            "It may feel selfish."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "query-rest-deadline",
+      "label": "health_work_boundary",
+      "relevantRecordIds": ["health-work-rest", "health-work-overtime"],
+      "rawText": "Should I rest to recover or push through work for an important deadline?",
+      "options": [
+        {
+          "title": "Rest to recover",
+          "benefits": [
+            "It protects my health.",
+            "It restores my energy.",
+            "It lowers the risk of burnout."
+          ],
+          "costs": [
+            "It may slow the project.",
+            "It could frustrate coworkers.",
+            "It might look less committed."
+          ]
+        },
+        {
+          "title": "Push through work",
+          "benefits": [
+            "It helps the team deliver.",
+            "It shows reliability.",
+            "It avoids handing work to others."
+          ],
+          "costs": [
+            "It could worsen exhaustion.",
+            "It may damage sleep.",
+            "It leaves little room for recovery."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "query-discipline-comfort",
+      "label": "comfort_growth_goal",
+      "relevantRecordIds": ["comfort-learning-language", "comfort-fitness-training"],
+      "rawText": "Should I give up easy evenings for a long-term self-improvement goal?",
+      "options": [
+        {
+          "title": "Work on the goal",
+          "benefits": [
+            "It builds discipline.",
+            "It supports future opportunities.",
+            "It creates a sense of progress."
+          ],
+          "costs": [
+            "It reduces immediate comfort.",
+            "It requires effort after work.",
+            "It may be frustrating at first."
+          ]
+        },
+        {
+          "title": "Keep easy evenings",
+          "benefits": [
+            "It feels relaxing right away.",
+            "It keeps my schedule flexible.",
+            "It avoids extra pressure."
+          ],
+          "costs": [
+            "It delays my long-term goal.",
+            "It may reinforce avoidance.",
+            "It gives fewer future benefits."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -196,6 +196,45 @@ public struct ClusterMetadata: Codable, Identifiable, Sendable {
   }
 }
 
+public enum DecisionClusterMethod: String, Codable, CaseIterable, Sendable {
+  case bhatiaWardReddit
+  case kMeansAttributeEmbeddings
+
+  public var assetResourceName: String {
+    switch self {
+    case .bhatiaWardReddit:
+      "DilemmaAssets"
+    case .kMeansAttributeEmbeddings:
+      "DilemmaAssetsKMeans"
+    }
+  }
+
+  public var metadataValue: String {
+    switch self {
+    case .bhatiaWardReddit:
+      "bhatia_hierarchical_ward_reddit_option_profiles"
+    case .kMeansAttributeEmbeddings:
+      "kmeans_on_mean_pro_con_attribute_embeddings"
+    }
+  }
+
+  public var label: String {
+    switch self {
+    case .bhatiaWardReddit:
+      "Bhatia Ward Reddit clusters"
+    case .kMeansAttributeEmbeddings:
+      "KMeans attribute embedding clusters"
+    }
+  }
+
+  public init?(assetResourceName: String) {
+    guard let method = Self.allCases.first(where: { $0.assetResourceName == assetResourceName }) else {
+      return nil
+    }
+    self = method
+  }
+}
+
 struct AttributeAssetModel: Codable, Sendable {
   let id: String
   let shortName: String
@@ -271,6 +310,9 @@ public struct DecisionAnalysisResult: Sendable {
   public let modelName: String
   public let assetVersion: Int
   public let sourceDOI: String
+  public let assetResourceName: String
+  public let clusterMethodID: String
+  public let clusterMethodLabel: String
   public let metrics: AnalysisMetrics
   public let reasonResults: [ReasonMatchResult]
   public let optionProfiles: [Int: [Float]]

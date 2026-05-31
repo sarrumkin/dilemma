@@ -102,6 +102,30 @@ struct AttributeScoringTests {
   }
 
   @Test
+  func conflictVectorIgnoresOptionOrder() {
+    let profiles: [Int: [Float]] = [
+      1: [1, -2, 4],
+      2: [-3, 1, 4],
+    ]
+    let swapped: [Int: [Float]] = [
+      1: profiles[2]!,
+      2: profiles[1]!,
+    ]
+
+    #expect(AttributeScoring.conflictVector(optionProfiles: profiles) == [4, 3, 0])
+    #expect(AttributeScoring.conflictVector(optionProfiles: profiles) == AttributeScoring.conflictVector(optionProfiles: swapped))
+  }
+
+  @Test
+  func clusterVectorAggregationKeepsStableClusterOrder() {
+    let store = makeStore()
+    let aggregator = ClusterAggregator(store: store)
+
+    #expect(aggregator.vector(fromAttributeProfile: [2, 4]) == [2, 4])
+    #expect(AttributeScoring.normalize([Float(0), Float(0)]) == [0, 0])
+  }
+
+  @Test
   func decisionDraftValidationRequiresStructuredReasons() throws {
     let valid = DecisionAnalysisRunner.defaultDraft
 
@@ -158,6 +182,20 @@ struct AttributeScoringTests {
         [0, 1],
         [1, 0],
         [0, 1],
+      ],
+      clusters: [
+        ClusterMetadata(
+          clusterID: 1,
+          label: "money",
+          representativeAttributeName: "money",
+          sortOrder: 1
+        ),
+        ClusterMetadata(
+          clusterID: 2,
+          label: "risk",
+          representativeAttributeName: "risk",
+          sortOrder: 2
+        ),
       ]
     )
   }

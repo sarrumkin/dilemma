@@ -4,19 +4,40 @@ public struct DecisionAnalysisRunner: Sendable {
   private let bundle: Bundle
   private let modelResourceName: String
   private let assetResourceName: String
+  private let clusterMethod: DecisionClusterMethod?
 
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
     modelResourceName: String = "all-MiniLM-L12-v2",
-    assetResourceName: String = "DilemmaAssets"
+    clusterMethod: DecisionClusterMethod = .bhatiaWardReddit
+  ) {
+    self.bundle = bundle
+    self.modelResourceName = modelResourceName
+    self.assetResourceName = clusterMethod.assetResourceName
+    self.clusterMethod = clusterMethod
+  }
+
+  public init(
+    bundle: Bundle = DecisionKernelResourceBundle.bundle,
+    modelResourceName: String = "all-MiniLM-L12-v2",
+    assetResourceName: String
   ) {
     self.bundle = bundle
     self.modelResourceName = modelResourceName
     self.assetResourceName = assetResourceName
+    self.clusterMethod = DecisionClusterMethod(assetResourceName: assetResourceName)
   }
 
   public func run() async throws -> DecisionAnalysisResult {
-    try await DecisionAnalysisService(
+    if let clusterMethod {
+      return try await DecisionAnalysisService(
+        bundle: bundle,
+        modelResourceName: modelResourceName,
+        clusterMethod: clusterMethod
+      ).analyze(Self.defaultDraft)
+    }
+
+    return try await DecisionAnalysisService(
       bundle: bundle,
       modelResourceName: modelResourceName,
       assetResourceName: assetResourceName
