@@ -5,6 +5,7 @@ public enum SimilarityMethod: String, Codable, CaseIterable, Sendable {
   case kMeansClusters
   case textEmbedding
 
+  /// Human-readable method name for reports and diagnostics.
   public var label: String {
     switch self {
     case .bhatiaClusters:
@@ -22,6 +23,7 @@ public struct SimilarityCorpusRecord: Identifiable, Sendable {
   public let draft: DecisionDraft
   public let label: String?
 
+  /// Creates one searchable corpus record with an optional evaluation label.
   public init(id: String, draft: DecisionDraft, label: String? = nil) {
     self.id = id
     self.draft = draft
@@ -36,6 +38,7 @@ public struct SimilarityMatch: Identifiable, Sendable {
   public let score: Float
   public let label: String?
 
+  /// Creates one ranked similarity match for a corpus record.
   public init(recordID: String, method: SimilarityMethod, score: Float, label: String? = nil) {
     self.id = "\(method.rawValue)-\(recordID)"
     self.recordID = recordID
@@ -50,6 +53,7 @@ public struct SimilaritySearchResult: Sendable {
   public let method: SimilarityMethod
   public let matches: [SimilarityMatch]
 
+  /// Creates the complete ranked result for one similarity method.
   public init(queryID: String? = nil, method: SimilarityMethod, matches: [SimilarityMatch]) {
     self.queryID = queryID
     self.method = method
@@ -62,6 +66,7 @@ public struct DecisionSimilarityService: Sendable {
   private let modelResourceName: String
   private let topAttributeMatches: Int
 
+  /// Creates a similarity service that uses bundled assets and a local embedding model.
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
     modelResourceName: String = "all-MiniLM-L12-v2",
@@ -72,6 +77,7 @@ public struct DecisionSimilarityService: Sendable {
     self.topAttributeMatches = topAttributeMatches
   }
 
+  /// Ranks corpus records by comparing normalized conflict vectors aggregated through a cluster method.
   public func similarRecordsByClusters(
     query: DecisionDraft,
     corpus: [SimilarityCorpusRecord],
@@ -117,6 +123,7 @@ public struct DecisionSimilarityService: Sendable {
     )
   }
 
+  /// Ranks corpus records by comparing canonical structured text embeddings directly.
   public func similarRecordsByTextEmbedding(
     query: DecisionDraft,
     corpus: [SimilarityCorpusRecord],
@@ -150,6 +157,7 @@ public struct DecisionSimilarityService: Sendable {
     )
   }
 
+  /// Converts a structured draft into deterministic text for full-text embedding comparison.
   public static func canonicalText(for draft: DecisionDraft) -> String {
     var lines = ["Dilemma: \(draft.rawText)"]
 
@@ -171,6 +179,7 @@ public struct DecisionSimilarityService: Sendable {
     return lines.joined(separator: "\n")
   }
 
+  /// Embeds and maps drafts into normalized cluster vectors for cluster-based retrieval.
   private func clusterVectors(
     for drafts: [DecisionDraft],
     store: AttributeEmbeddingStore,
@@ -202,6 +211,7 @@ public struct DecisionSimilarityService: Sendable {
     }
   }
 
+  /// Scores corpus vectors against the query vector and returns the deterministic top matches.
   private func rankedMatches(
     queryVector: [Float],
     corpusVectors: [[Float]],

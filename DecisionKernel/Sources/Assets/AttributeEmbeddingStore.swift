@@ -13,12 +13,18 @@ struct AttributeEmbeddingStore: Sendable {
   private let attributeOrdinalByRowIndex: [Int]
   private let clusterByID: [Int: ClusterMetadata]
 
+  /// Embedding dimension used by every attribute vector in the asset.
   var dimension: Int { metadata.model.embeddingDimension }
+  /// Version number recorded in the loaded attribute asset.
   var assetVersion: Int { metadata.assetVersion }
+  /// DOI of the Bhatia source dataset used to build the asset.
   var sourceDOI: String { metadata.sourceDoi }
+  /// Number of unique, non-directional attributes represented in the store.
   var attributeCount: Int { attributeDefinitions.count }
+  /// Debug-oriented row-major vector view reconstructed from the flat vector storage.
   var vectors: [[Float]] { flatVectors.chunked(size: dimension) }
 
+  /// Creates an in-memory store from metadata and row-major vectors, primarily for tests.
   init(
     metadata: AttributeAssetMetadata,
     vectors: [[Float]],
@@ -27,6 +33,7 @@ struct AttributeEmbeddingStore: Sendable {
     self.init(metadata: metadata, flatVectors: vectors.flatMap { $0 }, clusters: clusters)
   }
 
+  /// Creates a store from flat vectors plus optional SQLite-derived attribute and cluster metadata.
   private init(
     metadata: AttributeAssetMetadata,
     flatVectors: [Float],
@@ -54,6 +61,7 @@ struct AttributeEmbeddingStore: Sendable {
     self.clusterByID = Dictionary(uniqueKeysWithValues: clusters.map { ($0.clusterID, $0) })
   }
 
+  /// Loads the legacy JSON plus Float16 asset format from the bundle.
   static func load(
     resourceName: String,
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
@@ -87,6 +95,7 @@ struct AttributeEmbeddingStore: Sendable {
     return AttributeEmbeddingStore(metadata: metadata, flatVectors: flat)
   }
 
+  /// Loads the production SQLite asset format from the bundle in read-only mode.
   static func loadSQLite(
     resourceName: String = "DilemmaAssets",
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
@@ -138,20 +147,24 @@ struct AttributeEmbeddingStore: Sendable {
     )
   }
 
+  /// Returns directional metadata row indices for pro or con scoring.
   func directionIndices(for direction: AttributeDirection) -> [Int] {
     direction == .pro ? proIndices : conIndices
   }
 
+  /// Maps a directional source row index to the unique attribute profile ordinal.
   func attributeOrdinal(forRowIndex rowIndex: Int) -> Int? {
     guard rowIndex >= 0 && rowIndex < attributeOrdinalByRowIndex.count else { return nil }
     return attributeOrdinalByRowIndex[rowIndex]
   }
 
+  /// Resolves cluster metadata for an optional cluster id.
   func cluster(for clusterID: Int?) -> ClusterMetadata? {
     guard let clusterID else { return nil }
     return clusterByID[clusterID]
   }
 
+  /// Computes cosine similarity against one normalized attribute vector.
   func dot(normalizedReasonVector: [Float], attributeIndex: Int) -> Float {
     let offset = attributeIndex * dimension
     return normalizedReasonVector.withUnsafeBufferPointer { reasonBuffer in
@@ -183,6 +196,7 @@ struct AttributeEmbeddingStore: Sendable {
     case invalidVectorByteCount(actual: Int, expectedValues: Int)
     case invalidSQLiteAsset(String)
 
+    /// Human-readable asset loading error description.
     var errorDescription: String? {
       switch self {
       case .missingResource(let name):
@@ -195,6 +209,7 @@ struct AttributeEmbeddingStore: Sendable {
     }
   }
 
+  /// Collapses directional attribute metadata rows into unique attribute definitions.
   private static func makeAttributeDefinitions(
     from attributes: [AttributeMetadata]
   ) -> [AttributeDefinition] {
@@ -217,6 +232,7 @@ struct AttributeEmbeddingStore: Sendable {
     return definitions.sorted { $0.attributeID < $1.attributeID }
   }
 
+  /// Builds a lookup from each directional metadata row to its unique attribute ordinal.
   private static func makeAttributeOrdinalMap(
     attributes: [AttributeMetadata],
     definitions: [AttributeDefinition]
@@ -238,6 +254,7 @@ struct AttributeEmbeddingStore: Sendable {
   }
 }
 
+/// Loads a little-endian Float16 vector file and expands it to Float32 values.
 func loadFloat16VectorFile(at url: URL, expectedCount: Int) throws -> [Float] {
   let data = try Data(contentsOf: url)
   guard data.count == expectedCount * 2 else {
@@ -259,6 +276,7 @@ func loadFloat16VectorFile(at url: URL, expectedCount: Int) throws -> [Float] {
 }
 
 extension Array {
+  /// Splits the array into contiguous chunks of at most `size` elements.
   func chunked(size: Int) -> [[Element]] {
     stride(from: 0, to: count, by: size).map { start in
       Array(self[start..<Swift.min(start + size, count)])
@@ -267,6 +285,7 @@ extension Array {
 }
 
 extension JSONDecoder {
+  /// Decoder configured for snake_case attribute asset metadata.
   static var attributeAsset: JSONDecoder {
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -277,6 +296,7 @@ extension JSONDecoder {
 private final class SQLiteReadOnlyDatabase {
   private let handle: OpaquePointer
 
+  /// Opens a SQLite database in read-only, fully mutexed mode.
   init(url: URL) throws {
     var database: OpaquePointer?
     let flags = SQLITE_OPEN_READONLY | SQLITE_OPEN_FULLMUTEX
@@ -290,10 +310,12 @@ private final class SQLiteReadOnlyDatabase {
     self.handle = database
   }
 
+  /// Closes the SQLite handle when the wrapper is released.
   deinit {
     sqlite3_close(handle)
   }
 
+  /// Reads the `asset_metadata` table into a key-value dictionary.
   func metadataRows() throws -> [String: String] {
     try query("SELECT key, value FROM asset_metadata") { statement in
       (
@@ -305,6 +327,7 @@ private final class SQLiteReadOnlyDatabase {
     }
   }
 
+  /// Loads cluster metadata ordered by asset sort order.
   func clusters() throws -> [ClusterMetadata] {
     try query(
       """
@@ -322,6 +345,7 @@ private final class SQLiteReadOnlyDatabase {
     }
   }
 
+  /// Loads unique attribute definitions and their optional cluster assignments.
   func attributeDefinitions() throws -> [AttributeDefinition] {
     try query(
       """
@@ -342,6 +366,7 @@ private final class SQLiteReadOnlyDatabase {
     }
   }
 
+  /// Loads directional attribute rows ordered by scoring row index.
   func attributeDirections() throws -> [AttributeMetadata] {
     try query(
       """
@@ -380,6 +405,7 @@ private final class SQLiteReadOnlyDatabase {
     }
   }
 
+  /// Loads row-major Float32 embedding blobs in scoring row order.
   func embeddingVectors(expectedDimension: Int) throws -> [[Float]] {
     try query(
       """
@@ -403,6 +429,7 @@ private final class SQLiteReadOnlyDatabase {
     }
   }
 
+  /// Executes a read query and maps each row through the supplied closure.
   private func query<T>(
     _ sql: String,
     map: (OpaquePointer) throws -> T
@@ -432,6 +459,7 @@ private final class SQLiteReadOnlyDatabase {
 }
 
 private extension Dictionary where Key == String, Value == String {
+  /// Returns a required string metadata value or throws an asset validation error.
   func requiredString(_ key: String) throws -> String {
     guard let value = self[key] else {
       throw AttributeEmbeddingStore.StoreError.invalidSQLiteAsset("Missing metadata \(key)")
@@ -439,6 +467,7 @@ private extension Dictionary where Key == String, Value == String {
     return value
   }
 
+  /// Parses a required integer metadata value or throws an asset validation error.
   func requiredInt(_ key: String) throws -> Int {
     let value = try requiredString(key)
     guard let intValue = Int(value) else {
@@ -451,6 +480,7 @@ private extension Dictionary where Key == String, Value == String {
 }
 
 private extension Data {
+  /// Decodes the data as little-endian Float32 values.
   func littleEndianFloat32Values() -> [Float] {
     var values = [Float]()
     values.reserveCapacity(count / 4)

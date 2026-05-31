@@ -6,6 +6,7 @@ public struct DecisionAnalysisRunner: Sendable {
   private let assetResourceName: String
   private let clusterMethod: DecisionClusterMethod?
 
+  /// Creates a runner for the built-in smoke draft using a known cluster method.
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
     modelResourceName: String = "all-MiniLM-L12-v2",
@@ -17,6 +18,7 @@ public struct DecisionAnalysisRunner: Sendable {
     self.clusterMethod = clusterMethod
   }
 
+  /// Creates a runner for the built-in smoke draft using an explicit asset resource name.
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
     modelResourceName: String = "all-MiniLM-L12-v2",
@@ -28,6 +30,7 @@ public struct DecisionAnalysisRunner: Sendable {
     self.clusterMethod = DecisionClusterMethod(assetResourceName: assetResourceName)
   }
 
+  /// Executes the built-in smoke analysis draft through `DecisionAnalysisService`.
   public func run() async throws -> DecisionAnalysisResult {
     if let clusterMethod {
       return try await DecisionAnalysisService(
@@ -44,6 +47,7 @@ public struct DecisionAnalysisRunner: Sendable {
     ).analyze(Self.defaultDraft)
   }
 
+  /// Stable smoke-test draft used by integration tests and local analysis probes.
   static let defaultDraft = DecisionDraft(
     rawText: "Should I keep the stable path or take the new opportunity?",
     options: [
@@ -76,6 +80,7 @@ public struct DecisionAnalysisRunner: Sendable {
 }
 
 enum MemorySnapshot {
+  /// Returns the current process resident memory in megabytes, or zero when unavailable.
   static func currentResidentMegabytes() -> Double {
     var info = mach_task_basic_info()
     var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size) / 4

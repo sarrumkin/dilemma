@@ -2,6 +2,7 @@ import Accelerate
 import Foundation
 
 enum AttributeScoring {
+  /// Scores one normalized reason vector against pro or con attribute rows and returns the top matches.
   static func topMatches(
     reasonVector: [Float],
     reasonPolarity: ReasonPolarity,
@@ -25,6 +26,7 @@ enum AttributeScoring {
     return (directionScores, Array(ranked.prefix(topK)))
   }
 
+  /// Subtracts the finite-score mean from each finite score while preserving missing values.
   static func rowCenter(_ scores: [Float]) -> [Float] {
     let finiteScores = scores.filter { $0.isFinite }
     guard !finiteScores.isEmpty else { return scores }
@@ -32,6 +34,7 @@ enum AttributeScoring {
     return scores.map { $0.isFinite ? $0 - mean : $0 }
   }
 
+  /// Builds option-level profiles over directional attribute rows from scored reasons.
   static func optionProfiles(from results: [ReasonMatchResult], attributeCount: Int) -> [Int: [Float]] {
     let options = Set(results.map(\.reason.optionIndex))
     var profiles: [Int: [Float]] = [:]
@@ -54,6 +57,7 @@ enum AttributeScoring {
     return profiles
   }
 
+  /// Builds option-level profiles over unique attributes by collapsing pro and con rows.
   static func optionAttributeProfiles(
     from results: [ReasonMatchResult],
     store: AttributeEmbeddingStore
@@ -79,6 +83,7 @@ enum AttributeScoring {
     return profiles
   }
 
+  /// Returns the highest-magnitude attribute differences between the two option profiles.
   static func conflictDimensions(
     optionProfiles: [Int: [Float]],
     attributes: [AttributeDefinition],
@@ -106,6 +111,7 @@ enum AttributeScoring {
       .map { $0 }
   }
 
+  /// Builds the unsigned conflict vector as `abs(option1_profile - option2_profile)`.
   static func conflictVector(optionProfiles: [Int: [Float]]) -> [Float] {
     guard
       let option1 = optionProfiles[1],
@@ -120,6 +126,7 @@ enum AttributeScoring {
     }
   }
 
+  /// Returns the strongest attributes for each option profile by absolute score magnitude.
   static func topAttributes(
     optionProfiles: [Int: [Float]],
     attributes: [AttributeDefinition],
@@ -136,6 +143,7 @@ enum AttributeScoring {
     }
   }
 
+  /// Computes a dot product over the overlapping prefix of two float vectors.
   static func dot(_ lhs: [Float], _ rhs: [Float]) -> Float {
     lhs.withUnsafeBufferPointer { lhsBuffer in
       rhs.withUnsafeBufferPointer { rhsBuffer in
@@ -151,12 +159,14 @@ enum AttributeScoring {
     }
   }
 
+  /// Returns the L2-normalized vector, or the original vector when its norm is zero.
   static func normalize(_ vector: [Float]) -> [Float] {
     let norm = sqrt(vector.reduce(Float(0)) { $0 + $1 * $1 })
     guard norm > 0 else { return vector }
     return vector.map { $0 / norm }
   }
 
+  /// Computes a column-wise finite mean for directional score rows.
   private static func meanRows(_ rows: [[Float]], width: Int) -> [Float] {
     guard !rows.isEmpty else { return Array(repeating: 0, count: width) }
     var totals = Array(repeating: Float(0), count: width)
@@ -174,6 +184,7 @@ enum AttributeScoring {
     }
   }
 
+  /// Computes a column-wise finite mean after mapping directional rows to unique attribute ordinals.
   private static func meanAttributeRows(
     _ results: [ReasonMatchResult],
     store: AttributeEmbeddingStore

@@ -4,6 +4,7 @@ public enum ReasonPolarity: String, Codable, Sendable {
   case benefit
   case cost
 
+  /// Returns the attribute vector direction used to score this reason polarity.
   var targetDirection: AttributeDirection {
     switch self {
     case .benefit: .pro
@@ -17,12 +18,14 @@ public struct DecisionDraft: Identifiable, Sendable {
   public let rawText: String
   public let options: [DecisionOption]
 
+  /// Creates a structured two-option decision draft ready for validation and analysis.
   public init(id: UUID = UUID(), rawText: String, options: [DecisionOption]) {
     self.id = id
     self.rawText = rawText
     self.options = options
   }
 
+  /// Validates that the draft has dilemma text, exactly two options, and enough reasons per polarity.
   public func validated(requiredReasonsPerPolarity: Int = 3) throws -> DecisionDraft {
     guard !rawText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
       throw DecisionDraftValidationError.missingDilemmaText
@@ -54,6 +57,7 @@ public struct DecisionDraft: Identifiable, Sendable {
     return self
   }
 
+  /// Flattens option reasons into the stable option-index order expected by the scoring pipeline.
   var reasonInputs: [ReasonInput] {
     options
       .sorted { $0.index < $1.index }
@@ -71,6 +75,7 @@ public struct DecisionOption: Identifiable, Sendable {
   public let title: String
   public let reasons: [Reason]
 
+  /// Creates one candidate option with its structured benefit and cost reasons.
   public init(id: UUID = UUID(), index: Int, title: String, reasons: [Reason]) {
     self.id = id
     self.index = index
@@ -84,6 +89,7 @@ public struct Reason: Identifiable, Sendable {
   public let text: String
   public let polarity: ReasonPolarity
 
+  /// Creates a single free-text reason and marks whether it is a benefit or a cost.
   public init(id: UUID = UUID(), text: String, polarity: ReasonPolarity) {
     self.id = id
     self.text = text
@@ -97,6 +103,7 @@ public enum DecisionDraftValidationError: LocalizedError, Equatable, Sendable {
   case missingOptionTitle(optionIndex: Int)
   case notEnoughReasons(optionIndex: Int, polarity: ReasonPolarity, expected: Int, actual: Int)
 
+  /// Human-readable validation message for UI surfaces and logs.
   public var errorDescription: String? {
     switch self {
     case .missingDilemmaText:
@@ -122,6 +129,7 @@ public struct ReasonInput: Identifiable, Sendable {
   public let optionIndex: Int
   public let polarity: ReasonPolarity
 
+  /// Creates the runtime scoring representation for a reason tied to one option.
   public init(text: String, optionIndex: Int, polarity: ReasonPolarity) {
     self.text = text
     self.optionIndex = optionIndex
@@ -138,8 +146,10 @@ public struct AttributeMetadata: Codable, Identifiable, Sendable {
   public let vectorOffset: Int
   public let clusterID: Int?
 
+  /// Stable identity for one directional attribute row.
   public var id: String { "\(rowIndex)-\(direction.rawValue)" }
 
+  /// Creates metadata for one directional attribute vector row in the asset.
   public init(
     attributeID: Int? = nil,
     rowIndex: Int,
@@ -165,8 +175,10 @@ public struct AttributeDefinition: Codable, Identifiable, Sendable {
   public let source: String
   public let clusterID: Int?
 
+  /// Stable identity for one unique attribute.
   public var id: Int { attributeID }
 
+  /// Creates the non-directional definition for an attribute used in option profiles.
   public init(attributeID: Int, name: String, source: String, clusterID: Int?) {
     self.attributeID = attributeID
     self.name = name
@@ -181,8 +193,10 @@ public struct ClusterMetadata: Codable, Identifiable, Sendable {
   public let representativeAttributeName: String
   public let sortOrder: Int
 
+  /// Stable identity for one cluster in the loaded asset.
   public var id: Int { clusterID }
 
+  /// Creates metadata for a cluster and its display representative.
   public init(
     clusterID: Int,
     label: String,
@@ -200,6 +214,7 @@ public enum DecisionClusterMethod: String, Codable, CaseIterable, Sendable {
   case bhatiaWardReddit
   case kMeansAttributeEmbeddings
 
+  /// Resource basename for the SQLite asset backing this clustering method.
   public var assetResourceName: String {
     switch self {
     case .bhatiaWardReddit:
@@ -209,6 +224,7 @@ public enum DecisionClusterMethod: String, Codable, CaseIterable, Sendable {
     }
   }
 
+  /// Exact `asset_metadata.cluster_method` value expected inside the SQLite asset.
   public var metadataValue: String {
     switch self {
     case .bhatiaWardReddit:
@@ -218,6 +234,7 @@ public enum DecisionClusterMethod: String, Codable, CaseIterable, Sendable {
     }
   }
 
+  /// Human-readable label for diagnostics and experiment reports.
   public var label: String {
     switch self {
     case .bhatiaWardReddit:
@@ -227,6 +244,7 @@ public enum DecisionClusterMethod: String, Codable, CaseIterable, Sendable {
     }
   }
 
+  /// Resolves a known clustering method from its bundled SQLite resource basename.
   public init?(assetResourceName: String) {
     guard let method = Self.allCases.first(where: { $0.assetResourceName == assetResourceName }) else {
       return nil

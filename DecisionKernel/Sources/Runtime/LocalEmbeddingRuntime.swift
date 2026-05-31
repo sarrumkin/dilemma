@@ -6,6 +6,7 @@ struct LocalEmbeddingRuntime {
   let bundle: Bundle
   let modelResourceName: String
 
+  /// Loads a bundled BERT-compatible sentence embedding model without network fallback.
   func loadModel() async throws -> LoadedEmbeddingModel {
     // Runtime is deliberately bundled-only: no hubRepoId fallback, no
     // network fetch, and no API call from the app path.
@@ -28,6 +29,7 @@ struct LocalEmbeddingRuntime {
   enum RuntimeError: LocalizedError {
     case missingBundledModel(String)
 
+    /// Human-readable runtime loading error description.
     var errorDescription: String? {
       switch self {
       case .missingBundledModel(let name):
@@ -40,6 +42,7 @@ struct LocalEmbeddingRuntime {
 struct LoadedEmbeddingModel {
   fileprivate let modelBundle: Bert.ModelBundle
 
+  /// Embeds texts with masked mean pooling and returns L2-normalized sentence vectors.
   func embed(texts: [String]) async throws -> [[Float]] {
     let tokenized = try modelBundle.tokenizer.tokenizeTextsPaddingToLongest(
       texts,

@@ -7,6 +7,7 @@ public struct DecisionAnalysisService: Sendable {
   private let clusterMethod: DecisionClusterMethod?
   private let topK: Int
 
+  /// Creates an analysis service backed by one of the known bundled cluster-method assets.
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
     modelResourceName: String = "all-MiniLM-L12-v2",
@@ -20,6 +21,7 @@ public struct DecisionAnalysisService: Sendable {
     self.topK = topK
   }
 
+  /// Creates an analysis service backed by an explicit SQLite asset resource name.
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
     modelResourceName: String = "all-MiniLM-L12-v2",
@@ -33,6 +35,7 @@ public struct DecisionAnalysisService: Sendable {
     self.topK = topK
   }
 
+  /// Runs validation, local embedding, attribute scoring, clustering, and conflict extraction for one draft.
   public func analyze(_ draft: DecisionDraft) async throws -> DecisionAnalysisResult {
     let validatedDraft = try draft.validated()
     var metrics = AnalysisMetrics()
@@ -105,6 +108,7 @@ public struct DecisionAnalysisService: Sendable {
     )
   }
 
+  /// Converts an elapsed continuous-clock duration to milliseconds for analysis metrics.
   private func elapsedMilliseconds(since start: ContinuousClock.Instant) -> Double {
     let elapsed = ContinuousClock.now - start
     return Double(elapsed.components.seconds) * 1_000
@@ -116,6 +120,7 @@ struct AssetRepository: Sendable {
   let bundle: Bundle
   let resourceName: String
 
+  /// Loads the configured SQLite attribute asset from the given bundle.
   func load() throws -> AttributeEmbeddingStore {
     try AttributeEmbeddingStore.loadSQLite(resourceName: resourceName, bundle: bundle)
   }
@@ -125,6 +130,7 @@ struct AttributeMapper: Sendable {
   let store: AttributeEmbeddingStore
   let topK: Int
 
+  /// Scores a reason embedding against the direction-appropriate attribute vectors.
   func map(reason: ReasonInput, embedding: [Float]) -> ReasonMatchResult {
     let scored = AttributeScoring.topMatches(
       reasonVector: embedding,
@@ -144,12 +150,14 @@ struct AttributeMapper: Sendable {
 struct ClusterAggregator: Sendable {
   let store: AttributeEmbeddingStore
 
+  /// Aggregates option attribute profiles into ranked cluster score profiles.
   func profiles(optionProfiles: [Int: [Float]]) -> [Int: [ClusterScore]] {
     optionProfiles.mapValues { profile in
       clusterScores(for: profile)
     }
   }
 
+  /// Aggregates an attribute profile into a fixed-order cluster vector.
   func vector(fromAttributeProfile profile: [Float]) -> [Float] {
     let scores = clusterScores(for: profile)
     let scoreByClusterID = Dictionary(uniqueKeysWithValues: scores.map {
@@ -158,6 +166,7 @@ struct ClusterAggregator: Sendable {
     return store.clusters.map { scoreByClusterID[$0.clusterID] ?? 0 }
   }
 
+  /// Computes ranked cluster-level differences between option 1 and option 2 profiles.
   func conflicts(optionProfiles: [Int: [Float]], topK: Int) -> [ClusterConflictDimension] {
     guard
       let option1 = optionProfiles[1],
@@ -191,6 +200,7 @@ struct ClusterAggregator: Sendable {
     .map { $0 }
   }
 
+  /// Computes average profile score per cluster and sorts by absolute magnitude.
   private func clusterScores(for profile: [Float]) -> [ClusterScore] {
     var totals: [Int: Float] = [:]
     var counts: [Int: Float] = [:]

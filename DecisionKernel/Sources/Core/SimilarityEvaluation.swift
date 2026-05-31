@@ -6,6 +6,7 @@ public struct SimilarityEvaluationQuery: Identifiable, Sendable {
   public let label: String?
   public let relevantRecordIDs: Set<String>
 
+  /// Creates an evaluation query and the set of corpus records considered relevant for it.
   public init(
     id: String,
     draft: DecisionDraft,
@@ -25,6 +26,7 @@ public struct SimilarityMethodEvaluationResult: Sendable {
   public let relevantCountAtK: Int
   public let hitAtK: Bool
 
+  /// Computes relevance counts for one method's ranked matches.
   public init(method: SimilarityMethod, matches: [SimilarityMatch], relevantRecordIDs: Set<String>) {
     self.method = method
     self.matches = matches
@@ -39,6 +41,7 @@ public struct SimilarityEvaluationCaseResult: Sendable {
   public let relevantRecordIDs: Set<String>
   public let methodResults: [SimilarityMethodEvaluationResult]
 
+  /// Creates all method-level evaluation results for one query.
   public init(
     queryID: String,
     queryLabel: String?,
@@ -56,11 +59,13 @@ public struct SimilarityEvaluationSummary: Sendable {
   public let topK: Int
   public let cases: [SimilarityEvaluationCaseResult]
 
+  /// Creates an evaluation summary over all queries and methods.
   public init(topK: Int, cases: [SimilarityEvaluationCaseResult]) {
     self.topK = topK
     self.cases = cases
   }
 
+  /// Counts how many query cases had at least one relevant match for the given method.
   public func hitCount(for method: SimilarityMethod) -> Int {
     cases.reduce(0) { total, result in
       guard let methodResult = result.methodResults.first(where: { $0.method == method }) else {
@@ -74,10 +79,12 @@ public struct SimilarityEvaluationSummary: Sendable {
 public struct SimilarityEvaluationRunner: Sendable {
   private let service: DecisionSimilarityService
 
+  /// Creates an evaluator around a similarity service.
   public init(service: DecisionSimilarityService = DecisionSimilarityService()) {
     self.service = service
   }
 
+  /// Runs Bhatia, KMeans, and full-text similarity for every query against the same corpus.
   public func evaluate(
     queries: [SimilarityEvaluationQuery],
     corpus: [SimilarityCorpusRecord],
@@ -126,6 +133,7 @@ public struct SimilarityEvaluationRunner: Sendable {
 }
 
 public enum SimilarityEvaluationCSVFormatter {
+  /// Renders a similarity evaluation summary as CSV rows.
   public static func string(from summary: SimilarityEvaluationSummary) -> String {
     var rows = ["query_id,query_label,method,rank,record_id,record_label,score,is_relevant"]
 
@@ -151,6 +159,7 @@ public enum SimilarityEvaluationCSVFormatter {
     return rows.joined(separator: "\n") + "\n"
   }
 
+  /// Escapes one CSV field according to RFC 4180 quoting rules used by spreadsheet readers.
   private static func escapeCSV(_ value: String) -> String {
     if value.contains(",") || value.contains("\"") || value.contains("\n") {
       return "\"\(value.replacingOccurrences(of: "\"", with: "\"\""))\""
@@ -160,6 +169,7 @@ public enum SimilarityEvaluationCSVFormatter {
 }
 
 public enum SimilarityEvaluationMarkdownFormatter {
+  /// Renders a similarity evaluation summary as a Markdown report.
   public static func string(from summary: SimilarityEvaluationSummary) -> String {
     var lines = [
       "# Similarity Methods Swift Evaluation",
