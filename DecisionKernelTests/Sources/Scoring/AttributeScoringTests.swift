@@ -3,8 +3,10 @@ import Testing
 
 @testable import DecisionKernel
 
+/// Набор unit-тестов для загрузки векторов, attribute scoring и агрегации conflict-профилей.
 @Suite
 struct AttributeScoringTests {
+  /// Проверяет, что little-endian Float16 файл разворачивается в ожидаемые Float значения.
   @Test
   func float16VectorLoaderExpandsLittleEndianValues() throws {
     let url = FileManager.default.temporaryDirectory
@@ -26,6 +28,7 @@ struct AttributeScoringTests {
     #expect(loaded == [1, -2, 0.5])
   }
 
+  /// Проверяет, что benefit reasons матчятся только с pro rows, а cost reasons только с con rows.
   @Test
   func benefitScoresOnlyProAndCostScoresOnlyCon() {
     let store = makeStore()
@@ -49,6 +52,7 @@ struct AttributeScoringTests {
     #expect(cost.top.first?.attribute.name == "risk")
   }
 
+  /// Проверяет row-centering и усреднение centered scores в option profile.
   @Test
   func rowCenterAndOptionProfileAggregation() {
     let reason1 = ReasonInput(text: "benefit", optionIndex: 1, polarity: .benefit)
@@ -77,6 +81,7 @@ struct AttributeScoringTests {
     #expect(profiles[1] == [1, 1])
   }
 
+  /// Проверяет, что pro/con rows одного attribute схлопываются в единый attribute profile.
   @Test
   func attributeProfilesCollapseProAndConRowsToUniqueAttributes() {
     let store = makeStore()
@@ -101,6 +106,7 @@ struct AttributeScoringTests {
     #expect(store.attributeDefinitions.map(\.name) == ["money", "risk"])
   }
 
+  /// Проверяет, что conflict vector строится как abs(option1 - option2) и не зависит от порядка опций.
   @Test
   func conflictVectorIgnoresOptionOrder() {
     let profiles: [Int: [Float]] = [
@@ -116,6 +122,7 @@ struct AttributeScoringTests {
     #expect(AttributeScoring.conflictVector(optionProfiles: profiles) == AttributeScoring.conflictVector(optionProfiles: swapped))
   }
 
+  /// Проверяет стабильный порядок cluster-вектора и поведение нормализации для нулевого вектора.
   @Test
   func clusterVectorAggregationKeepsStableClusterOrder() {
     let store = makeStore()
@@ -125,6 +132,7 @@ struct AttributeScoringTests {
     #expect(AttributeScoring.normalize([Float(0), Float(0)]) == [0, 0])
   }
 
+  /// Проверяет, что DecisionDraft validation требует текст дилеммы и структурированные опции.
   @Test
   func decisionDraftValidationRequiresStructuredReasons() throws {
     let valid = DecisionAnalysisRunner.defaultDraft
@@ -142,6 +150,7 @@ struct AttributeScoringTests {
     }
   }
 
+  /// Проверяет загрузку production SQLite asset, если он доступен в bundle тестового окружения.
   @Test
   func productionSQLiteAssetLoadsIfPresent() throws {
     let assetURL = DecisionKernelResourceBundle.bundle.url(
@@ -160,6 +169,7 @@ struct AttributeScoringTests {
     #expect(store.dimension == 384)
   }
 
+  /// Создает компактный in-memory AttributeEmbeddingStore для unit-тестов scoring и агрегации.
   private func makeStore() -> AttributeEmbeddingStore {
     let attributes = [
       AttributeMetadata(attributeID: 1, rowIndex: 0, name: "money", source: "test", direction: .pro, vectorOffset: 0, clusterID: 1),

@@ -1,0 +1,15 @@
+{
+  "assetResourceNames" : {
+    "bhatia" : "DilemmaAssets",
+    "kMeans" : "DilemmaAssetsKMeans"
+  },
+  "corpusCount" : 12,
+  "datasetChecksum" : "fnv1a64:79fa0b3478e01a7f",
+  "durationSeconds" : 28.900989055633545,
+  "generatedAt" : "2026-06-01T09:33:10.585Z",
+  "model" : "sentence-transformers\/all-MiniLM-L12-v2",
+  "modelResourceName" : "all-MiniLM-L12-v2",
+  "queryCount" : 4,
+  "runID" : "2026-06-01T09-33-10Z_4fca00e2",
+  "topK" : 3
+}

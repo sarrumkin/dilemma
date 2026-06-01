@@ -3,8 +3,10 @@ import Testing
 
 @testable import DecisionKernel
 
+/// Проверки синтетического набора и базовых similarity-компонентов без записи отчетов на диск.
 @Suite
 struct SimilarityExperimentTests {
+  /// Проверяет, что synthetic dataset валиден как структурированный DecisionDraft и содержит релевантные corpus-id.
   @Test
   func syntheticDatasetSchemaIsValid() throws {
     let dataset = try SyntheticSimilarityDataset.load()
@@ -31,6 +33,7 @@ struct SimilarityExperimentTests {
     }
   }
 
+  /// Проверяет, что canonical text baseline сохраняет dilemma, обе опции и обе группы reasons.
   @Test
   func canonicalTextIncludesAllStructuredFields() throws {
     let dataset = try SyntheticSimilarityDataset.load()
@@ -47,6 +50,7 @@ struct SimilarityExperimentTests {
     #expect(text.contains(record.rawText))
   }
 
+  /// Проверяет, что все три similarity-метода возвращают конечные top-3 scores без дублей.
   @Test(
     .enabled(
       if: DecisionKernelResourceBundle.bundle.url(
@@ -65,9 +69,7 @@ struct SimilarityExperimentTests {
   func similarityMethodsReturnFiniteTop3Matches() async throws {
     let dataset = try SyntheticSimilarityDataset.load()
     let service = DecisionSimilarityService()
-    let corpus = dataset.corpus.map {
-      SimilarityCorpusRecord(id: $0.id, draft: $0.makeDraft(), label: $0.label)
-    }
+    let corpus = dataset.makeCorpus()
 
     for queryRecord in dataset.queries {
       let query = queryRecord.makeDraft()
@@ -102,6 +104,7 @@ struct SimilarityExperimentTests {
     }
   }
 
+  /// Проверяет, что CSV и Markdown formatters включают query id и все имена методов.
   @Test
   func evaluationFormattersIncludeQueriesAndMethods() {
     let summary = SimilarityEvaluationSummary(
@@ -141,71 +144,4 @@ struct SimilarityExperimentTests {
     #expect(markdown.contains("KMeans clusters"))
     #expect(markdown.contains("Full-text embedding"))
   }
-}
-
-private final class SimilarityExperimentResourceAnchor {}
-
-private struct SyntheticSimilarityDataset: Decodable {
-  let corpus: [SyntheticRecord]
-  let queries: [SyntheticRecord]
-
-  static func load() throws -> SyntheticSimilarityDataset {
-    let bundle = Bundle(for: SimilarityExperimentResourceAnchor.self)
-    let url = bundle.url(
-      forResource: "synthetic_dataset",
-      withExtension: "json",
-      subdirectory: "SimilarityExperiment"
-    ) ?? bundle.url(forResource: "synthetic_dataset", withExtension: "json")
-    let datasetURL = try #require(url)
-    let data = try Data(contentsOf: datasetURL)
-    return try JSONDecoder().decode(SyntheticSimilarityDataset.self, from: data)
-  }
-}
-
-private struct SyntheticRecord: Decodable {
-  let id: String
-  let label: String
-  let relevantRecordIds: [String]
-  let rawText: String
-  let options: [SyntheticOption]
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case label
-    case relevantRecordIds
-    case rawText
-    case options
-  }
-
-  init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    id = try container.decode(String.self, forKey: .id)
-    label = try container.decode(String.self, forKey: .label)
-    relevantRecordIds = try container.decodeIfPresent(
-      [String].self,
-      forKey: .relevantRecordIds
-    ) ?? []
-    rawText = try container.decode(String.self, forKey: .rawText)
-    options = try container.decode([SyntheticOption].self, forKey: .options)
-  }
-
-  func makeDraft() -> DecisionDraft {
-    DecisionDraft(
-      rawText: rawText,
-      options: options.enumerated().map { offset, option in
-        DecisionOption(
-          index: offset + 1,
-          title: option.title,
-          reasons: option.benefits.map { Reason(text: $0, polarity: .benefit) }
-            + option.costs.map { Reason(text: $0, polarity: .cost) }
-        )
-      }
-    )
-  }
-}
-
-private struct SyntheticOption: Decodable {
-  let title: String
-  let benefits: [String]
-  let costs: [String]
 }

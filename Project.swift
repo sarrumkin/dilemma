@@ -97,7 +97,7 @@ let project = Project(
       deploymentTargets: deploymentTarget,
       infoPlist: targetInfoPlist("DecisionKernelTests"),
       resources: .resources([
-        .glob(pattern: "DecisionKernelTests/Resources/**"),
+        .folderReference(path: "DecisionKernelTests/Resources"),
       ]),
       buildableFolders: [
         "DecisionKernelTests/Sources",

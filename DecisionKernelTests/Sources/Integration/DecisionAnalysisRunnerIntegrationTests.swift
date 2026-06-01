@@ -3,8 +3,10 @@ import Testing
 
 @testable import DecisionKernel
 
+/// Интеграционные проверки DecisionAnalysisRunner на bundled model и SQLite assets.
 @Suite
 struct DecisionAnalysisRunnerIntegrationTests {
+  /// Проверяет production runner с Bhatia Ward asset и печатает базовые runtime-метрики.
   @Test(
     .enabled(
       if: DecisionKernelResourceBundle.bundle.url(
@@ -39,6 +41,7 @@ struct DecisionAnalysisRunnerIntegrationTests {
     }
   }
 
+  /// Проверяет альтернативный KMeans asset через тот же DecisionAnalysisRunner API.
   @Test(
     .enabled(
       if: DecisionKernelResourceBundle.bundle.url(
