@@ -31,10 +31,10 @@ public struct EntryDraftCommand: Equatable, Sendable {
     !rawText.trimmed.isEmpty
       && !option1Title.trimmed.isEmpty
       && !option2Title.trimmed.isEmpty
-      && option1Benefits.count == 3
-      && option1Costs.count == 3
-      && option2Benefits.count == 3
-      && option2Costs.count == 3
+      && option1Benefits.count >= 3
+      && option1Costs.count >= 3
+      && option2Benefits.count >= 3
+      && option2Costs.count >= 3
       && option1Benefits.allSatisfy { !$0.trimmed.isEmpty }
       && option1Costs.allSatisfy { !$0.trimmed.isEmpty }
       && option2Benefits.allSatisfy { !$0.trimmed.isEmpty }

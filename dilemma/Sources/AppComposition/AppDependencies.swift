@@ -22,6 +22,15 @@ struct AppDependencies {
     )
   }
 
+  func makeDilemmaJSONImportModel(
+    onImported: @escaping @MainActor (DilemmaDraftImportResult) -> Void
+  ) -> DilemmaJSONImportModel {
+    DilemmaJSONImportModel(
+      importDilemmaDrafts: useCases.importDilemmaDrafts,
+      onImported: onImported
+    )
+  }
+
   func makeStatisticsModel() -> StatisticsModel {
     StatisticsModel(loadPreferenceStatistics: useCases.loadPreferenceStatistics)
   }

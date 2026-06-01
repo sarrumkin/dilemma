@@ -4,8 +4,10 @@ import SwiftUI
 struct DiaryListView: View {
   let model: DiaryListModel
   let makeNewEntryModel: () -> NewEntryModel
+  let makeJSONImportModel: () -> DilemmaJSONImportModel
   let makeAnalysisDetailModel: (DiaryEntry, DiaryAnalysis?) -> AnalysisDetailModel
   @State private var isCreatingEntry = false
+  @State private var isImportingJSON = false
 
   var body: some View {
     NavigationStack {
@@ -39,7 +41,14 @@ struct DiaryListView: View {
       }
       .navigationTitle("Dilemma")
       .toolbar {
-        ToolbarItem(placement: .topBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+          Button {
+            isImportingJSON = true
+          } label: {
+            Label("Import JSON", systemImage: "tray.and.arrow.down")
+          }
+          .accessibilityIdentifier("import-json-button")
+
           Button {
             isCreatingEntry = true
           } label: {
@@ -50,6 +59,9 @@ struct DiaryListView: View {
       }
       .sheet(isPresented: $isCreatingEntry) {
         NewEntrySheet(isPresented: $isCreatingEntry, model: makeNewEntryModel())
+      }
+      .sheet(isPresented: $isImportingJSON) {
+        JSONImportSheet(isPresented: $isImportingJSON, model: makeJSONImportModel())
       }
     }
   }
@@ -66,6 +78,75 @@ private struct NewEntrySheet: View {
 
   var body: some View {
     NewEntryView(model: model, isPresented: $isPresented)
+  }
+}
+
+private struct JSONImportSheet: View {
+  @Binding var isPresented: Bool
+  @State private var model: DilemmaJSONImportModel
+
+  init(isPresented: Binding<Bool>, model: DilemmaJSONImportModel) {
+    self._isPresented = isPresented
+    self._model = State(initialValue: model)
+  }
+
+  var body: some View {
+    DilemmaJSONImportView(model: model, isPresented: $isPresented)
+  }
+}
+
+private struct DilemmaJSONImportView: View {
+  @Bindable var model: DilemmaJSONImportModel
+  @Binding var isPresented: Bool
+
+  var body: some View {
+    NavigationStack {
+      Form {
+        Section("JSON") {
+          TextEditor(text: $model.jsonText)
+            .font(.body.monospaced())
+            .frame(minHeight: 240)
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled()
+            .accessibilityIdentifier("json-import-text-editor")
+        }
+
+        if let errorMessage = model.errorMessage {
+          Section {
+            Text(errorMessage)
+              .foregroundStyle(.red)
+          }
+        }
+      }
+      .navigationTitle("Import JSON")
+      .toolbar {
+        ToolbarItem(placement: .cancellationAction) {
+          Button("Cancel") {
+            isPresented = false
+          }
+        }
+        ToolbarItem(placement: .confirmationAction) {
+          Button {
+            Task {
+              if await model.importDrafts() {
+                isPresented = false
+              }
+            }
+          } label: {
+            Label("Import", systemImage: "tray.and.arrow.down")
+          }
+          .disabled(!model.canImport)
+          .accessibilityIdentifier("run-json-import-button")
+        }
+      }
+      .overlay {
+        if model.isBusy {
+          ProgressView("Analyzing locally")
+            .padding()
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+        }
+      }
+    }
   }
 }
 

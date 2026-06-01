@@ -10,6 +10,8 @@ public struct DecisionUseCases: Sendable {
   public let saveFeedback: SaveFeedbackUseCase
   public let loadPreferenceStatistics: LoadPreferenceStatisticsUseCase
   public let exportDiaryData: ExportDiaryDataUseCase
+  public let exportDilemmaDraft: ExportDilemmaDraftUseCase
+  public let importDilemmaDrafts: ImportDilemmaDraftsUseCase
   public let deleteDiaryData: DeleteDiaryDataUseCase
   public let unlockDiary: UnlockDiaryUseCase
 
@@ -27,6 +29,8 @@ public struct DecisionUseCases: Sendable {
       saveFeedback: SaveFeedbackUseCase(vault: vault),
       loadPreferenceStatistics: LoadPreferenceStatisticsUseCase(vault: vault),
       exportDiaryData: ExportDiaryDataUseCase(vault: vault),
+      exportDilemmaDraft: ExportDilemmaDraftUseCase(),
+      importDilemmaDrafts: ImportDilemmaDraftsUseCase(vault: vault, analysisGenerator: analysisGenerator),
       deleteDiaryData: DeleteDiaryDataUseCase(vault: vault),
       unlockDiary: UnlockDiaryUseCase(vault: vault)
     )
@@ -40,6 +44,8 @@ public struct DecisionUseCases: Sendable {
       saveFeedback: SaveFeedbackUseCase(vault: vault),
       loadPreferenceStatistics: LoadPreferenceStatisticsUseCase(vault: vault),
       exportDiaryData: ExportDiaryDataUseCase(vault: vault),
+      exportDilemmaDraft: ExportDilemmaDraftUseCase(),
+      importDilemmaDrafts: ImportDilemmaDraftsUseCase(vault: vault, analysisGenerator: analysisGenerator),
       deleteDiaryData: DeleteDiaryDataUseCase(vault: vault),
       unlockDiary: UnlockDiaryUseCase(vault: vault)
     )
@@ -120,13 +126,11 @@ public struct CreateAnalyzedEntryUseCase: Sendable {
   public func callAsFunction(_ command: EntryDraftCommand) async throws -> DiarySnapshot {
     let now = Date()
     var entry = command.makeEntry(createdAt: now)
-    try vault.saveEntry(entry)
 
     let analysis = try await analysisGenerator.analysis(for: command, entryID: entry.id)
-    try vault.saveAnalysis(analysis)
-
     entry.updatedAt = Date()
     try vault.saveEntry(entry)
+    try vault.saveAnalysis(analysis)
 
     return try LoadDiarySnapshotUseCase(vault: vault)()
   }
@@ -187,6 +191,93 @@ public struct ExportDiaryDataUseCase: Sendable {
       .appendingPathExtension("json")
     try callAsFunction().write(to: url, options: .atomic)
     return url
+  }
+}
+
+public struct ExportDilemmaDraftUseCase: Sendable {
+  public init() {}
+
+  public func callAsFunction(entry: DiaryEntry) throws -> Data {
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+    return try encoder.encode(try DilemmaDraftJSON(entry: entry).validated())
+  }
+
+  public func makeTemporaryExportFile(entry: DiaryEntry, now: Date = Date()) throws -> URL {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [.withInternetDateTime]
+    let timestamp = formatter.string(from: now)
+      .replacingOccurrences(of: ":", with: "-")
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent("dilemma-draft-\(timestamp)")
+      .appendingPathExtension("json")
+    try callAsFunction(entry: entry).write(to: url, options: .atomic)
+    return url
+  }
+}
+
+public struct DilemmaDraftImportResult: Equatable, Sendable {
+  public var snapshot: DiarySnapshot
+  public var importedCount: Int
+
+  public init(snapshot: DiarySnapshot, importedCount: Int) {
+    self.snapshot = snapshot
+    self.importedCount = importedCount
+  }
+}
+
+public enum DilemmaDraftImportError: LocalizedError, Equatable, Sendable {
+  case invalidJSON(String)
+  case invalidItem(index: Int, reason: String)
+
+  public var errorDescription: String? {
+    switch self {
+    case .invalidJSON(let reason):
+      "Dilemma draft JSON must be an array of draft objects. \(reason)"
+    case .invalidItem(let index, let reason):
+      "Dilemma draft item \(index) is invalid. \(reason)"
+    }
+  }
+}
+
+public struct ImportDilemmaDraftsUseCase: Sendable {
+  private let vault: DiaryVault
+  private let analysisGenerator: EntryAnalysisGenerating
+
+  init(vault: DiaryVault, analysisGenerator: EntryAnalysisGenerating) {
+    self.vault = vault
+    self.analysisGenerator = analysisGenerator
+  }
+
+  public func callAsFunction(jsonData: Data) async throws -> DilemmaDraftImportResult {
+    let drafts: [DilemmaDraftJSON]
+    do {
+      drafts = try JSONDecoder().decode([DilemmaDraftJSON].self, from: jsonData)
+    } catch {
+      throw DilemmaDraftImportError.invalidJSON(error.localizedDescription)
+    }
+
+    let commands = try drafts.enumerated().map { offset, draft in
+      do {
+        return try draft.makeEntryDraftCommand()
+      } catch {
+        throw DilemmaDraftImportError.invalidItem(
+          index: offset + 1,
+          reason: error.localizedDescription
+        )
+      }
+    }
+
+    let createEntry = CreateAnalyzedEntryUseCase(
+      vault: vault,
+      analysisGenerator: analysisGenerator
+    )
+    var snapshot = try LoadDiarySnapshotUseCase(vault: vault)()
+    for command in commands {
+      snapshot = try await createEntry(command)
+    }
+
+    return DilemmaDraftImportResult(snapshot: snapshot, importedCount: commands.count)
   }
 }
 

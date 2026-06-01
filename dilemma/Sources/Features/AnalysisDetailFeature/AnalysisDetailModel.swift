@@ -14,20 +14,24 @@ final class AnalysisDetailModel {
   var chosenOptionIndex: Int?
   var note = ""
   var didSaveFeedback = false
+  var exportURL: URL?
   var errorMessage: String?
 
   @ObservationIgnored private let saveFeedbackUseCase: SaveFeedbackUseCase
+  @ObservationIgnored private let exportDilemmaDraft: ExportDilemmaDraftUseCase
   @ObservationIgnored private let onFeedbackSaved: @MainActor () -> Void
 
   init(
     entry: DiaryEntry,
     analysis: DiaryAnalysis?,
     saveFeedback: SaveFeedbackUseCase,
+    exportDilemmaDraft: ExportDilemmaDraftUseCase,
     onFeedbackSaved: @escaping @MainActor () -> Void
   ) {
     self.entry = entry
     self.analysis = analysis
     self.saveFeedbackUseCase = saveFeedback
+    self.exportDilemmaDraft = exportDilemmaDraft
     self.onFeedbackSaved = onFeedbackSaved
   }
 
@@ -48,6 +52,15 @@ final class AnalysisDetailModel {
       didSaveFeedback = true
       errorMessage = nil
       onFeedbackSaved()
+    } catch {
+      errorMessage = error.localizedDescription
+    }
+  }
+
+  func prepareExportFile() {
+    do {
+      exportURL = try exportDilemmaDraft.makeTemporaryExportFile(entry: entry)
+      errorMessage = nil
     } catch {
       errorMessage = error.localizedDescription
     }

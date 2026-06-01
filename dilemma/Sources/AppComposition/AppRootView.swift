@@ -23,11 +23,18 @@ struct AppRootView: View {
             statisticsModel.reload()
           }
         },
+        makeJSONImportModel: {
+          dependencies.makeDilemmaJSONImportModel { result in
+            diaryModel.apply(result.snapshot)
+            statisticsModel.reload()
+          }
+        },
         makeAnalysisDetailModel: { entry, analysis in
           AnalysisDetailModel(
             entry: entry,
             analysis: analysis,
             saveFeedback: dependencies.useCases.saveFeedback,
+            exportDilemmaDraft: dependencies.useCases.exportDilemmaDraft,
             onFeedbackSaved: {
               statisticsModel.reload()
             }

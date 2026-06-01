@@ -10,6 +10,22 @@ struct AnalysisDetailView: View {
         Text(model.entry.rawText)
       }
 
+      Section("Export") {
+        Button {
+          model.prepareExportFile()
+        } label: {
+          Label("Prepare JSON export", systemImage: "square.and.arrow.up")
+        }
+        .accessibilityIdentifier("prepare-entry-export-button")
+
+        if let exportURL = model.exportURL {
+          ShareLink(item: exportURL) {
+            Label("Share JSON", systemImage: "doc")
+          }
+          .accessibilityIdentifier("share-entry-export-button")
+        }
+      }
+
       ForEach(model.entry.options) { option in
         Section(option.title) {
           ForEach(option.reasons) { reason in
