@@ -27,6 +27,7 @@ __pycache__/
 /models/
 outputs/bhatia_reconstruction/
 отчет/
+презентация/
 DecisionKernel/Resources/Models/**
 !DecisionKernel/Resources/Models/
 !DecisionKernel/Resources/Models/.gitkeep
