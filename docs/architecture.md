@@ -104,7 +104,7 @@ AppDependencies
   -> DecisionUseCases.live()
   -> DiaryListModel
   -> StatisticsModel
-  -> PrivacySettingsModel
+  -> SettingsModel
 ```
 
 Feature models объявлены как `@MainActor @Observable` и держат локальные
