@@ -67,6 +67,7 @@ struct AppRootView: View {
           Label("Settings", systemImage: "gearshape")
         }
     }
+    .environment(\.locale, settingsModel.appLanguage.locale)
     .preferredColorScheme(settingsModel.usesDarkTheme ? .dark : .light)
     .task {
       if await settingsModel.unlockIfNeededAndPrepare() {

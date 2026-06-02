@@ -7,8 +7,8 @@ struct StatisticsView: View {
     NavigationStack {
       List {
         Section("Diary") {
-          MetricRow(label: String(localized: "Entries"), value: "\(model.statistics.entryCount)")
-          MetricRow(label: String(localized: "Feedback records"), value: "\(model.statistics.feedbackCount)")
+          MetricRow(label: "Entries", value: "\(model.statistics.entryCount)")
+          MetricRow(label: "Feedback records", value: "\(model.statistics.feedbackCount)")
         }
 
         Section("Chosen Cluster Ranking") {
@@ -36,7 +36,7 @@ struct StatisticsView: View {
           } else {
             ForEach(model.statistics.chosenOptionCounts.keys.sorted(), id: \.self) { option in
               MetricRow(
-                label: String.localizedStringWithFormat(String(localized: "Option %lld"), option),
+                label: "Option \(option)",
                 value: "\(model.statistics.chosenOptionCounts[option] ?? 0)"
               )
             }
@@ -66,7 +66,7 @@ struct StatisticsView: View {
 }
 
 private struct MetricRow: View {
-  let label: String
+  let label: LocalizedStringKey
   let value: String
 
   var body: some View {

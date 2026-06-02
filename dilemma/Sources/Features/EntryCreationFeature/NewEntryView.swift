@@ -14,14 +14,14 @@ struct NewEntryView: View {
         }
 
         OptionEditorSection(
-          title: String(localized: "Option 1"),
+          title: "Option 1",
           optionTitle: $model.command.option1Title,
           benefits: $model.command.option1Benefits,
           costs: $model.command.option1Costs
         )
 
         OptionEditorSection(
-          title: String(localized: "Option 2"),
+          title: "Option 2",
           optionTitle: $model.command.option2Title,
           benefits: $model.command.option2Benefits,
           costs: $model.command.option2Costs
@@ -76,7 +76,7 @@ struct NewEntryView: View {
 }
 
 private struct OptionEditorSection: View {
-  let title: String
+  let title: LocalizedStringKey
   @Binding var optionTitle: String
   @Binding var benefits: [String]
   @Binding var costs: [String]
@@ -87,13 +87,13 @@ private struct OptionEditorSection: View {
         .textInputAutocapitalization(.sentences)
 
       ReasonGroup(
-        title: String(localized: "Benefits"),
-        placeholderBase: String(localized: "Benefit"),
+        title: "Benefits",
+        placeholderBase: "Benefit",
         values: $benefits
       )
       ReasonGroup(
-        title: String(localized: "Costs"),
-        placeholderBase: String(localized: "Cost"),
+        title: "Costs",
+        placeholderBase: "Cost",
         values: $costs
       )
     }
@@ -101,8 +101,9 @@ private struct OptionEditorSection: View {
 }
 
 private struct ReasonGroup: View {
-  let title: String
-  let placeholderBase: String
+  @Environment(\.locale) private var locale
+  let title: LocalizedStringKey
+  let placeholderBase: String.LocalizationValue
   @Binding var values: [String]
 
   var body: some View {
@@ -110,11 +111,15 @@ private struct ReasonGroup: View {
       Text(title)
         .font(.subheadline.weight(.semibold))
       ForEach(values.indices, id: \.self) { index in
-        TextField("\(placeholderBase) \(index + 1)", text: $values[index], axis: .vertical)
+        TextField("\(localizedPlaceholderBase) \(index + 1)", text: $values[index], axis: .vertical)
           .lineLimit(1...3)
           .textInputAutocapitalization(.sentences)
       }
     }
     .padding(.vertical, 4)
+  }
+
+  private var localizedPlaceholderBase: String {
+    String(localized: placeholderBase, bundle: .main, locale: locale)
   }
 }

@@ -201,7 +201,11 @@ private struct EntryRow: View {
         .foregroundStyle(.secondary)
         .lineLimit(1)
       if let analysis {
-        Text("\(analysis.attributeConflicts.count) \(String(localized: "conflicts")) • \(analysis.modelID)")
+        (
+          Text("\(analysis.attributeConflicts.count) ")
+            + Text("conflicts")
+            + Text(" • \(analysis.modelID)")
+        )
           .font(.caption)
           .foregroundStyle(.secondary)
           .lineLimit(1)

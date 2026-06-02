@@ -8,6 +8,14 @@ struct SettingsView: View {
   var body: some View {
     NavigationStack {
       List {
+        Section("Language") {
+          Picker("Language", selection: $model.appLanguage) {
+            Text("English").tag(AppLanguage.english)
+            Text("Russian").tag(AppLanguage.russian)
+          }
+          .pickerStyle(.segmented)
+        }
+
         Section("Appearance") {
           Toggle("Use dark theme", isOn: $model.usesDarkTheme)
             .accessibilityIdentifier("dark-theme-toggle")
