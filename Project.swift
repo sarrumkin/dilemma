@@ -39,7 +39,12 @@ let project = Project(
       dependencies: [
         .target(name: "DecisionModels"),
         .target(name: "DecisionUseCases"),
-      ]
+      ],
+      settings: .settings(
+        base: [
+          "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
+        ]
+      )
     ),
     .target(
       name: "DecisionModels",
