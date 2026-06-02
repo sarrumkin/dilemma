@@ -10,7 +10,7 @@ public struct DecisionAnalysisService: Sendable {
   /// Creates an analysis service backed by one of the known bundled cluster-method assets.
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
-    modelResourceName: String = "all-MiniLM-L12-v2",
+    modelResourceName: String = "paraphrase-multilingual-MiniLM-L12-v2",
     clusterMethod: DecisionClusterMethod = .bhatiaWardReddit,
     topK: Int = 8
   ) {
@@ -24,7 +24,7 @@ public struct DecisionAnalysisService: Sendable {
   /// Creates an analysis service backed by an explicit SQLite asset resource name.
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
-    modelResourceName: String = "all-MiniLM-L12-v2",
+    modelResourceName: String = "paraphrase-multilingual-MiniLM-L12-v2",
     assetResourceName: String,
     topK: Int = 8
   ) {

@@ -31,7 +31,7 @@ final class NewEntryModel {
       onCreated(snapshot)
       return true
     } catch {
-      errorMessage = error.localizedDescription
+      errorMessage = AppErrorMessage.message(for: error, context: .analyzeEntry)
       return false
     }
   }

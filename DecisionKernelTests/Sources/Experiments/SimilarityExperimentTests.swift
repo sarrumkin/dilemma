@@ -54,7 +54,7 @@ struct SimilarityExperimentTests {
   @Test(
     .enabled(
       if: DecisionKernelResourceBundle.bundle.url(
-        forResource: "all-MiniLM-L12-v2",
+        forResource: "paraphrase-multilingual-MiniLM-L12-v2",
         withExtension: nil,
         subdirectory: "Models"
       ) != nil
@@ -63,7 +63,7 @@ struct SimilarityExperimentTests {
           withExtension: "sqlite",
           subdirectory: "Attributes"
         ) != nil,
-      "Bundled L12 model folder or KMeans SQLite asset is not present."
+      "Bundled multilingual MiniLM model folder or KMeans SQLite asset is not present."
     )
   )
   func similarityMethodsReturnFiniteTop3Matches() async throws {

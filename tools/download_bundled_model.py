@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 from pathlib import Path
 
@@ -12,6 +13,13 @@ from huggingface_hub import snapshot_download
 MODELS = {
     "all-MiniLM-L6-v2": "sentence-transformers/all-MiniLM-L6-v2",
     "all-MiniLM-L12-v2": "sentence-transformers/all-MiniLM-L12-v2",
+    "paraphrase-multilingual-MiniLM-L12-v2": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+}
+
+TOKENIZER_CLASS_OVERRIDES = {
+    # The HF config advertises PreTrainedTokenizerFast, but tokenizer.json is
+    # Unigram. swift-transformers needs the concrete supported tokenizer class.
+    "paraphrase-multilingual-MiniLM-L12-v2": "XLMRobertaTokenizer",
 }
 
 ALLOW_PATTERNS = [
@@ -53,6 +61,15 @@ def main() -> None:
         source = downloaded / file_name
         if source.exists():
             shutil.copy2(source, target / file_name)
+
+    if args.model in TOKENIZER_CLASS_OVERRIDES:
+        tokenizer_config_path = target / "tokenizer_config.json"
+        tokenizer_config = json.loads(tokenizer_config_path.read_text(encoding="utf-8"))
+        tokenizer_config["tokenizer_class"] = TOKENIZER_CLASS_OVERRIDES[args.model]
+        tokenizer_config_path.write_text(
+            json.dumps(tokenizer_config, ensure_ascii=False, separators=(",", ":")) + "\n",
+            encoding="utf-8",
+        )
 
     print(f"Prepared {model_id} at {target}")
 

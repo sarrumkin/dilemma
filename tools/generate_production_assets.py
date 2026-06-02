@@ -25,11 +25,12 @@ from pathlib import Path
 import numpy as np
 
 DEFAULT_CSV = Path("Bhatia/Code and Data/2 - Vectorize Reasons/attributes.csv")
-DEFAULT_METADATA = Path("DecisionKernel/Resources/Attributes/attributes_l12.json")
-DEFAULT_VECTORS = Path("DecisionKernel/Resources/Attributes/attribute_embeddings_l12.f16")
+DEFAULT_METADATA = Path("DecisionKernel/Resources/Attributes/attributes_multi_l12.json")
+DEFAULT_VECTORS = Path("DecisionKernel/Resources/Attributes/attribute_embeddings_multi_l12.f16")
 DEFAULT_CLUSTER_MAPPING = Path("DecisionKernel/Resources/Attributes/bhatia_attribute_clusters.csv")
 DEFAULT_OUTPUT = Path("DecisionKernel/Resources/Attributes/DilemmaAssets.sqlite")
 DEFAULT_KMEANS_OUTPUT = Path("DecisionKernel/Resources/Attributes/DilemmaAssetsKMeans.sqlite")
+DEFAULT_ASSET_VERSION = 2
 CLUSTER_COUNT = 25
 BHATIA_CLUSTER_METHOD = "bhatia_hierarchical_ward_reddit_option_profiles"
 KMEANS_CLUSTER_METHOD = "kmeans_on_mean_pro_con_attribute_embeddings"
@@ -53,6 +54,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cluster-mapping", type=Path, default=DEFAULT_CLUSTER_MAPPING)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--expected-cluster-count", type=int, default=CLUSTER_COUNT)
+    parser.add_argument("--asset-version", type=int, default=DEFAULT_ASSET_VERSION)
     args = parser.parse_args()
     if args.output is None:
         args.output = DEFAULT_KMEANS_OUTPUT if args.cluster_method == "kmeans" else DEFAULT_OUTPUT
@@ -499,6 +501,7 @@ def main() -> None:
     args = parse_args()
     source_rows = load_source_rows(args.attributes_csv)
     metadata, vectors = load_runtime_asset(args.metadata, args.vectors)
+    metadata["asset_version"] = args.asset_version
     attribute_ids = unique_attributes(source_rows)
     cluster_source_path = None
     cluster_source_sha256 = None

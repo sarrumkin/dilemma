@@ -27,7 +27,7 @@ final class DilemmaJSONImportModel {
   func importDrafts() async -> Bool {
     let trimmedJSON = jsonText.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmedJSON.isEmpty, let data = trimmedJSON.data(using: .utf8) else {
-      errorMessage = "Paste a JSON array to import."
+      errorMessage = String(localized: "Paste a JSON array to import.")
       return false
     }
 
@@ -40,7 +40,7 @@ final class DilemmaJSONImportModel {
       onImported(result)
       return true
     } catch {
-      errorMessage = error.localizedDescription
+      errorMessage = AppErrorMessage.message(for: error, context: .importJSON)
       return false
     }
   }

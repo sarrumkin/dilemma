@@ -53,7 +53,7 @@ final class AnalysisDetailModel {
       errorMessage = nil
       onFeedbackSaved()
     } catch {
-      errorMessage = error.localizedDescription
+      errorMessage = AppErrorMessage.message(for: error, context: .saveFeedback)
     }
   }
 
@@ -62,7 +62,7 @@ final class AnalysisDetailModel {
       exportURL = try exportDilemmaDraft.makeTemporaryExportFile(entry: entry)
       errorMessage = nil
     } catch {
-      errorMessage = error.localizedDescription
+      errorMessage = AppErrorMessage.message(for: error, context: .exportEntry)
     }
   }
 

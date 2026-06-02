@@ -17,13 +17,17 @@
 
 ## Предусловия
 
-Быстрые unit-тесты не требуют локальной модели. Интеграционные тесты и similarity experiment требуют:
+Быстрые unit-тесты не требуют локальной модели. Интеграционные тесты и non-writing similarity checks требуют:
 
-- `DecisionKernel/Resources/Models/all-MiniLM-L12-v2`
+- `DecisionKernel/Resources/Models/paraphrase-multilingual-MiniLM-L12-v2`
 - `DecisionKernel/Resources/Attributes/DilemmaAssets.sqlite`
 - `DecisionKernel/Resources/Attributes/DilemmaAssetsKMeans.sqlite`
 
 Если model assets отсутствуют, подготовь их локально через tooling из root `README.md`.
+
+`SimilarityExperimentRunTests` остается pinned на English L12 fallback, чтобы не перезаписывать
+исторический experiment context при обычном multilingual runtime-прогоне. Он дополнительно требует
+`DecisionKernel/Resources/Models/all-MiniLM-L12-v2`.
 
 ## Команды запуска
 
@@ -39,8 +43,8 @@ xcodebuild test -workspace dilemma.xcworkspace -scheme dilemma -destination 'pla
 xcodebuild test -workspace dilemma.xcworkspace -scheme dilemma -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' -only-testing:DecisionKernelTests
 ```
 
-Если bundled model/assets доступны, полный `DecisionKernelTests` также запустит `SimilarityExperimentRunTests`
-и создаст новый каталог в `Resources/SimilarityExperiment/Runs`.
+Если L12 fallback model и SQLite assets доступны, полный `DecisionKernelTests` также запустит
+`SimilarityExperimentRunTests` и создаст новый каталог в `Resources/SimilarityExperiment/Runs`.
 
 Быстрый kernel-прогон без записи нового отчета:
 

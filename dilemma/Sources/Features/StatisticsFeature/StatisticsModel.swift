@@ -20,7 +20,7 @@ final class StatisticsModel {
       statistics = try loadPreferenceStatistics()
       errorMessage = nil
     } catch {
-      errorMessage = error.localizedDescription
+      errorMessage = AppErrorMessage.message(for: error, context: .loadStatistics)
     }
   }
 }

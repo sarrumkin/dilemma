@@ -7,13 +7,13 @@ struct StatisticsView: View {
     NavigationStack {
       List {
         Section("Diary") {
-          MetricRow(label: "Entries", value: "\(model.statistics.entryCount)")
-          MetricRow(label: "Feedback records", value: "\(model.statistics.feedbackCount)")
+          MetricRow(label: String(localized: "Entries"), value: "\(model.statistics.entryCount)")
+          MetricRow(label: String(localized: "Feedback records"), value: "\(model.statistics.feedbackCount)")
         }
 
         Section("Conflict Feedback") {
-          MetricRow(label: "Useful", value: "\(model.statistics.acceptedConflictCount)")
-          MetricRow(label: "Not useful", value: "\(model.statistics.rejectedConflictCount)")
+          MetricRow(label: String(localized: "Useful"), value: "\(model.statistics.acceptedConflictCount)")
+          MetricRow(label: String(localized: "Not useful"), value: "\(model.statistics.rejectedConflictCount)")
         }
 
         Section("Frequent Clusters") {
@@ -41,7 +41,7 @@ struct StatisticsView: View {
           } else {
             ForEach(model.statistics.chosenOptionCounts.keys.sorted(), id: \.self) { option in
               MetricRow(
-                label: "Option \(option)",
+                label: String.localizedStringWithFormat(String(localized: "Option %lld"), option),
                 value: "\(model.statistics.chosenOptionCounts[option] ?? 0)"
               )
             }

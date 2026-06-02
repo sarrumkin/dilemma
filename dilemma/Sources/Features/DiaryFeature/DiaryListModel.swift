@@ -20,7 +20,7 @@ final class DiaryListModel {
     do {
       apply(try loadDiarySnapshot())
     } catch {
-      errorMessage = error.localizedDescription
+      errorMessage = AppErrorMessage.message(for: error, context: .loadDiary)
     }
   }
 

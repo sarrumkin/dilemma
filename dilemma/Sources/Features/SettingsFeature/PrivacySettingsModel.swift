@@ -38,13 +38,13 @@ final class PrivacySettingsModel {
   func unlockIfNeededAndPrepare() async -> Bool {
     do {
       if requiresDeviceUnlock {
-        try await unlockDiary()
+        try await unlockDiary(reason: String(localized: "Unlock your private decision diary."))
       }
       try prepareDiary()
       errorMessage = nil
       return true
     } catch {
-      errorMessage = error.localizedDescription
+      errorMessage = AppErrorMessage.message(for: error, context: .prepareDiary)
       return false
     }
   }
@@ -54,7 +54,7 @@ final class PrivacySettingsModel {
       exportURL = try exportDiaryData.makeTemporaryExportFile()
       errorMessage = nil
     } catch {
-      errorMessage = error.localizedDescription
+      errorMessage = AppErrorMessage.message(for: error, context: .exportDiary)
     }
   }
 
@@ -66,7 +66,7 @@ final class PrivacySettingsModel {
       errorMessage = nil
       return true
     } catch {
-      errorMessage = error.localizedDescription
+      errorMessage = AppErrorMessage.message(for: error, context: .deleteData)
       return false
     }
   }

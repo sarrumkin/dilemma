@@ -174,7 +174,7 @@ public enum SimilarityEvaluationMarkdownFormatter {
     var lines = [
       "# Similarity Methods Swift Evaluation",
       "",
-      "- Model: sentence-transformers/all-MiniLM-L12-v2",
+      "- Model: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
       "- Dataset: synthetic English dilemmas",
       "- Top K: \(summary.topK)",
       "- Evaluation: qualitative illustrative retrieval, not a statistical benchmark",
@@ -217,7 +217,7 @@ public enum SimilarityEvaluationMarkdownFormatter {
       "",
       "- Bhatia and KMeans methods compare conflict structure over the same 207 Bhatia attributes.",
       "- Bhatia uses the reconstructed Ward mapping from Reddit option profiles.",
-      "- KMeans uses an alternate grouping of the same attributes by MiniLM L12 mean pro/con embeddings.",
+      "- KMeans uses an alternate grouping of the same attributes by multilingual MiniLM L12 mean pro/con embeddings.",
       "- Full-text embedding compares canonical structured text directly.",
     ])
 

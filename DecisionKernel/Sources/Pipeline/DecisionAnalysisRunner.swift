@@ -9,7 +9,7 @@ public struct DecisionAnalysisRunner: Sendable {
   /// Creates a runner for the built-in smoke draft using a known cluster method.
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
-    modelResourceName: String = "all-MiniLM-L12-v2",
+    modelResourceName: String = "paraphrase-multilingual-MiniLM-L12-v2",
     clusterMethod: DecisionClusterMethod = .bhatiaWardReddit
   ) {
     self.bundle = bundle
@@ -21,7 +21,7 @@ public struct DecisionAnalysisRunner: Sendable {
   /// Creates a runner for the built-in smoke draft using an explicit asset resource name.
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
-    modelResourceName: String = "all-MiniLM-L12-v2",
+    modelResourceName: String = "paraphrase-multilingual-MiniLM-L12-v2",
     assetResourceName: String
   ) {
     self.bundle = bundle

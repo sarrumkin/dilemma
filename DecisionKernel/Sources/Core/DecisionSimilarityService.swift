@@ -69,7 +69,7 @@ public struct DecisionSimilarityService: Sendable {
   /// Creates a similarity service that uses bundled assets and a local embedding model.
   public init(
     bundle: Bundle = DecisionKernelResourceBundle.bundle,
-    modelResourceName: String = "all-MiniLM-L12-v2",
+    modelResourceName: String = "paraphrase-multilingual-MiniLM-L12-v2",
     topAttributeMatches: Int = 8
   ) {
     self.bundle = bundle

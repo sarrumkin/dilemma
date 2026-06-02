@@ -165,7 +165,8 @@ struct AttributeScoringTests {
     #expect(store.attributeDefinitions.count == 207)
     #expect(store.metadata.attributes.count == 414)
     #expect(store.clusters.count == 25)
-    #expect(store.assetVersion == 1)
+    #expect(store.assetVersion == 2)
+    #expect(store.metadata.model.shortName == "multi_l12")
     #expect(store.dimension == 384)
   }
 

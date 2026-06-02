@@ -15,6 +15,7 @@ QUALITY_REPORTS = [
     Path("reports/quality_l6.json"),
     Path("reports/quality_l12.json"),
     Path("reports/quality_mpnet.json"),
+    Path("reports/quality_multi_l12.json"),
 ]
 
 
@@ -52,7 +53,7 @@ def test_bhatia_cluster_mapping_if_present():
 
 
 def test_generated_runtime_assets_if_present():
-    for short_name, dimension in [("l6", 384), ("l12", 384)]:
+    for short_name, dimension in [("l6", 384), ("l12", 384), ("multi_l12", 384)]:
         metadata_path = ASSET_DIR / f"attributes_{short_name}.json"
         vector_path = ASSET_DIR / f"attribute_embeddings_{short_name}.f16"
         if not metadata_path.exists() or not vector_path.exists():
@@ -78,12 +79,13 @@ def test_production_sqlite_asset_if_present():
         PRODUCTION_SQLITE,
         "bhatia_hierarchical_ward_reddit_option_profiles",
     )
-    assert metadata["asset_version"] == "1"
+    assert metadata["asset_version"] == "2"
     assert metadata["source_doi"] == "10.1073/pnas.2406489122"
-    assert metadata["model_short_name"] == "l12"
+    assert metadata["model_short_name"] == "multi_l12"
     assert "cluster_source_sha256" in metadata
     assert int(metadata["embedding_dimension"]) == 384
     assert len(first_embedding) == 384 * 4
+    assert_normalized_float32_blob(first_embedding, 384)
 
 
 def test_kmeans_sqlite_asset_if_present():
@@ -94,12 +96,14 @@ def test_kmeans_sqlite_asset_if_present():
         KMEANS_SQLITE,
         "kmeans_on_mean_pro_con_attribute_embeddings",
     )
-    assert metadata["model_short_name"] == "l12"
+    assert metadata["asset_version"] == "2"
+    assert metadata["model_short_name"] == "multi_l12"
     assert metadata["cluster_random_state"] == "42"
     assert metadata["cluster_n_init"] == "50"
     assert metadata["cluster_algorithm"] == "lloyd"
     assert int(metadata["embedding_dimension"]) == 384
     assert len(first_embedding) == 384 * 4
+    assert_normalized_float32_blob(first_embedding, 384)
 
 
 def test_quality_smoke_reports_if_present():
@@ -122,6 +126,40 @@ def test_quality_smoke_reports_if_present():
             row = next(item for item in rows if fragment in item["reason"])
             top_names = {match["name"] for match in row["top_5"]}
             assert top_names & accepted, f"{report_path.name}: {row['reason']} => {top_names}"
+
+
+def test_multilingual_russian_quality_smoke_if_present():
+    report_path = Path("reports/quality_multi_l12.json")
+    if not report_path.exists():
+        return
+
+    expected_by_reason = {
+        "сэкономить деньги": {"money", "buying things i want", "being able to meet my financial needs"},
+        "карьерные перспективы": {"career", "having a career", "keeping up to date with career-related knowledge"},
+        "психическому здоровью": {"being mentally healthy", "protecting my wellbeing", "health", "avoiding stress"},
+        "времени с семьей": {
+            "feeling close to my parents",
+            "living close to my parents",
+            "having a stable family life",
+            "being close to my children",
+        },
+        "безопаснее": {"security", "feeling safe and secure", "safety vs. risk", "having stability in life"},
+        "больше независимости": {"being independent", "having freedom", "having freedom of choice"},
+        "приятно и интересно": {"pleasure", "having an exciting life", "stimulation", "being happy"},
+        "времени и усилий": {"complexity and effort", "efficiency", "having an easy and comfortable life"},
+    }
+
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    rows = report["quality_smoke_ru"]
+    assert len(rows) == len(expected_by_reason)
+    for fragment, accepted in expected_by_reason.items():
+        row = next(item for item in rows if fragment in item["reason"])
+        top_names = {match["name"] for match in row["top_5"]}
+        assert top_names & accepted, f"{report_path.name}: {row['reason']} => {top_names}"
+
+    comparison = report.get("baseline_comparison")
+    if comparison:
+        assert comparison["russian_smoke_not_worse_than_baseline"] is True
 
 
 def assert_normalized_asset(metadata_path: Path, vector_path: Path, dimension: int):
@@ -170,3 +208,11 @@ def assert_sqlite_asset(path: Path, expected_cluster_method: str):
     assert counts["attribute_cluster"] == 207
     assert metadata["cluster_method"] == expected_cluster_method
     return metadata, first_embedding
+
+
+def assert_normalized_float32_blob(blob: bytes, dimension: int):
+    vector = np.frombuffer(blob, dtype="<f4")
+    assert vector.shape == (dimension,)
+    norm = np.linalg.norm(vector)
+    assert norm > 0.99
+    assert norm < 1.01

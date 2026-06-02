@@ -1,0 +1,432 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Analysis" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Analysis" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Анализ" } }
+      }
+    },
+    "Analysis runs locally." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Analysis runs locally." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Анализ выполняется локально." } }
+      }
+    },
+    "Analyze" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Analyze" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Анализировать" } }
+      }
+    },
+    "Analyzing locally" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Analyzing locally" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Локальный анализ" } }
+      }
+    },
+    "Benefit" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Benefit" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Плюс" } }
+      }
+    },
+    "Benefits" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Benefits" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Плюсы" } }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cancel" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Отмена" } }
+      }
+    },
+    "Choice patterns appear when feedback includes a recorded option." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Choice patterns appear when feedback includes a recorded option." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Паттерны выбора появятся после обратной связи с выбранным вариантом." } }
+      }
+    },
+    "Cluster statistics appear after saved analysis results." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cluster statistics appear after saved analysis results." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Статистика кластеров появится после сохраненных результатов анализа." } }
+      }
+    },
+    "Conflict Feedback" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Conflict Feedback" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Обратная связь по конфликтам" } }
+      }
+    },
+    "Conflict was useful" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Conflict was useful" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Конфликт был полезен" } }
+      }
+    },
+    "Corrected attribute" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Corrected attribute" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Исправленный атрибут" } }
+      }
+    },
+    "Corrected cluster" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Corrected cluster" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Исправленный кластер" } }
+      }
+    },
+    "Cost" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cost" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Минус" } }
+      }
+    },
+    "Costs" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Costs" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Минусы" } }
+      }
+    },
+    "Could not analyze this entry." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not analyze this entry." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Не удалось проанализировать эту запись." } }
+      }
+    },
+    "Could not delete local diary data." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not delete local diary data." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Не удалось удалить локальные данные дневника." } }
+      }
+    },
+    "Could not export diary data." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not export diary data." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Не удалось экспортировать данные дневника." } }
+      }
+    },
+    "Could not import this JSON." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not import this JSON." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Не удалось импортировать этот JSON." } }
+      }
+    },
+    "Could not load statistics." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not load statistics." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Не удалось загрузить статистику." } }
+      }
+    },
+    "Could not load your diary." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not load your diary." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Не удалось загрузить дневник." } }
+      }
+    },
+    "Could not prepare the private diary." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not prepare the private diary." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Не удалось подготовить приватный дневник." } }
+      }
+    },
+    "Could not prepare this export." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not prepare this export." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Не удалось подготовить экспорт." } }
+      }
+    },
+    "Could not save feedback." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Could not save feedback." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Не удалось сохранить обратную связь." } }
+      }
+    },
+    "Create a structured dilemma to run local analysis." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Create a structured dilemma to run local analysis." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Создайте структурированную дилемму, чтобы запустить локальный анализ." } }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Удаление" } }
+      }
+    },
+    "Delete all entries, analysis results, feedback, and local diary settings?" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete all entries, analysis results, feedback, and local diary settings?" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Удалить все записи, результаты анализа, обратную связь и локальные настройки дневника?" } }
+      }
+    },
+    "Delete all user data" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete all user data" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Удалить все данные" } }
+      }
+    },
+    "Diary" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Diary" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Дневник" } }
+      }
+    },
+    "Dilemma" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dilemma" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Дилемма" } }
+      }
+    },
+    "Dilemma text" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dilemma text" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Текст дилеммы" } }
+      }
+    },
+    "Dilemma text is not sent to a server." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Dilemma text is not sent to a server." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Текст дилеммы не отправляется на сервер." } }
+      }
+    },
+    "Entries" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Entries" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Записи" } }
+      }
+    },
+    "Export" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Export" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Экспорт" } }
+      }
+    },
+    "Feedback" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Feedback" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Обратная связь" } }
+      }
+    },
+    "Feedback records" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Feedback records" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Записи обратной связи" } }
+      }
+    },
+    "Feedback saved locally." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Feedback saved locally." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Обратная связь сохранена локально." } }
+      }
+    },
+    "Fill the dilemma, both options, and three benefits and costs for each option." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fill the dilemma, both options, and three benefits and costs for each option." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Заполните дилемму, оба варианта, а также три плюса и три минуса для каждого варианта." } }
+      }
+    },
+    "Frequent Clusters" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Frequent Clusters" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Частые кластеры" } }
+      }
+    },
+    "Import" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Import" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Импорт" } }
+      }
+    },
+    "Import JSON" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Import JSON" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Импорт JSON" } }
+      }
+    },
+    "Likely Attribute Conflict" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Likely Attribute Conflict" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Вероятный конфликт атрибутов" } }
+      }
+    },
+    "Lock" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lock" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Блокировка" } }
+      }
+    },
+    "Model, embeddings, and assets are bundled locally." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Model, embeddings, and assets are bundled locally." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Модель, эмбеддинги и ресурсы встроены локально." } }
+      }
+    },
+    "New Entry" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "New Entry" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Новая запись" } }
+      }
+    },
+    "New entry" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "New entry" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Новая запись" } }
+      }
+    },
+    "No decisions yet" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No decisions yet" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Пока нет решений" } }
+      }
+    },
+    "No saved analysis is available for this entry." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No saved analysis is available for this entry." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Для этой записи нет сохраненного анализа." } }
+      }
+    },
+    "None" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "None" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Нет" } }
+      }
+    },
+    "Not useful" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not useful" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Не полезно" } }
+      }
+    },
+    "Note" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Note" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Заметка" } }
+      }
+    },
+    "Option %lld" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Option %lld" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Вариант %lld" } }
+      }
+    },
+    "Option 1" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Option 1" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Вариант 1" } }
+      }
+    },
+    "Option 2" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Option 2" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Вариант 2" } }
+      }
+    },
+    "Option title" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Option title" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Название варианта" } }
+      }
+    },
+    "Paste a JSON array to import." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Paste a JSON array to import." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Вставьте JSON-массив для импорта." } }
+      }
+    },
+    "Prepare JSON export" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Prepare JSON export" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Подготовить JSON-экспорт" } }
+      }
+    },
+    "Privacy" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Privacy" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Приватность" } }
+      }
+    },
+    "Recorded Choices" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Recorded Choices" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Записанные выборы" } }
+      }
+    },
+    "Recorded choice" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Recorded choice" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Выбранный вариант" } }
+      }
+    },
+    "Refresh" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Refresh" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Обновить" } }
+      }
+    },
+    "Require Face ID or passcode" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Require Face ID or passcode" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Требовать Face ID или код-пароль" } }
+      }
+    },
+    "Save feedback" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Save feedback" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Сохранить обратную связь" } }
+      }
+    },
+    "Share JSON" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share JSON" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Поделиться JSON" } }
+      }
+    },
+    "Share export" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share export" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Поделиться экспортом" } }
+      }
+    },
+    "Statistics" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Statistics" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Статистика" } }
+      }
+    },
+    "Stats" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Stats" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Статистика" } }
+      }
+    },
+    "Top Clusters" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Top Clusters" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Главные кластеры" } }
+      }
+    },
+    "Unlock your private decision diary." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlock your private decision diary." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Разблокируйте приватный дневник решений." } }
+      }
+    },
+    "Useful" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Useful" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Полезно" } }
+      }
+    },
+    "conflicts" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "conflicts" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "конфликтов" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

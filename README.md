@@ -6,7 +6,7 @@ The app stores private diary data locally, maps structured benefits/costs to
 Bhatia-style attribute directions, shows descriptive analysis and feedback, and
 keeps export/delete flows inside the local privacy boundary.
 
-Current prototype default: `swift-embeddings + all-MiniLM-L12-v2`.
+Current prototype default: `swift-embeddings + paraphrase-multilingual-MiniLM-L12-v2`.
 
 ## Local shape
 
@@ -39,6 +39,7 @@ Use Python 3.12:
 .venv/bin/pip install -r tools/requirements.txt
 .venv/bin/python tools/generate_attribute_assets.py --model all-MiniLM-L6-v2
 .venv/bin/python tools/generate_attribute_assets.py --model all-MiniLM-L12-v2
+.venv/bin/python tools/generate_attribute_assets.py --model paraphrase-multilingual-MiniLM-L12-v2 --quality-report reports/quality_multi_l12.json --baseline-quality-report reports/quality_l12.json
 .venv/bin/python tools/generate_production_assets.py
 .venv/bin/python -m pytest tools/test_attribute_assets.py
 ```
@@ -59,7 +60,7 @@ If the source reconstruction needs to be repeated, use
 brew tap tuist/tuist
 brew install --formula tuist
 .venv/bin/python tools/download_bundled_model.py --model all-MiniLM-L6-v2
-.venv/bin/python tools/download_bundled_model.py --model all-MiniLM-L12-v2
+.venv/bin/python tools/download_bundled_model.py --model paraphrase-multilingual-MiniLM-L12-v2
 tuist generate --no-open
 xcodebuild test -workspace dilemma.xcworkspace -scheme dilemma -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2'
 ```

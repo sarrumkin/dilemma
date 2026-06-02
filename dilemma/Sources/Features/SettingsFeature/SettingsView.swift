@@ -40,7 +40,7 @@ struct SettingsView: View {
         Section("Privacy") {
           Label("Analysis runs locally.", systemImage: "checkmark.shield")
           Label("Dilemma text is not sent to a server.", systemImage: "wifi.slash")
-          Label("Model and assets are bundled locally.", systemImage: "shippingbox")
+          Label("Model, embeddings, and assets are bundled locally.", systemImage: "shippingbox")
         }
 
         if let errorMessage = model.errorMessage {

@@ -19,28 +19,135 @@ DEFAULT_OUTPUT_DIR = Path("DecisionKernel/Resources/Attributes")
 MODELS = {
     "all-MiniLM-L6-v2": "sentence-transformers/all-MiniLM-L6-v2",
     "all-MiniLM-L12-v2": "sentence-transformers/all-MiniLM-L12-v2",
+    "paraphrase-multilingual-MiniLM-L12-v2": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
     "all-mpnet-base-v2": "sentence-transformers/all-mpnet-base-v2",
 }
 
 RUNTIME_SHORT_NAMES = {
     "all-MiniLM-L6-v2": "l6",
     "all-MiniLM-L12-v2": "l12",
+    "paraphrase-multilingual-MiniLM-L12-v2": "multi_l12",
     "all-mpnet-base-v2": "mpnet",
 }
 
-DEFAULT_REASONS = [
-    ("This option would save me money.", "benefit"),
-    ("There is a chance I could lose stability.", "cost"),
-    ("It could improve my career prospects.", "benefit"),
-    ("It may hurt my mental health.", "cost"),
-    ("It could strengthen the relationship.", "benefit"),
-    ("It would give me more time with my family.", "benefit"),
-    ("I would have more independence.", "benefit"),
-    ("It requires a lot of time and work.", "cost"),
-    ("I would learn useful new skills.", "benefit"),
-    ("It may damage my reputation.", "cost"),
-    ("It sounds enjoyable and exciting.", "benefit"),
-    ("It gives me a safer long-term path.", "benefit"),
+ENGLISH_SMOKE_REASONS = [
+    (
+        "This option would save me money.",
+        "benefit",
+        {"money", "buying things i want", "being able to meet my financial needs"},
+    ),
+    (
+        "There is a chance I could lose stability.",
+        "cost",
+        {"security", "having stability in life", "safety vs. risk"},
+    ),
+    (
+        "It could improve my career prospects.",
+        "benefit",
+        {"career", "having a career", "keeping up to date with career-related knowledge"},
+    ),
+    (
+        "It may hurt my mental health.",
+        "cost",
+        {"being mentally healthy", "protecting my wellbeing", "health", "avoiding stress"},
+    ),
+    (
+        "It could strengthen the relationship.",
+        "benefit",
+        {
+            "being close to my spouse",
+            "having a mature romantic relationship",
+            "having friends i love",
+        },
+    ),
+    (
+        "It would give me more time with my family.",
+        "benefit",
+        {
+            "feeling close to my parents",
+            "living close to my parents",
+            "having a stable family life",
+            "being close to my children",
+        },
+    ),
+    (
+        "I would have more independence.",
+        "benefit",
+        {"being independent", "having freedom", "having freedom of choice"},
+    ),
+    (
+        "It requires a lot of time and work.",
+        "cost",
+        {"complexity and effort", "efficiency", "having an easy and comfortable life"},
+    ),
+    (
+        "I would learn useful new skills.",
+        "benefit",
+        {"getting an education", "knowledge", "experiencing personal growth"},
+    ),
+    (
+        "It may damage my reputation.",
+        "cost",
+        {"being respected by others", "being admired", "social"},
+    ),
+    (
+        "It sounds enjoyable and exciting.",
+        "benefit",
+        {"pleasure", "having an exciting life", "stimulation", "being happy"},
+    ),
+    (
+        "It gives me a safer long-term path.",
+        "benefit",
+        {"security", "feeling safe and secure", "safety vs. risk", "having stability in life"},
+    ),
+]
+
+RUSSIAN_SMOKE_REASONS = [
+    (
+        "Этот вариант поможет мне сэкономить деньги.",
+        "benefit",
+        {"money", "buying things i want", "being able to meet my financial needs"},
+    ),
+    (
+        "Это может улучшить мои карьерные перспективы.",
+        "benefit",
+        {"career", "having a career", "keeping up to date with career-related knowledge"},
+    ),
+    (
+        "Это может навредить моему психическому здоровью.",
+        "cost",
+        {"being mentally healthy", "protecting my wellbeing", "health", "avoiding stress"},
+    ),
+    (
+        "У меня будет больше времени с семьей.",
+        "benefit",
+        {
+            "feeling close to my parents",
+            "living close to my parents",
+            "having a stable family life",
+            "being close to my children",
+        },
+    ),
+    (
+        "Так будет безопаснее в долгосрочной перспективе.",
+        "benefit",
+        {"security", "feeling safe and secure", "safety vs. risk", "having stability in life"},
+    ),
+    (
+        "У меня будет больше независимости.",
+        "benefit",
+        {"being independent", "having freedom", "having freedom of choice"},
+    ),
+    (
+        "Это будет приятно и интересно.",
+        "benefit",
+        {"pleasure", "having an exciting life", "stimulation", "being happy"},
+    ),
+    (
+        "Это потребует много времени и усилий.",
+        "cost",
+        {"complexity and effort", "efficiency", "having an easy and comfortable life"},
+    ),
 ]
 
 
@@ -59,6 +166,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--attributes-csv", type=Path, default=DEFAULT_CSV)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--quality-report", type=Path)
+    parser.add_argument("--baseline-quality-report", type=Path)
     parser.add_argument("--batch-size", type=int, default=64)
     return parser.parse_args()
 
@@ -167,9 +275,11 @@ def quality_smoke(
     attribute_vectors: np.ndarray,
     model: SentenceTransformer,
     batch_size: int,
+    smoke_reasons: list[tuple[str, str, set[str]]],
 ) -> list[dict]:
-    reasons = [text for text, _ in DEFAULT_REASONS]
-    polarities = [polarity for _, polarity in DEFAULT_REASONS]
+    reasons = [text for text, _, _ in smoke_reasons]
+    polarities = [polarity for _, polarity, _ in smoke_reasons]
+    expected_by_reason = {text: expected for text, _, expected in smoke_reasons}
     reason_vectors = model.encode(
         reasons,
         batch_size=batch_size,
@@ -184,21 +294,70 @@ def quality_smoke(
         candidate_indices = [index for index, row in enumerate(rows) if row.direction == direction]
         scores = attribute_vectors[candidate_indices] @ reason_vector
         ranked = np.argsort(-scores)[:5]
+        top_5 = [
+            {
+                "name": rows[candidate_indices[int(rank)]].name,
+                "direction": rows[candidate_indices[int(rank)]].direction,
+                "score": float(scores[int(rank)]),
+            }
+            for rank in ranked
+        ]
+        expected_top5 = expected_by_reason[reason]
+        matched_expected = sorted({match["name"] for match in top_5} & expected_top5)
         output.append(
             {
                 "reason": reason,
                 "polarity": polarity,
-                "top_5": [
-                    {
-                        "name": rows[candidate_indices[int(rank)]].name,
-                        "direction": rows[candidate_indices[int(rank)]].direction,
-                        "score": float(scores[int(rank)]),
-                    }
-                    for rank in ranked
-                ],
+                "expected_top5": sorted(expected_top5),
+                "matched_expected": matched_expected,
+                "top_5": top_5,
             }
         )
     return output
+
+
+def summarize_expectations(rows: list[dict]) -> dict:
+    evaluated_rows = [row for row in rows if row.get("expected_top5")]
+    missed = [
+        {
+            "reason": row["reason"],
+            "expected_top5": row["expected_top5"],
+            "actual_top_5": [match["name"] for match in row["top_5"]],
+        }
+        for row in evaluated_rows
+        if not row.get("matched_expected")
+    ]
+    evaluated_count = len(evaluated_rows)
+    hit_count = evaluated_count - len(missed)
+    return {
+        "evaluated_count": evaluated_count,
+        "hit_count": hit_count,
+        "hit_rate": hit_count / evaluated_count if evaluated_count else 0,
+        "missed": missed,
+    }
+
+
+def summarize_legacy_baseline(path: Path) -> dict:
+    report = json.loads(path.read_text(encoding="utf-8"))
+    expected_by_reason = {reason: expected for reason, _, expected in ENGLISH_SMOKE_REASONS}
+    rows = []
+    for row in report["quality_smoke"]:
+        expected_top5 = expected_by_reason.get(row["reason"])
+        if not expected_top5:
+            continue
+        top_names = {match["name"] for match in row["top_5"]}
+        rows.append(
+            {
+                "reason": row["reason"],
+                "expected_top5": sorted(expected_top5),
+                "matched_expected": sorted(top_names & expected_top5),
+                "top_5": row["top_5"],
+            }
+        )
+    summary = summarize_expectations(rows)
+    summary["path"] = str(path)
+    summary["model_id"] = report.get("model_id")
+    return summary
 
 
 def main() -> None:
@@ -211,11 +370,39 @@ def main() -> None:
 
     if args.quality_report:
         args.quality_report.parent.mkdir(parents=True, exist_ok=True)
+        english_smoke = quality_smoke(
+            rows,
+            vectors,
+            model,
+            args.batch_size,
+            ENGLISH_SMOKE_REASONS,
+        )
+        russian_smoke = quality_smoke(
+            rows,
+            vectors,
+            model,
+            args.batch_size,
+            RUSSIAN_SMOKE_REASONS,
+        )
         report = {
             "model_id": MODELS[args.model],
             "embedding_dimension": int(vectors.shape[1]),
-            "quality_smoke": quality_smoke(rows, vectors, model, args.batch_size),
+            "quality_smoke": english_smoke,
+            "quality_smoke_ru": russian_smoke,
+            "quality_expectation_summary": {
+                "english": summarize_expectations(english_smoke),
+                "russian": summarize_expectations(russian_smoke),
+            },
         }
+        if args.baseline_quality_report:
+            baseline = summarize_legacy_baseline(args.baseline_quality_report)
+            russian = report["quality_expectation_summary"]["russian"]
+            report["baseline_comparison"] = {
+                "baseline": baseline,
+                "candidate_russian": russian,
+                "russian_smoke_not_worse_than_baseline": russian["hit_rate"]
+                >= baseline["hit_rate"],
+            }
         args.quality_report.write_text(
             json.dumps(report, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
