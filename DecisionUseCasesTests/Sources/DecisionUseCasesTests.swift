@@ -94,6 +94,49 @@ struct DecisionUseCasesTests {
   }
 
   @Test
+  func deleteSingleDilemmaReturnsSnapshotWithoutDeletedAnalysis() async throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(
+      databaseURL: url,
+      keyProvider: EphemeralKeyProvider(),
+      authenticator: NoOpVaultAuthenticator()
+    )
+    let useCases = DecisionUseCases.testing(
+      vault: vault,
+      analysisGenerator: StubAnalysisGenerator()
+    )
+    try useCases.prepareDiary()
+
+    let first = try await useCases.createAnalyzedEntry(.sample())
+    let deletedEntry = try #require(first.entries.first)
+    let deletedAnalysis = try #require(first.latestAnalyses[deletedEntry.id])
+    var secondCommand = EntryDraftCommand.sample()
+    secondCommand.rawText = "Should I keep this dilemma?"
+    let second = try await useCases.createAnalyzedEntry(secondCommand)
+    let keptEntry = try #require(second.entries.first(where: { $0.id != deletedEntry.id }))
+
+    try useCases.saveFeedback(
+      FeedbackCommand(
+        entryID: deletedEntry.id,
+        analysisID: deletedAnalysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: 1
+      )
+    )
+
+    let snapshot = try useCases.deleteDiaryEntry(id: deletedEntry.id)
+
+    #expect(snapshot.entries.map(\.id) == [keptEntry.id])
+    #expect(snapshot.latestAnalyses[deletedEntry.id] == nil)
+    #expect(snapshot.latestAnalyses[keptEntry.id] != nil)
+    let statistics = try useCases.loadPreferenceStatistics()
+    #expect(statistics.entryCount == 1)
+    #expect(statistics.feedbackCount == 0)
+  }
+
+  @Test
   func importDilemmaDraftArrayAnalyzesEveryItem() async throws {
     let url = FileManager.default.temporaryDirectory
       .appendingPathComponent(UUID().uuidString)

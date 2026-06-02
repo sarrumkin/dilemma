@@ -12,6 +12,7 @@ public struct DecisionUseCases: Sendable {
   public let exportDiaryData: ExportDiaryDataUseCase
   public let exportDilemmaDraft: ExportDilemmaDraftUseCase
   public let importDilemmaDrafts: ImportDilemmaDraftsUseCase
+  public let deleteDiaryEntry: DeleteDiaryEntryUseCase
   public let deleteDiaryData: DeleteDiaryDataUseCase
   public let unlockDiary: UnlockDiaryUseCase
 
@@ -31,6 +32,7 @@ public struct DecisionUseCases: Sendable {
       exportDiaryData: ExportDiaryDataUseCase(vault: vault),
       exportDilemmaDraft: ExportDilemmaDraftUseCase(),
       importDilemmaDrafts: ImportDilemmaDraftsUseCase(vault: vault, analysisGenerator: analysisGenerator),
+      deleteDiaryEntry: DeleteDiaryEntryUseCase(vault: vault),
       deleteDiaryData: DeleteDiaryDataUseCase(vault: vault),
       unlockDiary: UnlockDiaryUseCase(vault: vault)
     )
@@ -46,6 +48,7 @@ public struct DecisionUseCases: Sendable {
       exportDiaryData: ExportDiaryDataUseCase(vault: vault),
       exportDilemmaDraft: ExportDilemmaDraftUseCase(),
       importDilemmaDrafts: ImportDilemmaDraftsUseCase(vault: vault, analysisGenerator: analysisGenerator),
+      deleteDiaryEntry: DeleteDiaryEntryUseCase(vault: vault),
       deleteDiaryData: DeleteDiaryDataUseCase(vault: vault),
       unlockDiary: UnlockDiaryUseCase(vault: vault)
     )
@@ -303,6 +306,19 @@ public struct DeleteDiaryDataUseCase: Sendable {
 
   public func callAsFunction() throws {
     try vault.deleteAllData()
+  }
+}
+
+public struct DeleteDiaryEntryUseCase: Sendable {
+  private let vault: DiaryVault
+
+  init(vault: DiaryVault) {
+    self.vault = vault
+  }
+
+  public func callAsFunction(id: UUID) throws -> DiarySnapshot {
+    try vault.deleteEntry(id: id)
+    return try LoadDiarySnapshotUseCase(vault: vault)()
   }
 }
 

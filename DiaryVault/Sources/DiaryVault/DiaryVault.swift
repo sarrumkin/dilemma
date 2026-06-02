@@ -132,6 +132,16 @@ public final class DiaryVault: @unchecked Sendable {
     }
   }
 
+  public func deleteEntry(id: UUID) throws {
+    try queue.sync {
+      let database = try openDatabase()
+      try database.execute(
+        "DELETE FROM diary_entry WHERE id = ?",
+        [.text(id.uuidString)]
+      )
+    }
+  }
+
   public func saveAnalysis(_ analysis: DiaryAnalysis) throws {
     try queue.sync {
       let database = try openDatabase()

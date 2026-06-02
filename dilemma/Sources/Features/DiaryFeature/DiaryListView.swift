@@ -5,9 +5,11 @@ struct DiaryListView: View {
   let model: DiaryListModel
   let makeNewEntryModel: () -> NewEntryModel
   let makeJSONImportModel: () -> DilemmaJSONImportModel
+  let onDeleted: () -> Void
   let makeAnalysisDetailModel: (DiaryEntry, DiaryAnalysis?) -> AnalysisDetailModel
   @State private var isCreatingEntry = false
   @State private var isImportingJSON = false
+  @State private var pendingDeleteEntry: DiaryEntry?
 
   var body: some View {
     NavigationStack {
@@ -34,6 +36,14 @@ struct DiaryListView: View {
                 )
               } label: {
                 EntryRow(entry: entry, analysis: model.latestAnalysis(for: entry))
+              }
+              .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                Button(role: .destructive) {
+                  pendingDeleteEntry = entry
+                } label: {
+                  Label("Delete", systemImage: "trash")
+                }
+                .accessibilityIdentifier("delete-entry-button-\(entry.id.uuidString)")
               }
             }
           }
@@ -63,7 +73,34 @@ struct DiaryListView: View {
       .sheet(isPresented: $isImportingJSON) {
         JSONImportSheet(isPresented: $isImportingJSON, model: makeJSONImportModel())
       }
+      .confirmationDialog(
+        "Delete this dilemma, its analysis, and feedback?",
+        isPresented: deleteConfirmationBinding,
+        titleVisibility: .visible
+      ) {
+        Button("Delete", role: .destructive) {
+          guard let entry = pendingDeleteEntry else { return }
+          if model.delete(entry) {
+            onDeleted()
+          }
+          pendingDeleteEntry = nil
+        }
+        .accessibilityIdentifier("confirm-delete-entry-button")
+        Button("Cancel", role: .cancel) {
+          pendingDeleteEntry = nil
+        }
+      }
     }
+  }
+
+  private var deleteConfirmationBinding: Binding<Bool> {
+    Binding(get: {
+      pendingDeleteEntry != nil
+    }, set: { isPresented in
+      if !isPresented {
+        pendingDeleteEntry = nil
+      }
+    })
   }
 }
 

@@ -12,7 +12,10 @@ struct AppDependencies {
   }
 
   func makeDiaryListModel() -> DiaryListModel {
-    DiaryListModel(loadDiarySnapshot: useCases.loadDiarySnapshot)
+    DiaryListModel(
+      loadDiarySnapshot: useCases.loadDiarySnapshot,
+      deleteDiaryEntry: useCases.deleteDiaryEntry
+    )
   }
 
   func makeNewEntryModel(onCreated: @escaping @MainActor (DiarySnapshot) -> Void) -> NewEntryModel {

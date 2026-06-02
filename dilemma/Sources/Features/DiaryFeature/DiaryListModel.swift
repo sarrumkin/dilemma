@@ -11,9 +11,14 @@ final class DiaryListModel {
   var errorMessage: String?
 
   @ObservationIgnored private let loadDiarySnapshot: LoadDiarySnapshotUseCase
+  @ObservationIgnored private let deleteDiaryEntry: DeleteDiaryEntryUseCase
 
-  init(loadDiarySnapshot: LoadDiarySnapshotUseCase) {
+  init(
+    loadDiarySnapshot: LoadDiarySnapshotUseCase,
+    deleteDiaryEntry: DeleteDiaryEntryUseCase
+  ) {
     self.loadDiarySnapshot = loadDiarySnapshot
+    self.deleteDiaryEntry = deleteDiaryEntry
   }
 
   func reload() {
@@ -32,5 +37,15 @@ final class DiaryListModel {
 
   func latestAnalysis(for entry: DiaryEntry) -> DiaryAnalysis? {
     latestAnalyses[entry.id]
+  }
+
+  func delete(_ entry: DiaryEntry) -> Bool {
+    do {
+      apply(try deleteDiaryEntry(id: entry.id))
+      return true
+    } catch {
+      errorMessage = AppErrorMessage.message(for: error, context: .deleteEntry)
+      return false
+    }
   }
 }

@@ -8,6 +8,7 @@ enum AppErrorContext {
   case exportEntry
   case prepareDiary
   case exportDiary
+  case deleteEntry
   case deleteData
   case loadStatistics
 }
@@ -29,6 +30,8 @@ enum AppErrorMessage {
       String(localized: "Could not prepare the private diary.")
     case .exportDiary:
       String(localized: "Could not export diary data.")
+    case .deleteEntry:
+      String(localized: "Could not delete this dilemma.")
     case .deleteData:
       String(localized: "Could not delete local diary data.")
     case .loadStatistics:

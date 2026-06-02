@@ -29,6 +29,9 @@ struct AppRootView: View {
             statisticsModel.reload()
           }
         },
+        onDeleted: {
+          statisticsModel.reload()
+        },
         makeAnalysisDetailModel: { entry, analysis in
           AnalysisDetailModel(
             entry: entry,

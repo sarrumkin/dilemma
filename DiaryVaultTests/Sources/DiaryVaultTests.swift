@@ -86,9 +86,83 @@ struct DiaryVaultTests {
     #expect(try vault.entries().isEmpty)
   }
 
-  private func sampleEntry() -> DiaryEntry {
+  @Test
+  func deleteEntryRemovesItFromAnalysisStatisticsAndExport() throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(
+      databaseURL: url,
+      keyProvider: EphemeralKeyProvider(),
+      authenticator: NoOpVaultAuthenticator()
+    )
+    try vault.prepare()
+
+    let deletedEntry = sampleEntry(rawText: "Should I delete this dilemma?")
+    let keptEntry = sampleEntry(rawText: "Should this dilemma remain?")
+    try vault.saveEntry(deletedEntry)
+    try vault.saveEntry(keptEntry)
+
+    let deletedAnalysis = sampleAnalysis(
+      entryID: deletedEntry.id,
+      clusterID: 4,
+      label: "Cluster 4: money"
+    )
+    let keptAnalysis = sampleAnalysis(
+      entryID: keptEntry.id,
+      clusterID: 10,
+      label: "Cluster 10: career"
+    )
+    try vault.saveAnalysis(deletedAnalysis)
+    try vault.saveAnalysis(keptAnalysis)
+    try vault.saveFeedback(
+      Feedback(
+        entryID: deletedEntry.id,
+        analysisID: deletedAnalysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: 1
+      )
+    )
+    try vault.saveFeedback(
+      Feedback(
+        entryID: keptEntry.id,
+        analysisID: keptAnalysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: 1
+      )
+    )
+
+    try vault.deleteEntry(id: deletedEntry.id)
+
+    do {
+      _ = try vault.entry(id: deletedEntry.id)
+      Issue.record("Expected deleted entry lookup to fail.")
+    } catch let error as DiaryVaultError {
+      #expect(error == .notFound)
+    } catch {
+      Issue.record("Unexpected error: \(error)")
+    }
+    #expect(try vault.entries().map(\.id) == [keptEntry.id])
+    #expect(try vault.analyses(entryID: deletedEntry.id).isEmpty)
+    #expect(try vault.feedback(entryID: deletedEntry.id).isEmpty)
+
+    let statistics = try vault.statistics()
+    #expect(statistics.entryCount == 1)
+    #expect(statistics.feedbackCount == 1)
+    #expect(statistics.chosenClusterDilemmaCount == 1)
+    #expect(statistics.mostFrequentClusters == [
+      ClusterFrequency(clusterID: 10, label: "Cluster 10: career", count: 1),
+    ])
+
+    let export = try vault.exportData()
+    #expect(export.entries.map(\.id) == [keptEntry.id])
+    #expect(export.analyses.map(\.entryID) == [keptEntry.id])
+    #expect(export.feedback.map(\.entryID) == [keptEntry.id])
+  }
+
+  private func sampleEntry(rawText: String = "Should I stay or leave?") -> DiaryEntry {
     DiaryEntry(
-      rawText: "Should I stay or leave?",
+      rawText: rawText,
       options: [
         DiaryOption(
           index: 1,
@@ -114,6 +188,28 @@ struct DiaryVaultTests {
             DiaryReason(text: "Less family time", polarity: .cost),
           ]
         ),
+      ]
+    )
+  }
+
+  private func sampleAnalysis(entryID: UUID, clusterID: Int, label: String) -> DiaryAnalysis {
+    DiaryAnalysis(
+      entryID: entryID,
+      assetVersion: 1,
+      modelID: "sentence-transformers/all-MiniLM-L12-v2",
+      sourceDOI: "10.1073/pnas.2406489122",
+      attributeConflicts: [
+        AttributeConflict(
+          attributeName: label,
+          option1Score: 0.8,
+          option2Score: -0.2,
+          difference: 1.0,
+          rank: 1
+        ),
+      ],
+      clusterProfiles: [
+        ClusterProfile(optionIndex: 1, clusterID: clusterID, label: label, score: 0.7),
+        ClusterProfile(optionIndex: 2, clusterID: clusterID + 100, label: "Other \(clusterID)", score: 0.1),
       ]
     )
   }
