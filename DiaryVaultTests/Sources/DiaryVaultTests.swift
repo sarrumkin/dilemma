@@ -61,8 +61,11 @@ struct DiaryVaultTests {
     #expect(statistics.entryCount == 1)
     #expect(statistics.feedbackCount == 1)
     #expect(statistics.acceptedConflictCount == 1)
-    #expect(statistics.mostFrequentClusters.count == 2)
+    #expect(statistics.mostFrequentClusters == [
+      ClusterFrequency(clusterID: 4, label: "Cluster 4: money", count: 1),
+    ])
     #expect(statistics.chosenOptionCounts[1] == 1)
+    #expect(statistics.chosenClusterDilemmaCount == 1)
 
     let export = try vault.exportData()
     #expect(export.schemaVersion == 1)

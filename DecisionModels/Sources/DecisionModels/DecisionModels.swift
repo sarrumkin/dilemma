@@ -257,6 +257,7 @@ public struct PreferenceStatistics: Codable, Equatable, Sendable {
   public var rejectedConflictCount: Int
   public var mostFrequentClusters: [ClusterFrequency]
   public var chosenOptionCounts: [Int: Int]
+  public var chosenClusterDilemmaCount: Int
 
   public init(
     entryCount: Int,
@@ -264,7 +265,8 @@ public struct PreferenceStatistics: Codable, Equatable, Sendable {
     acceptedConflictCount: Int,
     rejectedConflictCount: Int,
     mostFrequentClusters: [ClusterFrequency],
-    chosenOptionCounts: [Int: Int]
+    chosenOptionCounts: [Int: Int],
+    chosenClusterDilemmaCount: Int = 0
   ) {
     self.entryCount = entryCount
     self.feedbackCount = feedbackCount
@@ -272,6 +274,7 @@ public struct PreferenceStatistics: Codable, Equatable, Sendable {
     self.rejectedConflictCount = rejectedConflictCount
     self.mostFrequentClusters = mostFrequentClusters
     self.chosenOptionCounts = chosenOptionCounts
+    self.chosenClusterDilemmaCount = chosenClusterDilemmaCount
   }
 
   public static var empty: PreferenceStatistics {
@@ -281,7 +284,8 @@ public struct PreferenceStatistics: Codable, Equatable, Sendable {
       acceptedConflictCount: 0,
       rejectedConflictCount: 0,
       mostFrequentClusters: [],
-      chosenOptionCounts: [:]
+      chosenOptionCounts: [:],
+      chosenClusterDilemmaCount: 0
     )
   }
 }

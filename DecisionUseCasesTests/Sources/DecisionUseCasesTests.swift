@@ -53,6 +53,7 @@ struct DecisionUseCasesTests {
     #expect(statistics.feedbackCount == 1)
     #expect(statistics.acceptedConflictCount == 1)
     #expect(statistics.chosenOptionCounts[1] == 1)
+    #expect(statistics.chosenClusterDilemmaCount == 1)
 
     let exportData = try useCases.exportDiaryData()
     #expect(!exportData.isEmpty)
