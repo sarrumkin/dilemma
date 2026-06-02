@@ -250,12 +250,7 @@ public struct ImportDilemmaDraftsUseCase: Sendable {
   }
 
   public func callAsFunction(jsonData: Data) async throws -> DilemmaDraftImportResult {
-    let drafts: [DilemmaDraftJSON]
-    do {
-      drafts = try JSONDecoder().decode([DilemmaDraftJSON].self, from: jsonData)
-    } catch {
-      throw DilemmaDraftImportError.invalidJSON(error.localizedDescription)
-    }
+    let drafts = try Self.decodeDrafts(from: jsonData)
 
     let commands = try drafts.enumerated().map { offset, draft in
       do {
@@ -279,6 +274,24 @@ public struct ImportDilemmaDraftsUseCase: Sendable {
 
     return DilemmaDraftImportResult(snapshot: snapshot, importedCount: commands.count)
   }
+
+  private static func decodeDrafts(from jsonData: Data) throws -> [DilemmaDraftJSON] {
+    let decoder = JSONDecoder()
+    do {
+      return try decoder.decode([DilemmaDraftJSON].self, from: jsonData)
+    } catch let flatError {
+      do {
+        let blocks = try decoder.decode([DilemmaDraftBlockJSON].self, from: jsonData)
+        return blocks.flatMap(\.dilemmas)
+      } catch {
+        throw DilemmaDraftImportError.invalidJSON(flatError.localizedDescription)
+      }
+    }
+  }
+}
+
+private struct DilemmaDraftBlockJSON: Decodable {
+  let dilemmas: [DilemmaDraftJSON]
 }
 
 public struct DeleteDiaryDataUseCase: Sendable {

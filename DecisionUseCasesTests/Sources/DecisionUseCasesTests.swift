@@ -130,6 +130,52 @@ struct DecisionUseCasesTests {
   }
 
   @Test
+  func importDilemmaDraftBlocksAnalyzesEveryNestedItem() async throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(
+      databaseURL: url,
+      keyProvider: EphemeralKeyProvider(),
+      authenticator: NoOpVaultAuthenticator()
+    )
+    let useCases = DecisionUseCases.testing(
+      vault: vault,
+      analysisGenerator: StubAnalysisGenerator()
+    )
+    try useCases.prepareDiary()
+
+    var second = EntryDraftCommand.sample()
+    second.rawText = "Should I fund the project or keep savings?"
+    second.option1Title = "Fund the project"
+    second.option2Title = "Keep savings"
+    let jsonData = """
+    [
+      {
+        "schemaVersion": 1,
+        "id": "growth_vs_security",
+        "title": "Growth vs security",
+        "comment": "A block-level note for humans.",
+        "intent": "Import should ignore block metadata and import nested dilemmas.",
+        "dilemmas": [
+          \(String(data: try JSONEncoder().encode(DilemmaDraftJSON(command: .sample())), encoding: .utf8)!),
+          \(String(data: try JSONEncoder().encode(DilemmaDraftJSON(command: second)), encoding: .utf8)!)
+        ]
+      }
+    ]
+    """.data(using: .utf8)!
+
+    let result = try await useCases.importDilemmaDrafts(jsonData: jsonData)
+
+    #expect(result.importedCount == 2)
+    #expect(result.snapshot.entries.count == 2)
+    #expect(Set(result.snapshot.entries.map(\.rawText)) == Set([
+      "Should I stay or leave?",
+      "Should I fund the project or keep savings?",
+    ]))
+  }
+
+  @Test
   func importDilemmaDraftArrayValidatesBeforeSavingAnything() async throws {
     let url = FileManager.default.temporaryDirectory
       .appendingPathComponent(UUID().uuidString)
