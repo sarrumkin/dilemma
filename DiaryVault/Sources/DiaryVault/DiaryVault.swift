@@ -293,12 +293,49 @@ public final class DiaryVault: @unchecked Sendable {
       let feedbackCount = try database.int("SELECT COUNT(*) FROM feedback")
       let accepted = try database.int("SELECT COUNT(*) FROM feedback WHERE conflict_was_useful = 1")
       let rejected = try database.int("SELECT COUNT(*) FROM feedback WHERE conflict_was_useful = 0")
+      let chosenClusterDilemmaCount = try database.int(
+        """
+        SELECT COUNT(DISTINCT f.id)
+        FROM feedback f
+        JOIN cluster_profile chosen
+          ON chosen.analysis_id = f.analysis_id
+         AND chosen.option_index = f.chosen_option_index
+        WHERE f.chosen_option_index IS NOT NULL
+        """
+      )
       let clusterRows = try database.query(
         """
-        SELECT cluster_id, label, COUNT(*) AS count
-        FROM cluster_profile
-        GROUP BY cluster_id, label
-        ORDER BY count DESC, cluster_id ASC
+        SELECT chosen.cluster_id, chosen.label, COUNT(*) AS count
+        FROM feedback f
+        JOIN cluster_profile chosen
+          ON chosen.analysis_id = f.analysis_id
+         AND chosen.option_index = f.chosen_option_index
+        LEFT JOIN cluster_profile other
+          ON other.analysis_id = chosen.analysis_id
+         AND other.cluster_id = chosen.cluster_id
+         AND other.option_index != chosen.option_index
+        WHERE f.chosen_option_index IS NOT NULL
+          AND NOT EXISTS (
+            SELECT 1
+            FROM cluster_profile challenger
+            LEFT JOIN cluster_profile challenger_other
+              ON challenger_other.analysis_id = challenger.analysis_id
+             AND challenger_other.cluster_id = challenger.cluster_id
+             AND challenger_other.option_index != challenger.option_index
+            WHERE challenger.analysis_id = chosen.analysis_id
+              AND challenger.option_index = chosen.option_index
+              AND (
+                ABS(challenger.score - COALESCE(challenger_other.score, 0))
+                  > ABS(chosen.score - COALESCE(other.score, 0))
+                OR (
+                  ABS(challenger.score - COALESCE(challenger_other.score, 0))
+                    = ABS(chosen.score - COALESCE(other.score, 0))
+                  AND challenger.cluster_id < chosen.cluster_id
+                )
+              )
+          )
+        GROUP BY chosen.cluster_id, chosen.label
+        ORDER BY count DESC, chosen.cluster_id ASC
         LIMIT 10
         """
       )
@@ -326,7 +363,8 @@ public final class DiaryVault: @unchecked Sendable {
         },
         chosenOptionCounts: Dictionary(uniqueKeysWithValues: try chosenRows.map {
           (try $0.int(0), try $0.int(1))
-        })
+        }),
+        chosenClusterDilemmaCount: chosenClusterDilemmaCount
       )
     }
   }

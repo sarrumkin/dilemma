@@ -11,14 +11,9 @@ struct StatisticsView: View {
           MetricRow(label: String(localized: "Feedback records"), value: "\(model.statistics.feedbackCount)")
         }
 
-        Section("Conflict Feedback") {
-          MetricRow(label: String(localized: "Useful"), value: "\(model.statistics.acceptedConflictCount)")
-          MetricRow(label: String(localized: "Not useful"), value: "\(model.statistics.rejectedConflictCount)")
-        }
-
-        Section("Frequent Clusters") {
+        Section("Chosen Cluster Ranking") {
           if model.statistics.mostFrequentClusters.isEmpty {
-            Text("Cluster statistics appear after saved analysis results.")
+            Text("Cluster statistics appear after a decision is saved for an analyzed dilemma.")
               .foregroundStyle(.secondary)
           } else {
             ForEach(model.statistics.mostFrequentClusters) { cluster in

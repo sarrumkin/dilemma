@@ -33,8 +33,11 @@ struct AppRootView: View {
           AnalysisDetailModel(
             entry: entry,
             analysis: analysis,
+            allEntries: diaryModel.entries,
+            latestAnalyses: diaryModel.latestAnalyses,
             saveFeedback: dependencies.useCases.saveFeedback,
             exportDilemmaDraft: dependencies.useCases.exportDilemmaDraft,
+            loadPreferenceStatistics: dependencies.useCases.loadPreferenceStatistics,
             onFeedbackSaved: {
               statisticsModel.reload()
             }
@@ -47,7 +50,7 @@ struct AppRootView: View {
 
       StatisticsView(model: statisticsModel)
         .tabItem {
-          Label("Stats", systemImage: "chart.bar")
+          Label("Stats", systemImage: "chart.pie")
         }
 
       SettingsView(
