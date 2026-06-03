@@ -240,6 +240,15 @@ public final class DiaryVault: @unchecked Sendable {
     try queue.sync {
       let database = try openDatabase()
       try database.transaction {
+        guard let chosenOptionIndex = feedback.chosenOptionIndex else {
+          try deleteFeedback(
+            entryID: feedback.entryID,
+            analysisID: feedback.analysisID,
+            database: database
+          )
+          return
+        }
+
         let existingID = try existingFeedbackID(
           entryID: feedback.entryID,
           analysisID: feedback.analysisID,
@@ -262,7 +271,7 @@ public final class DiaryVault: @unchecked Sendable {
               .integer(feedback.conflictWasUseful ? 1 : 0),
               feedback.correctedClusterID.map(SQLiteValue.integer) ?? .null,
               feedback.correctedAttributeName.map(SQLiteValue.text) ?? .null,
-              feedback.chosenOptionIndex.map(SQLiteValue.integer) ?? .null,
+              .integer(chosenOptionIndex),
               .text(feedback.note),
               .real(feedback.createdAt.timeIntervalSince1970),
               .text(existingID.uuidString),
@@ -284,7 +293,7 @@ public final class DiaryVault: @unchecked Sendable {
               .integer(feedback.conflictWasUseful ? 1 : 0),
               feedback.correctedClusterID.map(SQLiteValue.integer) ?? .null,
               feedback.correctedAttributeName.map(SQLiteValue.text) ?? .null,
-              feedback.chosenOptionIndex.map(SQLiteValue.integer) ?? .null,
+              .integer(chosenOptionIndex),
               .text(feedback.note),
               .real(feedback.createdAt.timeIntervalSince1970),
             ]
@@ -305,6 +314,7 @@ public final class DiaryVault: @unchecked Sendable {
                corrected_attribute_name, chosen_option_index, note, created_at
         FROM feedback
         WHERE entry_id = ? AND analysis_id = ?
+          AND chosen_option_index IS NOT NULL
         ORDER BY created_at DESC
         LIMIT 1
         """
@@ -315,6 +325,7 @@ public final class DiaryVault: @unchecked Sendable {
                corrected_attribute_name, chosen_option_index, note, created_at
         FROM feedback
         WHERE entry_id = ? AND analysis_id IS NULL
+          AND chosen_option_index IS NOT NULL
         ORDER BY created_at DESC
         LIMIT 1
         """
@@ -336,6 +347,7 @@ public final class DiaryVault: @unchecked Sendable {
                corrected_attribute_name, chosen_option_index, note, created_at
         FROM feedback
         WHERE entry_id = ?
+          AND chosen_option_index IS NOT NULL
         ORDER BY created_at DESC
         """
         bindings = [.text(entryID.uuidString)]
@@ -344,6 +356,7 @@ public final class DiaryVault: @unchecked Sendable {
         SELECT id, entry_id, analysis_id, conflict_was_useful, corrected_cluster_id,
                corrected_attribute_name, chosen_option_index, note, created_at
         FROM feedback
+        WHERE chosen_option_index IS NOT NULL
         ORDER BY created_at DESC
         """
         bindings = []
@@ -357,9 +370,13 @@ public final class DiaryVault: @unchecked Sendable {
     try queue.sync {
       let database = try openDatabase()
       let entryCount = try database.int("SELECT COUNT(*) FROM diary_entry")
-      let feedbackCount = try database.int("SELECT COUNT(*) FROM feedback")
-      let accepted = try database.int("SELECT COUNT(*) FROM feedback WHERE conflict_was_useful = 1")
-      let rejected = try database.int("SELECT COUNT(*) FROM feedback WHERE conflict_was_useful = 0")
+      let feedbackCount = try database.int("SELECT COUNT(*) FROM feedback WHERE chosen_option_index IS NOT NULL")
+      let accepted = try database.int(
+        "SELECT COUNT(*) FROM feedback WHERE conflict_was_useful = 1 AND chosen_option_index IS NOT NULL"
+      )
+      let rejected = try database.int(
+        "SELECT COUNT(*) FROM feedback WHERE conflict_was_useful = 0 AND chosen_option_index IS NOT NULL"
+      )
       let chosenClusterDilemmaCount = try database.int(
         """
         SELECT COUNT(DISTINCT f.id)
@@ -643,6 +660,24 @@ public final class DiaryVault: @unchecked Sendable {
       .map { try UUID.parse($0.string(0)) }
   }
 
+  private func deleteFeedback(
+    entryID: UUID,
+    analysisID: UUID?,
+    database: SQLiteDatabase
+  ) throws {
+    if let analysisID {
+      try database.execute(
+        "DELETE FROM feedback WHERE entry_id = ? AND analysis_id = ?",
+        [.text(entryID.uuidString), .text(analysisID.uuidString)]
+      )
+    } else {
+      try database.execute(
+        "DELETE FROM feedback WHERE entry_id = ? AND analysis_id IS NULL",
+        [.text(entryID.uuidString)]
+      )
+    }
+  }
+
   private static let schemaSQL = """
     PRAGMA foreign_keys = ON;
     PRAGMA journal_mode = WAL;
@@ -711,6 +746,9 @@ public final class DiaryVault: @unchecked Sendable {
       note TEXT NOT NULL,
       created_at REAL NOT NULL
     );
+
+    DELETE FROM feedback
+    WHERE chosen_option_index IS NULL;
 
     DELETE FROM feedback
     WHERE id NOT IN (

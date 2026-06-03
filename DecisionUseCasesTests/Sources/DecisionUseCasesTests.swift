@@ -65,7 +65,7 @@ struct DecisionUseCasesTests {
   }
 
   @Test
-  func savingFeedbackUpdatesExistingDecisionAndAllowsNoDecision() async throws {
+  func savingFeedbackUpdatesExistingDecisionAndDeletesWhenCleared() async throws {
     let url = FileManager.default.temporaryDirectory
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
@@ -83,6 +83,17 @@ struct DecisionUseCasesTests {
     let created = try await useCases.createAnalyzedEntry(.sample())
     let entry = try #require(created.entries.first)
     let analysis = try #require(created.latestAnalyses[entry.id])
+
+    try useCases.saveFeedback(
+      FeedbackCommand(
+        entryID: entry.id,
+        analysisID: analysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: nil,
+        note: "No decision yet"
+      )
+    )
+    #expect(try useCases.loadFeedbackForAnalysis(entryID: entry.id, analysisID: analysis.id) == nil)
 
     try useCases.saveFeedback(
       FeedbackCommand(
@@ -129,11 +140,9 @@ struct DecisionUseCasesTests {
       entryID: entry.id,
       analysisID: analysis.id
     )
-    savedFeedback = try #require(savedFeedbackResult)
-    #expect(savedFeedback.chosenOptionIndex == nil)
-    #expect(savedFeedback.note == "No final decision")
+    #expect(savedFeedbackResult == nil)
     statistics = try useCases.loadPreferenceStatistics()
-    #expect(statistics.feedbackCount == 1)
+    #expect(statistics.feedbackCount == 0)
     #expect(statistics.chosenOptionCounts.isEmpty)
     #expect(statistics.chosenClusterDilemmaCount == 0)
   }

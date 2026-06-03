@@ -50,7 +50,7 @@ final class AnalysisDetailModel {
   }
 
   var canSaveFeedback: Bool {
-    analysis != nil && isEditingFeedback
+    analysis != nil && isEditingFeedback && (chosenOptionIndex != nil || hasSavedFeedback)
   }
 
   var hasSavedFeedback: Bool {
@@ -90,12 +90,19 @@ final class AnalysisDetailModel {
         )
       )
       savedFeedback = try loadFeedbackForAnalysisUseCase(entryID: entry.id, analysisID: analysis.id)
-      applySavedFeedback()
-      isEditingFeedback = false
+      if savedFeedback == nil {
+        chosenOptionIndex = nil
+        note = ""
+        isEditingFeedback = true
+        didSaveFeedback = false
+      } else {
+        applySavedFeedback()
+        isEditingFeedback = false
+        didSaveFeedback = true
+      }
       errorMessage = nil
       reloadPreferenceStatistics()
       onFeedbackSaved()
-      didSaveFeedback = true
     } catch {
       errorMessage = AppErrorMessage.message(for: error, context: .saveFeedback)
     }
