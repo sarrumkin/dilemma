@@ -264,18 +264,30 @@ private struct ChosenClusterCircle: View {
         VStack(spacing: 2) {
           Text(hasData ? progress.formatted(.percent.precision(.fractionLength(0))) : "0")
             .font(.title2.monospacedDigit().weight(.bold))
-          Text(hasData ? "top" : "cases")
-            .font(.caption2.weight(.semibold))
-            .foregroundStyle(.secondary)
+          if hasData {
+            Text("top")
+              .font(.caption2.weight(.semibold))
+              .foregroundStyle(.secondary)
+          } else {
+            Text("cases")
+              .font(.caption2.weight(.semibold))
+              .foregroundStyle(.secondary)
+          }
         }
       }
       .frame(width: 118, height: 118)
       .accessibilityHidden(true)
 
       VStack(alignment: .leading, spacing: 6) {
-        Text(topCluster?.label ?? "No chosen cluster yet")
-          .font(.headline)
-          .lineLimit(3)
+        if let topCluster {
+          Text(topCluster.label)
+            .font(.headline)
+            .lineLimit(3)
+        } else {
+          Text("No chosen cluster yet")
+            .font(.headline)
+            .lineLimit(3)
+        }
 
         Text("Dilemmas in analysis: \(dilemmaCount)")
           .font(.subheadline.monospacedDigit())
