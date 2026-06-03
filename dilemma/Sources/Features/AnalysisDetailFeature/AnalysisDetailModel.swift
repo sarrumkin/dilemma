@@ -13,7 +13,7 @@ final class AnalysisDetailModel {
   var chosenOptionIndex: Int?
   var note = ""
   private(set) var savedFeedback: Feedback?
-  private(set) var isEditingFeedback = true
+  private(set) var isEditingFeedback = false
   private(set) var preferenceStatistics = PreferenceStatistics.empty
   var didSaveFeedback = false
   var exportURL: URL?
@@ -93,7 +93,7 @@ final class AnalysisDetailModel {
       if savedFeedback == nil {
         chosenOptionIndex = nil
         note = ""
-        isEditingFeedback = true
+        isEditingFeedback = false
         didSaveFeedback = false
       } else {
         applySavedFeedback()
@@ -143,7 +143,7 @@ final class AnalysisDetailModel {
       savedFeedback = nil
       chosenOptionIndex = nil
       note = ""
-      isEditingFeedback = true
+      isEditingFeedback = false
       return
     }
 
@@ -152,7 +152,7 @@ final class AnalysisDetailModel {
       if savedFeedback == nil {
         chosenOptionIndex = nil
         note = ""
-        isEditingFeedback = true
+        isEditingFeedback = false
       } else {
         applySavedFeedback()
         isEditingFeedback = false
@@ -161,7 +161,7 @@ final class AnalysisDetailModel {
       savedFeedback = nil
       chosenOptionIndex = nil
       note = ""
-      isEditingFeedback = true
+      isEditingFeedback = false
     }
   }
 

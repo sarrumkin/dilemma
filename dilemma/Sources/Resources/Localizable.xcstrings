@@ -581,6 +581,12 @@
         "ru" : { "stringUnit" : { "state" : "translated", "value" : "Решение принято" } }
       }
     },
+    "Edit Decision" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Edit Decision" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Изменить решение" } }
+      }
+    },
     "Delete" : {
       "extractionState" : "stale",
       "localizations" : {

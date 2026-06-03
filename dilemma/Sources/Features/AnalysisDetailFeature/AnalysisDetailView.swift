@@ -136,32 +136,21 @@ struct AnalysisDetailView: View {
         .disabled(!model.canSaveFeedback)
         .accessibilityIdentifier("save-feedback-button")
 
-        if model.hasSavedFeedback {
-          Button(role: .cancel) {
-            model.cancelEditingFeedback()
-          } label: {
-            Label("Cancel changes", systemImage: "xmark.circle")
-          }
-          .accessibilityIdentifier("cancel-feedback-edit-button")
+        Button(role: .cancel) {
+          model.cancelEditingFeedback()
+        } label: {
+          Label("Cancel", systemImage: "xmark.circle")
         }
+        .accessibilityIdentifier("cancel-feedback-edit-button")
       } else {
-        LabeledContent("Decision", value: model.savedDecisionTitle)
-
-        if !model.savedNote.isEmpty {
-          VStack(alignment: .leading, spacing: 4) {
-            Text("Note")
-              .font(.caption)
-              .foregroundStyle(.secondary)
-            Text(model.savedNote)
-          }
-        }
+        Text(model.savedDecisionTitle)
 
         Button {
           model.startEditingFeedback()
         } label: {
-          Label("Change decision", systemImage: "pencil")
+          Label("Edit Decision", systemImage: "pencil")
         }
-        .accessibilityIdentifier("change-feedback-button")
+        .accessibilityIdentifier("edit-decision-button")
       }
 
       if model.didSaveFeedback {
