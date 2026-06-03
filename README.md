@@ -61,9 +61,12 @@ brew tap tuist/tuist
 brew install --formula tuist
 .venv/bin/python tools/download_bundled_model.py --model all-MiniLM-L6-v2
 .venv/bin/python tools/download_bundled_model.py --model paraphrase-multilingual-MiniLM-L12-v2
-tuist generate --no-open
+./tools/generate_project.sh
 xcodebuild test -workspace dilemma.xcworkspace -scheme dilemma -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2'
 ```
+
+Use `./tools/generate_project.sh --open` to generate and open
+`dilemma.xcworkspace`.
 
 `DecisionKernel/Resources/Models` is ignored by git because bundled model weights are
 large. Regenerate or download them locally before running integration tests.

@@ -303,7 +303,11 @@ struct DiaryVaultTests {
     ])
   }
 
-  private func sampleEntry(rawText: String = "Should I stay or leave?") -> DiaryEntry {
+  private func sampleEntry(
+    rawText: String = "Should I stay or leave?",
+    createdAt: Date = Date(),
+    updatedAt: Date = Date()
+  ) -> DiaryEntry {
     DiaryEntry(
       rawText: rawText,
       options: [
@@ -331,13 +335,21 @@ struct DiaryVaultTests {
             DiaryReason(text: "Less family time", polarity: .cost),
           ]
         ),
-      ]
+      ],
+      createdAt: createdAt,
+      updatedAt: updatedAt
     )
   }
 
-  private func sampleAnalysis(entryID: UUID, clusterID: Int, label: String) -> DiaryAnalysis {
+  private func sampleAnalysis(
+    entryID: UUID,
+    clusterID: Int,
+    label: String,
+    createdAt: Date = Date()
+  ) -> DiaryAnalysis {
     DiaryAnalysis(
       entryID: entryID,
+      createdAt: createdAt,
       assetVersion: 1,
       modelID: "sentence-transformers/all-MiniLM-L12-v2",
       sourceDOI: "10.1073/pnas.2406489122",

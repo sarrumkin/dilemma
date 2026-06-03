@@ -30,14 +30,15 @@ struct DiaryListView: View {
             description: Text("Create a structured dilemma to run local analysis.")
           )
         } else {
-          Section("Diary") {
+          Section {
             ForEach(model.entries) { entry in
+              let analysis = model.latestAnalysis(for: entry)
               NavigationLink {
                 AnalysisDetailView(
-                  model: makeAnalysisDetailModel(entry, model.latestAnalysis(for: entry))
+                  model: makeAnalysisDetailModel(entry, analysis)
                 )
               } label: {
-                EntryRow(entry: entry, analysis: model.latestAnalysis(for: entry))
+                EntryRow(entry: entry, analysis: analysis)
               }
               .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                 Button(role: .destructive) {
@@ -51,7 +52,7 @@ struct DiaryListView: View {
           }
         }
       }
-      .navigationTitle("Dilemma")
+      .navigationTitle("Diary")
       .toolbar {
         ToolbarItemGroup(placement: .topBarTrailing) {
           Button {
