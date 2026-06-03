@@ -42,22 +42,19 @@ struct AnalysisDetailView: View {
 
         Section("Top Clusters") {
           ForEach(model.entry.options) { option in
-            let clusters = analysis.clusterProfiles
-              .filter { $0.optionIndex == option.index }
-              .sorted { abs($0.score) > abs($1.score) }
-              .prefix(5)
+            let clusters = topClusters(for: option, in: analysis)
 
             VStack(alignment: .leading, spacing: 8) {
               Text(option.title)
                 .font(.subheadline.weight(.semibold))
-              ForEach(Array(clusters)) { cluster in
+              ForEach(clusters) { cluster in
                 HStack {
                   Text(cluster.label)
                     .lineLimit(2)
                   Spacer()
                   Text(format(cluster.score))
                     .font(.caption.monospacedDigit())
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(scoreColor(cluster.score))
                 }
               }
             }
@@ -195,6 +192,37 @@ struct AnalysisDetailView: View {
 
   private func format(_ value: Double) -> String {
     value.formatted(.number.precision(.fractionLength(3)))
+  }
+
+  private func topClusters(for option: DiaryOption, in analysis: DiaryAnalysis) -> [ClusterProfile] {
+    let optionClusters = analysis.clusterProfiles
+      .filter { $0.optionIndex == option.index && $0.score != 0 }
+
+    let positives = optionClusters
+      .filter { $0.score > 0 }
+      .sorted { left, right in
+        if left.score == right.score {
+          return left.clusterID < right.clusterID
+        }
+        return left.score > right.score
+      }
+      .prefix(3)
+
+    let negatives = optionClusters
+      .filter { $0.score < 0 }
+      .sorted { left, right in
+        if left.score == right.score {
+          return left.clusterID < right.clusterID
+        }
+        return left.score < right.score
+      }
+      .prefix(3)
+
+    return Array(positives) + Array(negatives)
+  }
+
+  private func scoreColor(_ score: Double) -> Color {
+    score > 0 ? .green : .red
   }
 }
 

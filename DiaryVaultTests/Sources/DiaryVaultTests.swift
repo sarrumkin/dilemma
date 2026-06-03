@@ -240,6 +240,58 @@ struct DiaryVaultTests {
     #expect(export.feedback.map(\.entryID) == [keptEntry.id])
   }
 
+  @Test
+  func statisticsChoosePositiveClusterOverHighMagnitudeNegativeCluster() throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(
+      databaseURL: url,
+      keyProvider: EphemeralKeyProvider(),
+      authenticator: NoOpVaultAuthenticator()
+    )
+    try vault.prepare()
+
+    let entry = sampleEntry()
+    try vault.saveEntry(entry)
+
+    let analysis = DiaryAnalysis(
+      entryID: entry.id,
+      assetVersion: 1,
+      modelID: "sentence-transformers/all-MiniLM-L12-v2",
+      sourceDOI: "10.1073/pnas.2406489122",
+      attributeConflicts: [
+        AttributeConflict(
+          attributeName: "money",
+          option1Score: 0.8,
+          option2Score: -0.2,
+          difference: 1.0,
+          rank: 1
+        ),
+      ],
+      clusterProfiles: [
+        ClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.4),
+        ClusterProfile(optionIndex: 1, clusterID: 8, label: "Cluster 8: stress", score: -0.95),
+        ClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.2),
+      ]
+    )
+    try vault.saveAnalysis(analysis)
+    try vault.saveFeedback(
+      Feedback(
+        entryID: entry.id,
+        analysisID: analysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: 1
+      )
+    )
+
+    let statistics = try vault.statistics()
+    #expect(statistics.chosenClusterDilemmaCount == 1)
+    #expect(statistics.mostFrequentClusters == [
+      ClusterFrequency(clusterID: 4, label: "Cluster 4: money", count: 1),
+    ])
+  }
+
   private func sampleEntry(rawText: String = "Should I stay or leave?") -> DiaryEntry {
     DiaryEntry(
       rawText: rawText,
