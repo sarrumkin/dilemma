@@ -116,6 +116,40 @@ public final class DiaryVault: @unchecked Sendable {
     }
   }
 
+  public func snapshot() throws -> DiarySnapshot {
+    try queue.sync {
+      let database = try openDatabase()
+      let entryRows = try database.query(
+        """
+        SELECT id, raw_text, created_at, updated_at
+        FROM diary_entry
+        ORDER BY updated_at DESC
+        """
+      )
+      guard !entryRows.isEmpty else {
+        return DiarySnapshot(entries: [], latestAnalyses: [:])
+      }
+
+      let entryIDs = try entryRows.map { try UUID.parse($0.string(0)) }
+      let optionsByEntryID = try optionsByEntryID(for: entryIDs, database: database)
+      let entries = try entryRows.map { row in
+        let entryID = try UUID.parse(row.string(0))
+        return DiaryEntry(
+          id: entryID,
+          rawText: try row.string(1),
+          options: optionsByEntryID[entryID] ?? [],
+          createdAt: Date(timeIntervalSince1970: try row.double(2)),
+          updatedAt: Date(timeIntervalSince1970: try row.double(3))
+        )
+      }
+
+      return DiarySnapshot(
+        entries: entries,
+        latestAnalyses: try latestAnalysesByEntryID(for: entryIDs, database: database)
+      )
+    }
+  }
+
   public func entry(id: UUID) throws -> DiaryEntry {
     try queue.sync {
       let database = try openDatabase()
@@ -496,6 +530,195 @@ public final class DiaryVault: @unchecked Sendable {
     let database = try SQLiteDatabase(url: databaseURL)
     self.database = database
     return database
+  }
+
+  private func optionsByEntryID(
+    for entryIDs: [UUID],
+    database: SQLiteDatabase
+  ) throws -> [UUID: [DiaryOption]] {
+    guard !entryIDs.isEmpty else { return [:] }
+    let optionRows = try database.query(
+      """
+      SELECT id, entry_id, option_index, title
+      FROM decision_option
+      WHERE entry_id IN (\(Self.placeholders(count: entryIDs.count)))
+      ORDER BY entry_id, sort_order
+      """,
+      Self.bindings(for: entryIDs)
+    )
+    guard !optionRows.isEmpty else { return [:] }
+
+    let optionIDs = try optionRows.map { try UUID.parse($0.string(0)) }
+    let reasonsByOptionID = try reasonsByOptionID(for: optionIDs, database: database)
+    var optionsByEntryID: [UUID: [DiaryOption]] = [:]
+    for row in optionRows {
+      let optionID = try UUID.parse(row.string(0))
+      let entryID = try UUID.parse(row.string(1))
+      optionsByEntryID[entryID, default: []].append(
+        DiaryOption(
+          id: optionID,
+          index: try row.int(2),
+          title: try row.string(3),
+          reasons: reasonsByOptionID[optionID] ?? []
+        )
+      )
+    }
+    return optionsByEntryID
+  }
+
+  private func reasonsByOptionID(
+    for optionIDs: [UUID],
+    database: SQLiteDatabase
+  ) throws -> [UUID: [DiaryReason]] {
+    guard !optionIDs.isEmpty else { return [:] }
+    let reasonRows = try database.query(
+      """
+      SELECT id, option_id, polarity, text
+      FROM reason
+      WHERE option_id IN (\(Self.placeholders(count: optionIDs.count)))
+      ORDER BY option_id, sort_order
+      """,
+      Self.bindings(for: optionIDs)
+    )
+
+    var reasonsByOptionID: [UUID: [DiaryReason]] = [:]
+    for row in reasonRows {
+      let polarityRaw = try row.string(2)
+      guard let polarity = DiaryReasonPolarity(rawValue: polarityRaw) else {
+        throw DiaryVaultError.database("Unknown reason polarity \(polarityRaw)")
+      }
+      reasonsByOptionID[try UUID.parse(row.string(1)), default: []].append(
+        DiaryReason(
+          id: try UUID.parse(row.string(0)),
+          text: try row.string(3),
+          polarity: polarity
+        )
+      )
+    }
+    return reasonsByOptionID
+  }
+
+  private func latestAnalysesByEntryID(
+    for entryIDs: [UUID],
+    database: SQLiteDatabase
+  ) throws -> [UUID: DiaryAnalysis] {
+    guard !entryIDs.isEmpty else { return [:] }
+    let rows = try database.query(
+      """
+      SELECT id, entry_id, created_at, asset_version, model_id, source_doi
+      FROM analysis_result
+      WHERE entry_id IN (\(Self.placeholders(count: entryIDs.count)))
+      ORDER BY entry_id, created_at DESC
+      """,
+      Self.bindings(for: entryIDs)
+    )
+    guard !rows.isEmpty else { return [:] }
+
+    var latestRows = [SQLiteRow]()
+    var seenEntryIDs = Set<UUID>()
+    var analysisIDs = [UUID]()
+    for row in rows {
+      let entryID = try UUID.parse(row.string(1))
+      guard !seenEntryIDs.contains(entryID) else { continue }
+      seenEntryIDs.insert(entryID)
+      latestRows.append(row)
+      analysisIDs.append(try UUID.parse(row.string(0)))
+    }
+
+    let conflictsByAnalysisID = try attributeConflictsByAnalysisID(
+      for: analysisIDs,
+      database: database
+    )
+    let clustersByAnalysisID = try clusterProfilesByAnalysisID(
+      for: analysisIDs,
+      database: database
+    )
+
+    var latestAnalyses: [UUID: DiaryAnalysis] = [:]
+    for row in latestRows {
+      let analysisID = try UUID.parse(row.string(0))
+      let entryID = try UUID.parse(row.string(1))
+      latestAnalyses[entryID] = DiaryAnalysis(
+        id: analysisID,
+        entryID: entryID,
+        createdAt: Date(timeIntervalSince1970: try row.double(2)),
+        assetVersion: try row.int(3),
+        modelID: try row.string(4),
+        sourceDOI: try row.string(5),
+        attributeConflicts: conflictsByAnalysisID[analysisID] ?? [],
+        clusterProfiles: clustersByAnalysisID[analysisID] ?? []
+      )
+    }
+    return latestAnalyses
+  }
+
+  private func attributeConflictsByAnalysisID(
+    for analysisIDs: [UUID],
+    database: SQLiteDatabase
+  ) throws -> [UUID: [AttributeConflict]] {
+    guard !analysisIDs.isEmpty else { return [:] }
+    let rows = try database.query(
+      """
+      SELECT analysis_id, id, attribute_name, option1_score, option2_score, difference, rank
+      FROM attribute_match
+      WHERE analysis_id IN (\(Self.placeholders(count: analysisIDs.count)))
+      ORDER BY analysis_id, rank
+      """,
+      Self.bindings(for: analysisIDs)
+    )
+
+    var conflictsByAnalysisID: [UUID: [AttributeConflict]] = [:]
+    for row in rows {
+      conflictsByAnalysisID[try UUID.parse(row.string(0)), default: []].append(
+        AttributeConflict(
+          id: try UUID.parse(row.string(1)),
+          attributeName: try row.string(2),
+          option1Score: try row.double(3),
+          option2Score: try row.double(4),
+          difference: try row.double(5),
+          rank: try row.int(6)
+        )
+      )
+    }
+    return conflictsByAnalysisID
+  }
+
+  private func clusterProfilesByAnalysisID(
+    for analysisIDs: [UUID],
+    database: SQLiteDatabase
+  ) throws -> [UUID: [ClusterProfile]] {
+    guard !analysisIDs.isEmpty else { return [:] }
+    let rows = try database.query(
+      """
+      SELECT analysis_id, id, option_index, cluster_id, label, score
+      FROM cluster_profile
+      WHERE analysis_id IN (\(Self.placeholders(count: analysisIDs.count)))
+      ORDER BY analysis_id, option_index, ABS(score) DESC
+      """,
+      Self.bindings(for: analysisIDs)
+    )
+
+    var clustersByAnalysisID: [UUID: [ClusterProfile]] = [:]
+    for row in rows {
+      clustersByAnalysisID[try UUID.parse(row.string(0)), default: []].append(
+        ClusterProfile(
+          id: try UUID.parse(row.string(1)),
+          optionIndex: try row.int(2),
+          clusterID: try row.int(3),
+          label: try row.string(4),
+          score: try row.double(5)
+        )
+      )
+    }
+    return clustersByAnalysisID
+  }
+
+  private static func placeholders(count: Int) -> String {
+    Array(repeating: "?", count: count).joined(separator: ", ")
+  }
+
+  private static func bindings(for ids: [UUID]) -> [SQLiteValue] {
+    ids.map { .text($0.uuidString) }
   }
 
   private func entry(from row: SQLiteRow, database: SQLiteDatabase) throws -> DiaryEntry {
