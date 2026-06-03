@@ -35,7 +35,11 @@ struct AppDependencies {
   }
 
   func makeStatisticsModel() -> StatisticsModel {
-    StatisticsModel(loadPreferenceStatistics: useCases.loadPreferenceStatistics)
+    StatisticsModel(
+      loadPreferenceStatistics: useCases.loadPreferenceStatistics,
+      loadDiarySnapshot: useCases.loadDiarySnapshot,
+      loadFeedbackForAnalysis: useCases.loadFeedbackForAnalysis
+    )
   }
 
   func makeSettingsModel() -> SettingsModel {
