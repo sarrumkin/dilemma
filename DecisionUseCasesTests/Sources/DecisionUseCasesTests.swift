@@ -161,10 +161,19 @@ struct DecisionUseCasesTests {
       DilemmaDraftJSON(command: second),
     ]
     let jsonData = try JSONEncoder().encode(payload)
+    let progressRecorder = ProgressRecorder()
 
-    let result = try await useCases.importDilemmaDrafts(jsonData: jsonData)
+    let result = try await useCases.importDilemmaDrafts(jsonData: jsonData) { progress in
+      await progressRecorder.append(progress)
+    }
+    let progressEvents = await progressRecorder.events
 
     #expect(result.importedCount == 2)
+    #expect(progressEvents == [
+      DilemmaDraftImportProgress(completedCount: 0, totalCount: 2),
+      DilemmaDraftImportProgress(completedCount: 1, totalCount: 2),
+      DilemmaDraftImportProgress(completedCount: 2, totalCount: 2),
+    ])
     #expect(result.snapshot.entries.count == 2)
     #expect(result.snapshot.latestAnalyses.count == 2)
     #expect(Set(result.snapshot.entries.map(\.rawText)) == Set([
@@ -275,6 +284,14 @@ struct DecisionUseCasesTests {
     let snapshot = try useCases.loadDiarySnapshot()
     #expect(snapshot.entries.isEmpty)
     #expect(snapshot.latestAnalyses.isEmpty)
+  }
+}
+
+private actor ProgressRecorder {
+  private(set) var events: [DilemmaDraftImportProgress] = []
+
+  func append(_ progress: DilemmaDraftImportProgress) {
+    events.append(progress)
   }
 }
 

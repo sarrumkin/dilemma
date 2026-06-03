@@ -1,0 +1,3842 @@
+[
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I accept the promotion or keep the calmer role?",
+    "options": [
+      {
+        "title": "Accept the promotion",
+        "benefits": [
+          "It supports growth, status, and a stronger role in a concrete career and family time decision.",
+          "It can create a stronger career path.",
+          "It gives the choice a stronger sense that ambition is worth the cost."
+        ],
+        "costs": [
+          "It weakens closeness, stable routines, and relationships that also matters here.",
+          "It may put pressure on evenings with my family.",
+          "It could make the relational option harder to protect."
+        ]
+      },
+      {
+        "title": "Keep the calmer role",
+        "benefits": [
+          "It protects closeness, stable routines, and relationships in this career and family time situation.",
+          "It keeps evenings with my family safer and more predictable.",
+          "It avoids paying too much for growth, status, and a stronger role."
+        ],
+        "costs": [
+          "It may sacrifice growth, status, and a stronger role.",
+          "It can leave a stronger career path out of reach.",
+          "It may feel like avoiding a meaningful chance to grow."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I take a three-month art residency or stay home with my partner?",
+    "options": [
+      {
+        "title": "Take the residency",
+        "benefits": [
+          "It supports growth, status, and a stronger role in a concrete creative residency and relationship stability decision.",
+          "It can create a rare creative breakthrough.",
+          "It gives the choice a stronger sense that ambition is worth the cost."
+        ],
+        "costs": [
+          "It weakens closeness, stable routines, and relationships that also matters here.",
+          "It may put pressure on the daily rhythm of my relationship.",
+          "It could make the relational option harder to protect."
+        ]
+      },
+      {
+        "title": "Stay home",
+        "benefits": [
+          "It protects closeness, stable routines, and relationships in this creative residency and relationship stability situation.",
+          "It keeps the daily rhythm of my relationship safer and more predictable.",
+          "It avoids paying too much for growth, status, and a stronger role."
+        ],
+        "costs": [
+          "It may sacrifice growth, status, and a stronger role.",
+          "It can leave a rare creative breakthrough out of reach.",
+          "It may feel like avoiding a meaningful chance to grow."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I move abroad for graduate school or study locally and stay near my parents?",
+    "options": [
+      {
+        "title": "Move abroad",
+        "benefits": [
+          "It supports growth, status, and a stronger role in a concrete graduate school and care for parents decision.",
+          "It can create better academic opportunities.",
+          "It gives the choice a stronger sense that ambition is worth the cost."
+        ],
+        "costs": [
+          "It weakens closeness, stable routines, and relationships that also matters here.",
+          "It may put pressure on my parents' practical support.",
+          "It could make the relational option harder to protect."
+        ]
+      },
+      {
+        "title": "Study locally",
+        "benefits": [
+          "It protects closeness, stable routines, and relationships in this graduate school and care for parents situation.",
+          "It keeps my parents' practical support safer and more predictable.",
+          "It avoids paying too much for growth, status, and a stronger role."
+        ],
+        "costs": [
+          "It may sacrifice growth, status, and a stronger role.",
+          "It can leave better academic opportunities out of reach.",
+          "It may feel like avoiding a meaningful chance to grow."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I join a competitive sports team or keep weekends free for family?",
+    "options": [
+      {
+        "title": "Join the team",
+        "benefits": [
+          "It supports growth, status, and a stronger role in a concrete competitive sports and weekend family life decision.",
+          "It can create visible athletic progress.",
+          "It gives the choice a stronger sense that ambition is worth the cost."
+        ],
+        "costs": [
+          "It weakens closeness, stable routines, and relationships that also matters here.",
+          "It may put pressure on shared weekend routines.",
+          "It could make the relational option harder to protect."
+        ]
+      },
+      {
+        "title": "Keep weekends free",
+        "benefits": [
+          "It protects closeness, stable routines, and relationships in this competitive sports and weekend family life situation.",
+          "It keeps shared weekend routines safer and more predictable.",
+          "It avoids paying too much for growth, status, and a stronger role."
+        ],
+        "costs": [
+          "It may sacrifice growth, status, and a stronger role.",
+          "It can leave visible athletic progress out of reach.",
+          "It may feel like avoiding a meaningful chance to grow."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I join a demanding startup or keep my predictable job and social life?",
+    "options": [
+      {
+        "title": "Join the startup",
+        "benefits": [
+          "It supports growth, status, and a stronger role in a concrete startup work and friendships decision.",
+          "It can create ownership and faster learning.",
+          "It gives the choice a stronger sense that ambition is worth the cost."
+        ],
+        "costs": [
+          "It weakens closeness, stable routines, and relationships that also matters here.",
+          "It may put pressure on friendships that need regular attention.",
+          "It could make the relational option harder to protect."
+        ]
+      },
+      {
+        "title": "Keep the predictable job",
+        "benefits": [
+          "It protects closeness, stable routines, and relationships in this startup work and friendships situation.",
+          "It keeps friendships that need regular attention safer and more predictable.",
+          "It avoids paying too much for growth, status, and a stronger role."
+        ],
+        "costs": [
+          "It may sacrifice growth, status, and a stronger role.",
+          "It can leave ownership and faster learning out of reach.",
+          "It may feel like avoiding a meaningful chance to grow."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I move to a larger city for opportunity or stay in my hometown community?",
+    "options": [
+      {
+        "title": "Move to the larger city",
+        "benefits": [
+          "It supports growth, status, and a stronger role in a concrete relocation and hometown belonging decision.",
+          "It can create a wider professional network.",
+          "It gives the choice a stronger sense that ambition is worth the cost."
+        ],
+        "costs": [
+          "It weakens closeness, stable routines, and relationships that also matters here.",
+          "It may put pressure on the community that knows me well.",
+          "It could make the relational option harder to protect."
+        ]
+      },
+      {
+        "title": "Stay in the hometown",
+        "benefits": [
+          "It protects closeness, stable routines, and relationships in this relocation and hometown belonging situation.",
+          "It keeps the community that knows me well safer and more predictable.",
+          "It avoids paying too much for growth, status, and a stronger role."
+        ],
+        "costs": [
+          "It may sacrifice growth, status, and a stronger role.",
+          "It can leave a wider professional network out of reach.",
+          "It may feel like avoiding a meaningful chance to grow."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I lead a visible nonprofit campaign or keep time for private caregiving?",
+    "options": [
+      {
+        "title": "Lead the campaign",
+        "benefits": [
+          "It supports growth, status, and a stronger role in a concrete public leadership and private caregiving decision.",
+          "It can create public influence and leadership practice.",
+          "It gives the choice a stronger sense that ambition is worth the cost."
+        ],
+        "costs": [
+          "It weakens closeness, stable routines, and relationships that also matters here.",
+          "It may put pressure on care that depends on my presence.",
+          "It could make the relational option harder to protect."
+        ]
+      },
+      {
+        "title": "Keep caregiving time",
+        "benefits": [
+          "It protects closeness, stable routines, and relationships in this public leadership and private caregiving situation.",
+          "It keeps care that depends on my presence safer and more predictable.",
+          "It avoids paying too much for growth, status, and a stronger role."
+        ],
+        "costs": [
+          "It may sacrifice growth, status, and a stronger role.",
+          "It can leave public influence and leadership practice out of reach.",
+          "It may feel like avoiding a meaningful chance to grow."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I commit to an intense book deadline or slow the project and be present with my children?",
+    "options": [
+      {
+        "title": "Commit to the deadline",
+        "benefits": [
+          "It supports growth, status, and a stronger role in a concrete book deadline and time with children decision.",
+          "It can create a finished manuscript and public momentum.",
+          "It gives the choice a stronger sense that ambition is worth the cost."
+        ],
+        "costs": [
+          "It weakens closeness, stable routines, and relationships that also matters here.",
+          "It may put pressure on ordinary evenings with my children.",
+          "It could make the relational option harder to protect."
+        ]
+      },
+      {
+        "title": "Slow the project",
+        "benefits": [
+          "It protects closeness, stable routines, and relationships in this book deadline and time with children situation.",
+          "It keeps ordinary evenings with my children safer and more predictable.",
+          "It avoids paying too much for growth, status, and a stronger role."
+        ],
+        "costs": [
+          "It may sacrifice growth, status, and a stronger role.",
+          "It can leave a finished manuscript and public momentum out of reach.",
+          "It may feel like avoiding a meaningful chance to grow."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I enter a public debate on an important issue or stay private and protect home peace?",
+    "options": [
+      {
+        "title": "Enter the debate",
+        "benefits": [
+          "It supports growth, status, and a stronger role in a concrete public debate and private peace decision.",
+          "It can create recognition as a serious voice.",
+          "It gives the choice a stronger sense that ambition is worth the cost."
+        ],
+        "costs": [
+          "It weakens closeness, stable routines, and relationships that also matters here.",
+          "It may put pressure on privacy and emotional calm at home.",
+          "It could make the relational option harder to protect."
+        ]
+      },
+      {
+        "title": "Stay private",
+        "benefits": [
+          "It protects closeness, stable routines, and relationships in this public debate and private peace situation.",
+          "It keeps privacy and emotional calm at home safer and more predictable.",
+          "It avoids paying too much for growth, status, and a stronger role."
+        ],
+        "costs": [
+          "It may sacrifice growth, status, and a stronger role.",
+          "It can leave recognition as a serious voice out of reach.",
+          "It may feel like avoiding a meaningful chance to grow."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I send my child to an elite school far away or choose the local school near our community?",
+    "options": [
+      {
+        "title": "Choose the elite school",
+        "benefits": [
+          "It supports growth, status, and a stronger role in a concrete elite education and neighborhood roots decision.",
+          "It can create stronger academic credentials.",
+          "It gives the choice a stronger sense that ambition is worth the cost."
+        ],
+        "costs": [
+          "It weakens closeness, stable routines, and relationships that also matters here.",
+          "It may put pressure on neighborhood friendships and roots.",
+          "It could make the relational option harder to protect."
+        ]
+      },
+      {
+        "title": "Choose the local school",
+        "benefits": [
+          "It protects closeness, stable routines, and relationships in this elite education and neighborhood roots situation.",
+          "It keeps neighborhood friendships and roots safer and more predictable.",
+          "It avoids paying too much for growth, status, and a stronger role."
+        ],
+        "costs": [
+          "It may sacrifice growth, status, and a stronger role.",
+          "It can leave stronger academic credentials out of reach.",
+          "It may feel like avoiding a meaningful chance to grow."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I lend savings to my sibling or keep the emergency fund?",
+    "options": [
+      {
+        "title": "Lend the savings",
+        "benefits": [
+          "It supports care, generosity, and responsibility for others in a concrete family debt decision.",
+          "It can create real relief for a close relative.",
+          "It gives the choice a stronger sense that helping now matters more than keeping a reserve."
+        ],
+        "costs": [
+          "It weakens personal security, reserves, and future independence that also matters here.",
+          "It may put pressure on my rent and emergency buffer.",
+          "It could leave me exposed if my own situation worsens."
+        ]
+      },
+      {
+        "title": "Keep the emergency fund",
+        "benefits": [
+          "It protects personal security, reserves, and future independence in this family debt situation.",
+          "It keeps my rent and emergency buffer safer and more predictable.",
+          "It avoids paying too much for care, generosity, and responsibility for others."
+        ],
+        "costs": [
+          "It may sacrifice care, generosity, and responsibility for others.",
+          "It can leave real relief for a close relative out of reach.",
+          "It may feel like protecting myself at someone else's expense."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I donate my annual bonus to a local shelter or save it for my own medical costs?",
+    "options": [
+      {
+        "title": "Donate the bonus",
+        "benefits": [
+          "It supports care, generosity, and responsibility for others in a concrete charity giving decision.",
+          "It can create warm beds and meals for people nearby.",
+          "It gives the choice a stronger sense that helping now matters more than keeping a reserve."
+        ],
+        "costs": [
+          "It weakens personal security, reserves, and future independence that also matters here.",
+          "It may put pressure on my future treatment costs.",
+          "It could leave me exposed if my own situation worsens."
+        ]
+      },
+      {
+        "title": "Save the bonus",
+        "benefits": [
+          "It protects personal security, reserves, and future independence in this charity giving situation.",
+          "It keeps my future treatment costs safer and more predictable.",
+          "It avoids paying too much for care, generosity, and responsibility for others."
+        ],
+        "costs": [
+          "It may sacrifice care, generosity, and responsibility for others.",
+          "It can leave warm beds and meals for people nearby out of reach.",
+          "It may feel like protecting myself at someone else's expense."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I host a friend for several months or keep my small apartment private?",
+    "options": [
+      {
+        "title": "Host the friend",
+        "benefits": [
+          "It supports care, generosity, and responsibility for others in a concrete housing help decision.",
+          "It can create safe temporary housing for a friend.",
+          "It gives the choice a stronger sense that helping now matters more than keeping a reserve."
+        ],
+        "costs": [
+          "It weakens personal security, reserves, and future independence that also matters here.",
+          "It may put pressure on my sleep and personal space.",
+          "It could leave me exposed if my own situation worsens."
+        ]
+      },
+      {
+        "title": "Keep the apartment private",
+        "benefits": [
+          "It protects personal security, reserves, and future independence in this housing help situation.",
+          "It keeps my sleep and personal space safer and more predictable.",
+          "It avoids paying too much for care, generosity, and responsibility for others."
+        ],
+        "costs": [
+          "It may sacrifice care, generosity, and responsibility for others.",
+          "It can leave safe temporary housing for a friend out of reach.",
+          "It may feel like protecting myself at someone else's expense."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I cover a coworker's difficult shifts or protect my own recovery time?",
+    "options": [
+      {
+        "title": "Cover the shifts",
+        "benefits": [
+          "It supports care, generosity, and responsibility for others in a concrete work scheduling decision.",
+          "It can create practical help during a crisis.",
+          "It gives the choice a stronger sense that helping now matters more than keeping a reserve."
+        ],
+        "costs": [
+          "It weakens personal security, reserves, and future independence that also matters here.",
+          "It may put pressure on my energy and weekend plans.",
+          "It could leave me exposed if my own situation worsens."
+        ]
+      },
+      {
+        "title": "Protect recovery time",
+        "benefits": [
+          "It protects personal security, reserves, and future independence in this work scheduling situation.",
+          "It keeps my energy and weekend plans safer and more predictable.",
+          "It avoids paying too much for care, generosity, and responsibility for others."
+        ],
+        "costs": [
+          "It may sacrifice care, generosity, and responsibility for others.",
+          "It can leave practical help during a crisis out of reach.",
+          "It may feel like protecting myself at someone else's expense."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I spend the building budget on a neighbor's accessibility ramp or keep it for repairs that may affect my flat?",
+    "options": [
+      {
+        "title": "Fund the ramp",
+        "benefits": [
+          "It supports care, generosity, and responsibility for others in a concrete building maintenance decision.",
+          "It can create mobility and dignity for a neighbor.",
+          "It gives the choice a stronger sense that helping now matters more than keeping a reserve."
+        ],
+        "costs": [
+          "It weakens personal security, reserves, and future independence that also matters here.",
+          "It may put pressure on repairs that might affect me.",
+          "It could leave me exposed if my own situation worsens."
+        ]
+      },
+      {
+        "title": "Keep the repair reserve",
+        "benefits": [
+          "It protects personal security, reserves, and future independence in this building maintenance situation.",
+          "It keeps repairs that might affect me safer and more predictable.",
+          "It avoids paying too much for care, generosity, and responsibility for others."
+        ],
+        "costs": [
+          "It may sacrifice care, generosity, and responsibility for others.",
+          "It can leave mobility and dignity for a neighbor out of reach.",
+          "It may feel like protecting myself at someone else's expense."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I pay for surgery for a stray dog I found or keep the money for my own debt payment?",
+    "options": [
+      {
+        "title": "Pay for surgery",
+        "benefits": [
+          "It supports care, generosity, and responsibility for others in a concrete animal rescue decision.",
+          "It can create a chance to save a vulnerable life.",
+          "It gives the choice a stronger sense that helping now matters more than keeping a reserve."
+        ],
+        "costs": [
+          "It weakens personal security, reserves, and future independence that also matters here.",
+          "It may put pressure on my debt plan.",
+          "It could leave me exposed if my own situation worsens."
+        ]
+      },
+      {
+        "title": "Pay my debt",
+        "benefits": [
+          "It protects personal security, reserves, and future independence in this animal rescue situation.",
+          "It keeps my debt plan safer and more predictable.",
+          "It avoids paying too much for care, generosity, and responsibility for others."
+        ],
+        "costs": [
+          "It may sacrifice care, generosity, and responsibility for others.",
+          "It can leave a chance to save a vulnerable life out of reach.",
+          "It may feel like protecting myself at someone else's expense."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I pay a student's exam fee or save for my professional certification?",
+    "options": [
+      {
+        "title": "Pay the exam fee",
+        "benefits": [
+          "It supports care, generosity, and responsibility for others in a concrete education support decision.",
+          "It can create access to an important exam.",
+          "It gives the choice a stronger sense that helping now matters more than keeping a reserve."
+        ],
+        "costs": [
+          "It weakens personal security, reserves, and future independence that also matters here.",
+          "It may put pressure on my own credential.",
+          "It could leave me exposed if my own situation worsens."
+        ]
+      },
+      {
+        "title": "Save for certification",
+        "benefits": [
+          "It protects personal security, reserves, and future independence in this education support situation.",
+          "It keeps my own credential safer and more predictable.",
+          "It avoids paying too much for care, generosity, and responsibility for others."
+        ],
+        "costs": [
+          "It may sacrifice care, generosity, and responsibility for others.",
+          "It can leave access to an important exam out of reach.",
+          "It may feel like protecting myself at someone else's expense."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I buy a ticket so my cousin can attend a funeral or keep the travel money for my vacation?",
+    "options": [
+      {
+        "title": "Buy the ticket",
+        "benefits": [
+          "It supports care, generosity, and responsibility for others in a concrete urgent travel decision.",
+          "It can create family presence at a painful moment.",
+          "It gives the choice a stronger sense that helping now matters more than keeping a reserve."
+        ],
+        "costs": [
+          "It weakens personal security, reserves, and future independence that also matters here.",
+          "It may put pressure on my planned rest.",
+          "It could leave me exposed if my own situation worsens."
+        ]
+      },
+      {
+        "title": "Keep vacation money",
+        "benefits": [
+          "It protects personal security, reserves, and future independence in this urgent travel situation.",
+          "It keeps my planned rest safer and more predictable.",
+          "It avoids paying too much for care, generosity, and responsibility for others."
+        ],
+        "costs": [
+          "It may sacrifice care, generosity, and responsibility for others.",
+          "It can leave family presence at a painful moment out of reach.",
+          "It may feel like protecting myself at someone else's expense."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I lend expensive tools to a neighbor or avoid risking damage to them?",
+    "options": [
+      {
+        "title": "Lend the tools",
+        "benefits": [
+          "It supports care, generosity, and responsibility for others in a concrete shared equipment decision.",
+          "It can create trust and useful help nearby.",
+          "It gives the choice a stronger sense that helping now matters more than keeping a reserve."
+        ],
+        "costs": [
+          "It weakens personal security, reserves, and future independence that also matters here.",
+          "It may put pressure on equipment I rely on.",
+          "It could leave me exposed if my own situation worsens."
+        ]
+      },
+      {
+        "title": "Protect the tools",
+        "benefits": [
+          "It protects personal security, reserves, and future independence in this shared equipment situation.",
+          "It keeps equipment I rely on safer and more predictable.",
+          "It avoids paying too much for care, generosity, and responsibility for others."
+        ],
+        "costs": [
+          "It may sacrifice care, generosity, and responsibility for others.",
+          "It can leave trust and useful help nearby out of reach.",
+          "It may feel like protecting myself at someone else's expense."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I give my only free day to a food bank or use it to handle my own paperwork?",
+    "options": [
+      {
+        "title": "Volunteer at the food bank",
+        "benefits": [
+          "It supports care, generosity, and responsibility for others in a concrete volunteering decision.",
+          "It can create meals for people under pressure.",
+          "It gives the choice a stronger sense that helping now matters more than keeping a reserve."
+        ],
+        "costs": [
+          "It weakens personal security, reserves, and future independence that also matters here.",
+          "It may put pressure on my overdue personal tasks.",
+          "It could leave me exposed if my own situation worsens."
+        ]
+      },
+      {
+        "title": "Handle my paperwork",
+        "benefits": [
+          "It protects personal security, reserves, and future independence in this volunteering situation.",
+          "It keeps my overdue personal tasks safer and more predictable.",
+          "It avoids paying too much for care, generosity, and responsibility for others."
+        ],
+        "costs": [
+          "It may sacrifice care, generosity, and responsibility for others.",
+          "It can leave meals for people under pressure out of reach.",
+          "It may feel like protecting myself at someone else's expense."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I take sick leave or keep working on the project?",
+    "options": [
+      {
+        "title": "Take sick leave",
+        "benefits": [
+          "It supports health, recovery, and sustainable energy in a concrete work illness decision.",
+          "It can create time to recover properly.",
+          "It gives the choice a stronger sense that rest is a real responsibility."
+        ],
+        "costs": [
+          "It weakens duty, productivity, and being counted on that also matters here.",
+          "It may put pressure on the project deadline.",
+          "It may disappoint people who expected me to keep going."
+        ]
+      },
+      {
+        "title": "Keep working",
+        "benefits": [
+          "It protects duty, productivity, and being counted on in this work illness situation.",
+          "It keeps the project deadline safer and more predictable.",
+          "It avoids paying too much for health, recovery, and sustainable energy."
+        ],
+        "costs": [
+          "It may sacrifice health, recovery, and sustainable energy.",
+          "It can leave time to recover properly out of reach.",
+          "It may push my body or mind past a healthy limit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I sleep before the exam or study all night?",
+    "options": [
+      {
+        "title": "Sleep before the exam",
+        "benefits": [
+          "It supports health, recovery, and sustainable energy in a concrete exam preparation decision.",
+          "It can create a clearer mind in the morning.",
+          "It gives the choice a stronger sense that rest is a real responsibility."
+        ],
+        "costs": [
+          "It weakens duty, productivity, and being counted on that also matters here.",
+          "It may put pressure on the chance to review more material.",
+          "It may disappoint people who expected me to keep going."
+        ]
+      },
+      {
+        "title": "Study all night",
+        "benefits": [
+          "It protects duty, productivity, and being counted on in this exam preparation situation.",
+          "It keeps the chance to review more material safer and more predictable.",
+          "It avoids paying too much for health, recovery, and sustainable energy."
+        ],
+        "costs": [
+          "It may sacrifice health, recovery, and sustainable energy.",
+          "It can leave a clearer mind in the morning out of reach.",
+          "It may push my body or mind past a healthy limit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I skip the marathon because of an injury or run anyway for the result?",
+    "options": [
+      {
+        "title": "Skip the marathon",
+        "benefits": [
+          "It supports health, recovery, and sustainable energy in a concrete sports injury decision.",
+          "It can create a safer long-term recovery.",
+          "It gives the choice a stronger sense that rest is a real responsibility."
+        ],
+        "costs": [
+          "It weakens duty, productivity, and being counted on that also matters here.",
+          "It may put pressure on the goal I trained for.",
+          "It may disappoint people who expected me to keep going."
+        ]
+      },
+      {
+        "title": "Run anyway",
+        "benefits": [
+          "It protects duty, productivity, and being counted on in this sports injury situation.",
+          "It keeps the goal I trained for safer and more predictable.",
+          "It avoids paying too much for health, recovery, and sustainable energy."
+        ],
+        "costs": [
+          "It may sacrifice health, recovery, and sustainable energy.",
+          "It can leave a safer long-term recovery out of reach.",
+          "It may push my body or mind past a healthy limit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I pause volunteering while burned out or show up for the community shift?",
+    "options": [
+      {
+        "title": "Pause volunteering",
+        "benefits": [
+          "It supports health, recovery, and sustainable energy in a concrete volunteer burnout decision.",
+          "It can create space to regain emotional balance.",
+          "It gives the choice a stronger sense that rest is a real responsibility."
+        ],
+        "costs": [
+          "It weakens duty, productivity, and being counted on that also matters here.",
+          "It may put pressure on people who count on the shift.",
+          "It may disappoint people who expected me to keep going."
+        ]
+      },
+      {
+        "title": "Show up for the shift",
+        "benefits": [
+          "It protects duty, productivity, and being counted on in this volunteer burnout situation.",
+          "It keeps people who count on the shift safer and more predictable.",
+          "It avoids paying too much for health, recovery, and sustainable energy."
+        ],
+        "costs": [
+          "It may sacrifice health, recovery, and sustainable energy.",
+          "It can leave space to regain emotional balance out of reach.",
+          "It may push my body or mind past a healthy limit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I ask to postpone a presentation or give it despite anxiety?",
+    "options": [
+      {
+        "title": "Postpone the presentation",
+        "benefits": [
+          "It supports health, recovery, and sustainable energy in a concrete public speaking anxiety decision.",
+          "It can create a calmer and safer delivery.",
+          "It gives the choice a stronger sense that rest is a real responsibility."
+        ],
+        "costs": [
+          "It weakens duty, productivity, and being counted on that also matters here.",
+          "It may put pressure on my reputation for reliability.",
+          "It may disappoint people who expected me to keep going."
+        ]
+      },
+      {
+        "title": "Give the presentation",
+        "benefits": [
+          "It protects duty, productivity, and being counted on in this public speaking anxiety situation.",
+          "It keeps my reputation for reliability safer and more predictable.",
+          "It avoids paying too much for health, recovery, and sustainable energy."
+        ],
+        "costs": [
+          "It may sacrifice health, recovery, and sustainable energy.",
+          "It can leave a calmer and safer delivery out of reach.",
+          "It may push my body or mind past a healthy limit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I rest after a hard parenting week or organize the promised birthday party?",
+    "options": [
+      {
+        "title": "Rest this weekend",
+        "benefits": [
+          "It supports health, recovery, and sustainable energy in a concrete parenting fatigue decision.",
+          "It can create needed energy for the next week.",
+          "It gives the choice a stronger sense that rest is a real responsibility."
+        ],
+        "costs": [
+          "It weakens duty, productivity, and being counted on that also matters here.",
+          "It may put pressure on a promise to my child.",
+          "It may disappoint people who expected me to keep going."
+        ]
+      },
+      {
+        "title": "Organize the party",
+        "benefits": [
+          "It protects duty, productivity, and being counted on in this parenting fatigue situation.",
+          "It keeps a promise to my child safer and more predictable.",
+          "It avoids paying too much for health, recovery, and sustainable energy."
+        ],
+        "costs": [
+          "It may sacrifice health, recovery, and sustainable energy.",
+          "It can leave needed energy for the next week out of reach.",
+          "It may push my body or mind past a healthy limit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I go to a medical appointment or attend the client meeting?",
+    "options": [
+      {
+        "title": "Go to the appointment",
+        "benefits": [
+          "It supports health, recovery, and sustainable energy in a concrete medical appointment decision.",
+          "It can create early attention to a health concern.",
+          "It gives the choice a stronger sense that rest is a real responsibility."
+        ],
+        "costs": [
+          "It weakens duty, productivity, and being counted on that also matters here.",
+          "It may put pressure on a valuable client relationship.",
+          "It may disappoint people who expected me to keep going."
+        ]
+      },
+      {
+        "title": "Attend the client meeting",
+        "benefits": [
+          "It protects duty, productivity, and being counted on in this medical appointment situation.",
+          "It keeps a valuable client relationship safer and more predictable.",
+          "It avoids paying too much for health, recovery, and sustainable energy."
+        ],
+        "costs": [
+          "It may sacrifice health, recovery, and sustainable energy.",
+          "It can leave early attention to a health concern out of reach.",
+          "It may push my body or mind past a healthy limit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I turn off work chat for the weekend or stay reachable for the team?",
+    "options": [
+      {
+        "title": "Turn off work chat",
+        "benefits": [
+          "It supports health, recovery, and sustainable energy in a concrete digital boundaries decision.",
+          "It can create a real mental break.",
+          "It gives the choice a stronger sense that rest is a real responsibility."
+        ],
+        "costs": [
+          "It weakens duty, productivity, and being counted on that also matters here.",
+          "It may put pressure on team coordination.",
+          "It may disappoint people who expected me to keep going."
+        ]
+      },
+      {
+        "title": "Stay reachable",
+        "benefits": [
+          "It protects duty, productivity, and being counted on in this digital boundaries situation.",
+          "It keeps team coordination safer and more predictable.",
+          "It avoids paying too much for health, recovery, and sustainable energy."
+        ],
+        "costs": [
+          "It may sacrifice health, recovery, and sustainable energy.",
+          "It can leave a real mental break out of reach.",
+          "It may push my body or mind past a healthy limit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I go to therapy after work or finish urgent household tasks?",
+    "options": [
+      {
+        "title": "Go to therapy",
+        "benefits": [
+          "It supports health, recovery, and sustainable energy in a concrete therapy and chores decision.",
+          "It can create attention to a recurring emotional pattern.",
+          "It gives the choice a stronger sense that rest is a real responsibility."
+        ],
+        "costs": [
+          "It weakens duty, productivity, and being counted on that also matters here.",
+          "It may put pressure on the household backlog.",
+          "It may disappoint people who expected me to keep going."
+        ]
+      },
+      {
+        "title": "Finish household tasks",
+        "benefits": [
+          "It protects duty, productivity, and being counted on in this therapy and chores situation.",
+          "It keeps the household backlog safer and more predictable.",
+          "It avoids paying too much for health, recovery, and sustainable energy."
+        ],
+        "costs": [
+          "It may sacrifice health, recovery, and sustainable energy.",
+          "It can leave attention to a recurring emotional pattern out of reach.",
+          "It may push my body or mind past a healthy limit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I take a break from activism or keep campaigning before the vote?",
+    "options": [
+      {
+        "title": "Take a break",
+        "benefits": [
+          "It supports health, recovery, and sustainable energy in a concrete activism fatigue decision.",
+          "It can create protection from long-term burnout.",
+          "It gives the choice a stronger sense that rest is a real responsibility."
+        ],
+        "costs": [
+          "It weakens duty, productivity, and being counted on that also matters here.",
+          "It may put pressure on the campaign's final push.",
+          "It may disappoint people who expected me to keep going."
+        ]
+      },
+      {
+        "title": "Keep campaigning",
+        "benefits": [
+          "It protects duty, productivity, and being counted on in this activism fatigue situation.",
+          "It keeps the campaign's final push safer and more predictable.",
+          "It avoids paying too much for health, recovery, and sustainable energy."
+        ],
+        "costs": [
+          "It may sacrifice health, recovery, and sustainable energy.",
+          "It can leave protection from long-term burnout out of reach.",
+          "It may push my body or mind past a healthy limit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I travel alone without a strict plan or book a safe group tour?",
+    "options": [
+      {
+        "title": "Travel alone",
+        "benefits": [
+          "It supports freedom, exploration, and self-directed experience in a concrete solo travel decision.",
+          "It can create a vivid sense of independence.",
+          "It gives the choice a stronger sense that life should leave room for discovery."
+        ],
+        "costs": [
+          "It weakens safety, predictability, and controlled risk that also matters here.",
+          "It may put pressure on basic travel safety.",
+          "It may expose me to risks I cannot fully predict."
+        ]
+      },
+      {
+        "title": "Book the group tour",
+        "benefits": [
+          "It protects safety, predictability, and controlled risk in this solo travel situation.",
+          "It keeps basic travel safety safer and more predictable.",
+          "It avoids paying too much for freedom, exploration, and self-directed experience."
+        ],
+        "costs": [
+          "It may sacrifice freedom, exploration, and self-directed experience.",
+          "It can leave a vivid sense of independence out of reach.",
+          "It may make life feel smaller than I want."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I leave my job for freelance work or stay with a stable employer?",
+    "options": [
+      {
+        "title": "Go freelance",
+        "benefits": [
+          "It supports freedom, exploration, and self-directed experience in a concrete work format decision.",
+          "It can create control over my schedule.",
+          "It gives the choice a stronger sense that life should leave room for discovery."
+        ],
+        "costs": [
+          "It weakens safety, predictability, and controlled risk that also matters here.",
+          "It may put pressure on steady income.",
+          "It may expose me to risks I cannot fully predict."
+        ]
+      },
+      {
+        "title": "Stay employed",
+        "benefits": [
+          "It protects safety, predictability, and controlled risk in this work format situation.",
+          "It keeps steady income safer and more predictable.",
+          "It avoids paying too much for freedom, exploration, and self-directed experience."
+        ],
+        "costs": [
+          "It may sacrifice freedom, exploration, and self-directed experience.",
+          "It can leave control over my schedule out of reach.",
+          "It may make life feel smaller than I want."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I buy a motorcycle or keep using public transport?",
+    "options": [
+      {
+        "title": "Buy the motorcycle",
+        "benefits": [
+          "It supports freedom, exploration, and self-directed experience in a concrete transport choice decision.",
+          "It can create a stronger feeling of movement and autonomy.",
+          "It gives the choice a stronger sense that life should leave room for discovery."
+        ],
+        "costs": [
+          "It weakens safety, predictability, and controlled risk that also matters here.",
+          "It may put pressure on everyday safety.",
+          "It may expose me to risks I cannot fully predict."
+        ]
+      },
+      {
+        "title": "Use public transport",
+        "benefits": [
+          "It protects safety, predictability, and controlled risk in this transport choice situation.",
+          "It keeps everyday safety safer and more predictable.",
+          "It avoids paying too much for freedom, exploration, and self-directed experience."
+        ],
+        "costs": [
+          "It may sacrifice freedom, exploration, and self-directed experience.",
+          "It can leave a stronger feeling of movement and autonomy out of reach.",
+          "It may make life feel smaller than I want."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I date someone very different from my usual type or choose a more familiar match?",
+    "options": [
+      {
+        "title": "Date the unusual match",
+        "benefits": [
+          "It supports freedom, exploration, and self-directed experience in a concrete dating decision.",
+          "It can create a surprising emotional experience.",
+          "It gives the choice a stronger sense that life should leave room for discovery."
+        ],
+        "costs": [
+          "It weakens safety, predictability, and controlled risk that also matters here.",
+          "It may put pressure on predictable compatibility.",
+          "It may expose me to risks I cannot fully predict."
+        ]
+      },
+      {
+        "title": "Choose the familiar match",
+        "benefits": [
+          "It protects safety, predictability, and controlled risk in this dating situation.",
+          "It keeps predictable compatibility safer and more predictable.",
+          "It avoids paying too much for freedom, exploration, and self-directed experience."
+        ],
+        "costs": [
+          "It may sacrifice freedom, exploration, and self-directed experience.",
+          "It can leave a surprising emotional experience out of reach.",
+          "It may make life feel smaller than I want."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I invest a small sum in a risky idea or keep it in a conservative account?",
+    "options": [
+      {
+        "title": "Invest in the idea",
+        "benefits": [
+          "It supports freedom, exploration, and self-directed experience in a concrete investment risk decision.",
+          "It can create participation in a bold opportunity.",
+          "It gives the choice a stronger sense that life should leave room for discovery."
+        ],
+        "costs": [
+          "It weakens safety, predictability, and controlled risk that also matters here.",
+          "It may put pressure on capital protection.",
+          "It may expose me to risks I cannot fully predict."
+        ]
+      },
+      {
+        "title": "Keep the safe account",
+        "benefits": [
+          "It protects safety, predictability, and controlled risk in this investment risk situation.",
+          "It keeps capital protection safer and more predictable.",
+          "It avoids paying too much for freedom, exploration, and self-directed experience."
+        ],
+        "costs": [
+          "It may sacrifice freedom, exploration, and self-directed experience.",
+          "It can leave participation in a bold opportunity out of reach.",
+          "It may make life feel smaller than I want."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I move abroad without a guaranteed job or wait until everything is arranged?",
+    "options": [
+      {
+        "title": "Move now",
+        "benefits": [
+          "It supports freedom, exploration, and self-directed experience in a concrete relocation uncertainty decision.",
+          "It can create a real reset of my life.",
+          "It gives the choice a stronger sense that life should leave room for discovery."
+        ],
+        "costs": [
+          "It weakens safety, predictability, and controlled risk that also matters here.",
+          "It may put pressure on basic financial safety.",
+          "It may expose me to risks I cannot fully predict."
+        ]
+      },
+      {
+        "title": "Wait for certainty",
+        "benefits": [
+          "It protects safety, predictability, and controlled risk in this relocation uncertainty situation.",
+          "It keeps basic financial safety safer and more predictable.",
+          "It avoids paying too much for freedom, exploration, and self-directed experience."
+        ],
+        "costs": [
+          "It may sacrifice freedom, exploration, and self-directed experience.",
+          "It can leave a real reset of my life out of reach.",
+          "It may make life feel smaller than I want."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I go on a remote mountain hike or choose an easy marked route?",
+    "options": [
+      {
+        "title": "Take the remote hike",
+        "benefits": [
+          "It supports freedom, exploration, and self-directed experience in a concrete outdoor adventure decision.",
+          "It can create a stronger encounter with nature.",
+          "It gives the choice a stronger sense that life should leave room for discovery."
+        ],
+        "costs": [
+          "It weakens safety, predictability, and controlled risk that also matters here.",
+          "It may put pressure on route control and lower danger.",
+          "It may expose me to risks I cannot fully predict."
+        ]
+      },
+      {
+        "title": "Choose the marked route",
+        "benefits": [
+          "It protects safety, predictability, and controlled risk in this outdoor adventure situation.",
+          "It keeps route control and lower danger safer and more predictable.",
+          "It avoids paying too much for freedom, exploration, and self-directed experience."
+        ],
+        "costs": [
+          "It may sacrifice freedom, exploration, and self-directed experience.",
+          "It can leave a stronger encounter with nature out of reach.",
+          "It may make life feel smaller than I want."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I perform an improvised show or prepare a scripted performance?",
+    "options": [
+      {
+        "title": "Perform improvised",
+        "benefits": [
+          "It supports freedom, exploration, and self-directed experience in a concrete performance art decision.",
+          "It can create creative aliveness in the moment.",
+          "It gives the choice a stronger sense that life should leave room for discovery."
+        ],
+        "costs": [
+          "It weakens safety, predictability, and controlled risk that also matters here.",
+          "It may put pressure on a reliable result.",
+          "It may expose me to risks I cannot fully predict."
+        ]
+      },
+      {
+        "title": "Use a script",
+        "benefits": [
+          "It protects safety, predictability, and controlled risk in this performance art situation.",
+          "It keeps a reliable result safer and more predictable.",
+          "It avoids paying too much for freedom, exploration, and self-directed experience."
+        ],
+        "costs": [
+          "It may sacrifice freedom, exploration, and self-directed experience.",
+          "It can leave creative aliveness in the moment out of reach.",
+          "It may make life feel smaller than I want."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I try living off-grid for a month or rent a normal apartment?",
+    "options": [
+      {
+        "title": "Live off-grid",
+        "benefits": [
+          "It supports freedom, exploration, and self-directed experience in a concrete housing experiment decision.",
+          "It can create a test of independence.",
+          "It gives the choice a stronger sense that life should leave room for discovery."
+        ],
+        "costs": [
+          "It weakens safety, predictability, and controlled risk that also matters here.",
+          "It may put pressure on comfort and infrastructure.",
+          "It may expose me to risks I cannot fully predict."
+        ]
+      },
+      {
+        "title": "Rent normally",
+        "benefits": [
+          "It protects safety, predictability, and controlled risk in this housing experiment situation.",
+          "It keeps comfort and infrastructure safer and more predictable.",
+          "It avoids paying too much for freedom, exploration, and self-directed experience."
+        ],
+        "costs": [
+          "It may sacrifice freedom, exploration, and self-directed experience.",
+          "It can leave a test of independence out of reach.",
+          "It may make life feel smaller than I want."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I take a gap month with no fixed schedule or keep my usual routine?",
+    "options": [
+      {
+        "title": "Take the gap month",
+        "benefits": [
+          "It supports freedom, exploration, and self-directed experience in a concrete life routine decision.",
+          "It can create room to rediscover what I want.",
+          "It gives the choice a stronger sense that life should leave room for discovery."
+        ],
+        "costs": [
+          "It weakens safety, predictability, and controlled risk that also matters here.",
+          "It may put pressure on daily structure.",
+          "It may expose me to risks I cannot fully predict."
+        ]
+      },
+      {
+        "title": "Keep the routine",
+        "benefits": [
+          "It protects safety, predictability, and controlled risk in this life routine situation.",
+          "It keeps daily structure safer and more predictable.",
+          "It avoids paying too much for freedom, exploration, and self-directed experience."
+        ],
+        "costs": [
+          "It may sacrifice freedom, exploration, and self-directed experience.",
+          "It can leave room to rediscover what I want out of reach.",
+          "It may make life feel smaller than I want."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I tell my manager about a coworker's serious mistake or handle it quietly with the coworker?",
+    "options": [
+      {
+        "title": "Tell the manager",
+        "benefits": [
+          "It supports truth, accountability, and principled transparency in a concrete work mistake decision.",
+          "It can create a clearer record of what happened.",
+          "It gives the choice a stronger sense that clarity should not be sacrificed for comfort."
+        ],
+        "costs": [
+          "It weakens loyalty, harmony, and protection of relationships that also matters here.",
+          "It may put pressure on my relationship with the coworker.",
+          "It may damage trust with people close to the situation."
+        ]
+      },
+      {
+        "title": "Handle it quietly",
+        "benefits": [
+          "It protects loyalty, harmony, and protection of relationships in this work mistake situation.",
+          "It keeps my relationship with the coworker safer and more predictable.",
+          "It avoids paying too much for truth, accountability, and principled transparency."
+        ],
+        "costs": [
+          "It may sacrifice truth, accountability, and principled transparency.",
+          "It can leave a clearer record of what happened out of reach.",
+          "It may leave an important truth hidden."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I tell a friend what I heard about their partner or stay out of their relationship?",
+    "options": [
+      {
+        "title": "Tell the friend",
+        "benefits": [
+          "It supports truth, accountability, and principled transparency in a concrete friendship and romance decision.",
+          "It can create honest information before a major choice.",
+          "It gives the choice a stronger sense that clarity should not be sacrificed for comfort."
+        ],
+        "costs": [
+          "It weakens loyalty, harmony, and protection of relationships that also matters here.",
+          "It may put pressure on the peace of the friendship.",
+          "It may damage trust with people close to the situation."
+        ]
+      },
+      {
+        "title": "Stay out of it",
+        "benefits": [
+          "It protects loyalty, harmony, and protection of relationships in this friendship and romance situation.",
+          "It keeps the peace of the friendship safer and more predictable.",
+          "It avoids paying too much for truth, accountability, and principled transparency."
+        ],
+        "costs": [
+          "It may sacrifice truth, accountability, and principled transparency.",
+          "It can leave honest information before a major choice out of reach.",
+          "It may leave an important truth hidden."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I reveal a family secret before a wedding or keep the secret to avoid hurting everyone?",
+    "options": [
+      {
+        "title": "Reveal the secret",
+        "benefits": [
+          "It supports truth, accountability, and principled transparency in a concrete family secret decision.",
+          "It can create a decision based on reality.",
+          "It gives the choice a stronger sense that clarity should not be sacrificed for comfort."
+        ],
+        "costs": [
+          "It weakens loyalty, harmony, and protection of relationships that also matters here.",
+          "It may put pressure on family peace before the wedding.",
+          "It may damage trust with people close to the situation."
+        ]
+      },
+      {
+        "title": "Keep the secret",
+        "benefits": [
+          "It protects loyalty, harmony, and protection of relationships in this family secret situation.",
+          "It keeps family peace before the wedding safer and more predictable.",
+          "It avoids paying too much for truth, accountability, and principled transparency."
+        ],
+        "costs": [
+          "It may sacrifice truth, accountability, and principled transparency.",
+          "It can leave a decision based on reality out of reach.",
+          "It may leave an important truth hidden."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I write an honest negative review of a friend's restaurant or stay silent to support them?",
+    "options": [
+      {
+        "title": "Write the review",
+        "benefits": [
+          "It supports truth, accountability, and principled transparency in a concrete public review decision.",
+          "It can create useful honesty for customers.",
+          "It gives the choice a stronger sense that clarity should not be sacrificed for comfort."
+        ],
+        "costs": [
+          "It weakens loyalty, harmony, and protection of relationships that also matters here.",
+          "It may put pressure on a friend's fragile business.",
+          "It may damage trust with people close to the situation."
+        ]
+      },
+      {
+        "title": "Stay silent",
+        "benefits": [
+          "It protects loyalty, harmony, and protection of relationships in this public review situation.",
+          "It keeps a friend's fragile business safer and more predictable.",
+          "It avoids paying too much for truth, accountability, and principled transparency."
+        ],
+        "costs": [
+          "It may sacrifice truth, accountability, and principled transparency.",
+          "It can leave useful honesty for customers out of reach.",
+          "It may leave an important truth hidden."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I report plagiarism in a class project or protect the group grade?",
+    "options": [
+      {
+        "title": "Report plagiarism",
+        "benefits": [
+          "It supports truth, accountability, and principled transparency in a concrete academic integrity decision.",
+          "It can create fairness in the evaluation.",
+          "It gives the choice a stronger sense that clarity should not be sacrificed for comfort."
+        ],
+        "costs": [
+          "It weakens loyalty, harmony, and protection of relationships that also matters here.",
+          "It may put pressure on group solidarity.",
+          "It may damage trust with people close to the situation."
+        ]
+      },
+      {
+        "title": "Protect the grade",
+        "benefits": [
+          "It protects loyalty, harmony, and protection of relationships in this academic integrity situation.",
+          "It keeps group solidarity safer and more predictable.",
+          "It avoids paying too much for truth, accountability, and principled transparency."
+        ],
+        "costs": [
+          "It may sacrifice truth, accountability, and principled transparency.",
+          "It can leave fairness in the evaluation out of reach.",
+          "It may leave an important truth hidden."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I disclose a product bug before launch or avoid delaying the release?",
+    "options": [
+      {
+        "title": "Disclose the bug",
+        "benefits": [
+          "It supports truth, accountability, and principled transparency in a concrete product launch decision.",
+          "It can create accountability to users.",
+          "It gives the choice a stronger sense that clarity should not be sacrificed for comfort."
+        ],
+        "costs": [
+          "It weakens loyalty, harmony, and protection of relationships that also matters here.",
+          "It may put pressure on the team's launch momentum.",
+          "It may damage trust with people close to the situation."
+        ]
+      },
+      {
+        "title": "Avoid the delay",
+        "benefits": [
+          "It protects loyalty, harmony, and protection of relationships in this product launch situation.",
+          "It keeps the team's launch momentum safer and more predictable.",
+          "It avoids paying too much for truth, accountability, and principled transparency."
+        ],
+        "costs": [
+          "It may sacrifice truth, accountability, and principled transparency.",
+          "It can leave accountability to users out of reach.",
+          "It may leave an important truth hidden."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I tell the coach that a teammate cheated or protect the team's win?",
+    "options": [
+      {
+        "title": "Tell the coach",
+        "benefits": [
+          "It supports truth, accountability, and principled transparency in a concrete sports fairness decision.",
+          "It can create a fair result.",
+          "It gives the choice a stronger sense that clarity should not be sacrificed for comfort."
+        ],
+        "costs": [
+          "It weakens loyalty, harmony, and protection of relationships that also matters here.",
+          "It may put pressure on team unity after the match.",
+          "It may damage trust with people close to the situation."
+        ]
+      },
+      {
+        "title": "Protect the win",
+        "benefits": [
+          "It protects loyalty, harmony, and protection of relationships in this sports fairness situation.",
+          "It keeps team unity after the match safer and more predictable.",
+          "It avoids paying too much for truth, accountability, and principled transparency."
+        ],
+        "costs": [
+          "It may sacrifice truth, accountability, and principled transparency.",
+          "It can leave a fair result out of reach.",
+          "It may leave an important truth hidden."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I tell future tenants about a hidden defect or avoid conflict with the landlord?",
+    "options": [
+      {
+        "title": "Warn the tenants",
+        "benefits": [
+          "It supports truth, accountability, and principled transparency in a concrete rental housing decision.",
+          "It can create protection for the next tenants.",
+          "It gives the choice a stronger sense that clarity should not be sacrificed for comfort."
+        ],
+        "costs": [
+          "It weakens loyalty, harmony, and protection of relationships that also matters here.",
+          "It may put pressure on my current housing relationship.",
+          "It may damage trust with people close to the situation."
+        ]
+      },
+      {
+        "title": "Avoid landlord conflict",
+        "benefits": [
+          "It protects loyalty, harmony, and protection of relationships in this rental housing situation.",
+          "It keeps my current housing relationship safer and more predictable.",
+          "It avoids paying too much for truth, accountability, and principled transparency."
+        ],
+        "costs": [
+          "It may sacrifice truth, accountability, and principled transparency.",
+          "It can leave protection for the next tenants out of reach.",
+          "It may leave an important truth hidden."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I ask openly about a possible medical mistake or avoid challenging the doctor?",
+    "options": [
+      {
+        "title": "Ask openly",
+        "benefits": [
+          "It supports truth, accountability, and principled transparency in a concrete medical trust decision.",
+          "It can create clarity about health decisions.",
+          "It gives the choice a stronger sense that clarity should not be sacrificed for comfort."
+        ],
+        "costs": [
+          "It weakens loyalty, harmony, and protection of relationships that also matters here.",
+          "It may put pressure on a cooperative tone with the doctor.",
+          "It may damage trust with people close to the situation."
+        ]
+      },
+      {
+        "title": "Avoid challenging the doctor",
+        "benefits": [
+          "It protects loyalty, harmony, and protection of relationships in this medical trust situation.",
+          "It keeps a cooperative tone with the doctor safer and more predictable.",
+          "It avoids paying too much for truth, accountability, and principled transparency."
+        ],
+        "costs": [
+          "It may sacrifice truth, accountability, and principled transparency.",
+          "It can leave clarity about health decisions out of reach.",
+          "It may leave an important truth hidden."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I correct a respected elder in public or let the mistake pass to preserve respect?",
+    "options": [
+      {
+        "title": "Correct publicly",
+        "benefits": [
+          "It supports truth, accountability, and principled transparency in a concrete public disagreement decision.",
+          "It can create accuracy for everyone listening.",
+          "It gives the choice a stronger sense that clarity should not be sacrificed for comfort."
+        ],
+        "costs": [
+          "It weakens loyalty, harmony, and protection of relationships that also matters here.",
+          "It may put pressure on respectful social order.",
+          "It may damage trust with people close to the situation."
+        ]
+      },
+      {
+        "title": "Let it pass",
+        "benefits": [
+          "It protects loyalty, harmony, and protection of relationships in this public disagreement situation.",
+          "It keeps respectful social order safer and more predictable.",
+          "It avoids paying too much for truth, accountability, and principled transparency."
+        ],
+        "costs": [
+          "It may sacrifice truth, accountability, and principled transparency.",
+          "It can leave accuracy for everyone listening out of reach.",
+          "It may leave an important truth hidden."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I study a language every evening or relax after work?",
+    "options": [
+      {
+        "title": "Study the language",
+        "benefits": [
+          "It supports discipline, mastery, and long-term self-respect in a concrete language learning decision.",
+          "It can create steady fluency over time.",
+          "It gives the choice a stronger sense that future progress needs repeated effort."
+        ],
+        "costs": [
+          "It weakens comfort, ease, and immediate relief that also matters here.",
+          "It may put pressure on my evening comfort.",
+          "It will demand energy when comfort is available."
+        ]
+      },
+      {
+        "title": "Relax after work",
+        "benefits": [
+          "It protects comfort, ease, and immediate relief in this language learning situation.",
+          "It keeps my evening comfort safer and more predictable.",
+          "It avoids paying too much for discipline, mastery, and long-term self-respect."
+        ],
+        "costs": [
+          "It may sacrifice discipline, mastery, and long-term self-respect.",
+          "It can leave steady fluency over time out of reach.",
+          "It may leave the long-term goal underdeveloped."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I wake early for fitness training or sleep longer?",
+    "options": [
+      {
+        "title": "Train in the morning",
+        "benefits": [
+          "It supports discipline, mastery, and long-term self-respect in a concrete fitness routine decision.",
+          "It can create a stronger body and routine.",
+          "It gives the choice a stronger sense that future progress needs repeated effort."
+        ],
+        "costs": [
+          "It weakens comfort, ease, and immediate relief that also matters here.",
+          "It may put pressure on easy mornings.",
+          "It will demand energy when comfort is available."
+        ]
+      },
+      {
+        "title": "Sleep longer",
+        "benefits": [
+          "It protects comfort, ease, and immediate relief in this fitness routine situation.",
+          "It keeps easy mornings safer and more predictable.",
+          "It avoids paying too much for discipline, mastery, and long-term self-respect."
+        ],
+        "costs": [
+          "It may sacrifice discipline, mastery, and long-term self-respect.",
+          "It can leave a stronger body and routine out of reach.",
+          "It may leave the long-term goal underdeveloped."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I track every expense this month or spend without strict monitoring?",
+    "options": [
+      {
+        "title": "Track expenses",
+        "benefits": [
+          "It supports discipline, mastery, and long-term self-respect in a concrete personal budget decision.",
+          "It can create control over my money patterns.",
+          "It gives the choice a stronger sense that future progress needs repeated effort."
+        ],
+        "costs": [
+          "It weakens comfort, ease, and immediate relief that also matters here.",
+          "It may put pressure on spontaneous small pleasures.",
+          "It will demand energy when comfort is available."
+        ]
+      },
+      {
+        "title": "Spend freely",
+        "benefits": [
+          "It protects comfort, ease, and immediate relief in this personal budget situation.",
+          "It keeps spontaneous small pleasures safer and more predictable.",
+          "It avoids paying too much for discipline, mastery, and long-term self-respect."
+        ],
+        "costs": [
+          "It may sacrifice discipline, mastery, and long-term self-respect.",
+          "It can leave control over my money patterns out of reach.",
+          "It may leave the long-term goal underdeveloped."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I keep a strict sleep schedule or stay up for entertainment?",
+    "options": [
+      {
+        "title": "Keep the sleep schedule",
+        "benefits": [
+          "It supports discipline, mastery, and long-term self-respect in a concrete sleep hygiene decision.",
+          "It can create better energy in the long run.",
+          "It gives the choice a stronger sense that future progress needs repeated effort."
+        ],
+        "costs": [
+          "It weakens comfort, ease, and immediate relief that also matters here.",
+          "It may put pressure on late-night fun.",
+          "It will demand energy when comfort is available."
+        ]
+      },
+      {
+        "title": "Stay up late",
+        "benefits": [
+          "It protects comfort, ease, and immediate relief in this sleep hygiene situation.",
+          "It keeps late-night fun safer and more predictable.",
+          "It avoids paying too much for discipline, mastery, and long-term self-respect."
+        ],
+        "costs": [
+          "It may sacrifice discipline, mastery, and long-term self-respect.",
+          "It can leave better energy in the long run out of reach.",
+          "It may leave the long-term goal underdeveloped."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I meditate daily for three months or skip it when I feel busy?",
+    "options": [
+      {
+        "title": "Meditate daily",
+        "benefits": [
+          "It supports discipline, mastery, and long-term self-respect in a concrete mental practice decision.",
+          "It can create more stable attention.",
+          "It gives the choice a stronger sense that future progress needs repeated effort."
+        ],
+        "costs": [
+          "It weakens comfort, ease, and immediate relief that also matters here.",
+          "It may put pressure on a lighter daily schedule.",
+          "It will demand energy when comfort is available."
+        ]
+      },
+      {
+        "title": "Skip when busy",
+        "benefits": [
+          "It protects comfort, ease, and immediate relief in this mental practice situation.",
+          "It keeps a lighter daily schedule safer and more predictable.",
+          "It avoids paying too much for discipline, mastery, and long-term self-respect."
+        ],
+        "costs": [
+          "It may sacrifice discipline, mastery, and long-term self-respect.",
+          "It can leave more stable attention out of reach.",
+          "It may leave the long-term goal underdeveloped."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I practice piano scales every day or only play when it feels fun?",
+    "options": [
+      {
+        "title": "Practice scales",
+        "benefits": [
+          "It supports discipline, mastery, and long-term self-respect in a concrete music practice decision.",
+          "It can create real technical growth.",
+          "It gives the choice a stronger sense that future progress needs repeated effort."
+        ],
+        "costs": [
+          "It weakens comfort, ease, and immediate relief that also matters here.",
+          "It may put pressure on playful enjoyment.",
+          "It will demand energy when comfort is available."
+        ]
+      },
+      {
+        "title": "Play for fun",
+        "benefits": [
+          "It protects comfort, ease, and immediate relief in this music practice situation.",
+          "It keeps playful enjoyment safer and more predictable.",
+          "It avoids paying too much for discipline, mastery, and long-term self-respect."
+        ],
+        "costs": [
+          "It may sacrifice discipline, mastery, and long-term self-respect.",
+          "It can leave real technical growth out of reach.",
+          "It may leave the long-term goal underdeveloped."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I finish a coding side project or watch shows in the evening?",
+    "options": [
+      {
+        "title": "Finish the project",
+        "benefits": [
+          "It supports discipline, mastery, and long-term self-respect in a concrete coding project decision.",
+          "It can create a portfolio piece.",
+          "It gives the choice a stronger sense that future progress needs repeated effort."
+        ],
+        "costs": [
+          "It weakens comfort, ease, and immediate relief that also matters here.",
+          "It may put pressure on passive rest after work.",
+          "It will demand energy when comfort is available."
+        ]
+      },
+      {
+        "title": "Watch shows",
+        "benefits": [
+          "It protects comfort, ease, and immediate relief in this coding project situation.",
+          "It keeps passive rest after work safer and more predictable.",
+          "It avoids paying too much for discipline, mastery, and long-term self-respect."
+        ],
+        "costs": [
+          "It may sacrifice discipline, mastery, and long-term self-respect.",
+          "It can leave a portfolio piece out of reach.",
+          "It may leave the long-term goal underdeveloped."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I cook planned meals for the week or order food whenever I want?",
+    "options": [
+      {
+        "title": "Cook planned meals",
+        "benefits": [
+          "It supports discipline, mastery, and long-term self-respect in a concrete meal planning decision.",
+          "It can create better health and spending control.",
+          "It gives the choice a stronger sense that future progress needs repeated effort."
+        ],
+        "costs": [
+          "It weakens comfort, ease, and immediate relief that also matters here.",
+          "It may put pressure on convenient food choices.",
+          "It will demand energy when comfort is available."
+        ]
+      },
+      {
+        "title": "Order food freely",
+        "benefits": [
+          "It protects comfort, ease, and immediate relief in this meal planning situation.",
+          "It keeps convenient food choices safer and more predictable.",
+          "It avoids paying too much for discipline, mastery, and long-term self-respect."
+        ],
+        "costs": [
+          "It may sacrifice discipline, mastery, and long-term self-respect.",
+          "It can leave better health and spending control out of reach.",
+          "It may leave the long-term goal underdeveloped."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I declutter the apartment every weekend or ignore the mess and rest?",
+    "options": [
+      {
+        "title": "Declutter weekly",
+        "benefits": [
+          "It supports discipline, mastery, and long-term self-respect in a concrete home organization decision.",
+          "It can create a calmer living space.",
+          "It gives the choice a stronger sense that future progress needs repeated effort."
+        ],
+        "costs": [
+          "It weakens comfort, ease, and immediate relief that also matters here.",
+          "It may put pressure on rest without chores.",
+          "It will demand energy when comfort is available."
+        ]
+      },
+      {
+        "title": "Ignore the mess",
+        "benefits": [
+          "It protects comfort, ease, and immediate relief in this home organization situation.",
+          "It keeps rest without chores safer and more predictable.",
+          "It avoids paying too much for discipline, mastery, and long-term self-respect."
+        ],
+        "costs": [
+          "It may sacrifice discipline, mastery, and long-term self-respect.",
+          "It can leave a calmer living space out of reach.",
+          "It may leave the long-term goal underdeveloped."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I follow a difficult reading plan or read only light articles?",
+    "options": [
+      {
+        "title": "Follow the reading plan",
+        "benefits": [
+          "It supports discipline, mastery, and long-term self-respect in a concrete intellectual habit decision.",
+          "It can create deeper understanding over time.",
+          "It gives the choice a stronger sense that future progress needs repeated effort."
+        ],
+        "costs": [
+          "It weakens comfort, ease, and immediate relief that also matters here.",
+          "It may put pressure on easy mental entertainment.",
+          "It will demand energy when comfort is available."
+        ]
+      },
+      {
+        "title": "Read light articles",
+        "benefits": [
+          "It protects comfort, ease, and immediate relief in this intellectual habit situation.",
+          "It keeps easy mental entertainment safer and more predictable.",
+          "It avoids paying too much for discipline, mastery, and long-term self-respect."
+        ],
+        "costs": [
+          "It may sacrifice discipline, mastery, and long-term self-respect.",
+          "It can leave deeper understanding over time out of reach.",
+          "It may leave the long-term goal underdeveloped."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I choose a creative career or take the respected corporate path my family prefers?",
+    "options": [
+      {
+        "title": "Choose the creative career",
+        "benefits": [
+          "It supports autonomy, self-definition, and personal fit in a concrete career identity decision.",
+          "It can create work that fits my inner motives.",
+          "It gives the choice a stronger sense that my life should be recognizably mine."
+        ],
+        "costs": [
+          "It weakens approval, belonging, and social expectations that also matters here.",
+          "It may put pressure on family pride and approval.",
+          "It may create tension with people whose approval matters."
+        ]
+      },
+      {
+        "title": "Take the corporate path",
+        "benefits": [
+          "It protects approval, belonging, and social expectations in this career identity situation.",
+          "It keeps family pride and approval safer and more predictable.",
+          "It avoids paying too much for autonomy, self-definition, and personal fit."
+        ],
+        "costs": [
+          "It may sacrifice autonomy, self-definition, and personal fit.",
+          "It can leave work that fits my inner motives out of reach.",
+          "It may make me feel like I am living someone else's script."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I dress in a style that feels like me or dress conventionally for relatives?",
+    "options": [
+      {
+        "title": "Dress my way",
+        "benefits": [
+          "It supports autonomy, self-definition, and personal fit in a concrete personal style decision.",
+          "It can create visible self-expression.",
+          "It gives the choice a stronger sense that my life should be recognizably mine."
+        ],
+        "costs": [
+          "It weakens approval, belonging, and social expectations that also matters here.",
+          "It may put pressure on smooth family gatherings.",
+          "It may create tension with people whose approval matters."
+        ]
+      },
+      {
+        "title": "Dress conventionally",
+        "benefits": [
+          "It protects approval, belonging, and social expectations in this personal style situation.",
+          "It keeps smooth family gatherings safer and more predictable.",
+          "It avoids paying too much for autonomy, self-definition, and personal fit."
+        ],
+        "costs": [
+          "It may sacrifice autonomy, self-definition, and personal fit.",
+          "It can leave visible self-expression out of reach.",
+          "It may make me feel like I am living someone else's script."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I have a small wedding or hold the large celebration expected by relatives?",
+    "options": [
+      {
+        "title": "Have a small wedding",
+        "benefits": [
+          "It supports autonomy, self-definition, and personal fit in a concrete wedding planning decision.",
+          "It can create an intimate ceremony that fits us.",
+          "It gives the choice a stronger sense that my life should be recognizably mine."
+        ],
+        "costs": [
+          "It weakens approval, belonging, and social expectations that also matters here.",
+          "It may put pressure on relatives feeling honored.",
+          "It may create tension with people whose approval matters."
+        ]
+      },
+      {
+        "title": "Hold the large wedding",
+        "benefits": [
+          "It protects approval, belonging, and social expectations in this wedding planning situation.",
+          "It keeps relatives feeling honored safer and more predictable.",
+          "It avoids paying too much for autonomy, self-definition, and personal fit."
+        ],
+        "costs": [
+          "It may sacrifice autonomy, self-definition, and personal fit.",
+          "It can leave an intimate ceremony that fits us out of reach.",
+          "It may make me feel like I am living someone else's script."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I skip a ritual I no longer believe in or participate to please my family?",
+    "options": [
+      {
+        "title": "Skip the ritual",
+        "benefits": [
+          "It supports autonomy, self-definition, and personal fit in a concrete religious practice decision.",
+          "It can create honesty about my beliefs.",
+          "It gives the choice a stronger sense that my life should be recognizably mine."
+        ],
+        "costs": [
+          "It weakens approval, belonging, and social expectations that also matters here.",
+          "It may put pressure on family continuity.",
+          "It may create tension with people whose approval matters."
+        ]
+      },
+      {
+        "title": "Participate in the ritual",
+        "benefits": [
+          "It protects approval, belonging, and social expectations in this religious practice situation.",
+          "It keeps family continuity safer and more predictable.",
+          "It avoids paying too much for autonomy, self-definition, and personal fit."
+        ],
+        "costs": [
+          "It may sacrifice autonomy, self-definition, and personal fit.",
+          "It can leave honesty about my beliefs out of reach.",
+          "It may make me feel like I am living someone else's script."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I raise my child with my own rules or follow relatives' parenting advice?",
+    "options": [
+      {
+        "title": "Use my parenting rules",
+        "benefits": [
+          "It supports autonomy, self-definition, and personal fit in a concrete parenting norms decision.",
+          "It can create a parenting style I trust.",
+          "It gives the choice a stronger sense that my life should be recognizably mine."
+        ],
+        "costs": [
+          "It weakens approval, belonging, and social expectations that also matters here.",
+          "It may put pressure on less criticism from relatives.",
+          "It may create tension with people whose approval matters."
+        ]
+      },
+      {
+        "title": "Follow relatives' advice",
+        "benefits": [
+          "It protects approval, belonging, and social expectations in this parenting norms situation.",
+          "It keeps less criticism from relatives safer and more predictable.",
+          "It avoids paying too much for autonomy, self-definition, and personal fit."
+        ],
+        "costs": [
+          "It may sacrifice autonomy, self-definition, and personal fit.",
+          "It can leave a parenting style I trust out of reach.",
+          "It may make me feel like I am living someone else's script."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I stop posting online or keep posting because friends expect updates?",
+    "options": [
+      {
+        "title": "Stop posting",
+        "benefits": [
+          "It supports autonomy, self-definition, and personal fit in a concrete online presence decision.",
+          "It can create a quieter personal boundary.",
+          "It gives the choice a stronger sense that my life should be recognizably mine."
+        ],
+        "costs": [
+          "It weakens approval, belonging, and social expectations that also matters here.",
+          "It may put pressure on social connection and visibility.",
+          "It may create tension with people whose approval matters."
+        ]
+      },
+      {
+        "title": "Keep posting",
+        "benefits": [
+          "It protects approval, belonging, and social expectations in this online presence situation.",
+          "It keeps social connection and visibility safer and more predictable.",
+          "It avoids paying too much for autonomy, self-definition, and personal fit."
+        ],
+        "costs": [
+          "It may sacrifice autonomy, self-definition, and personal fit.",
+          "It can leave a quieter personal boundary out of reach.",
+          "It may make me feel like I am living someone else's script."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I date someone my family may not approve of or choose a socially easier relationship?",
+    "options": [
+      {
+        "title": "Date the person I choose",
+        "benefits": [
+          "It supports autonomy, self-definition, and personal fit in a concrete relationship choice decision.",
+          "It can create a relationship based on my own attraction.",
+          "It gives the choice a stronger sense that my life should be recognizably mine."
+        ],
+        "costs": [
+          "It weakens approval, belonging, and social expectations that also matters here.",
+          "It may put pressure on social acceptance.",
+          "It may create tension with people whose approval matters."
+        ]
+      },
+      {
+        "title": "Choose the easier match",
+        "benefits": [
+          "It protects approval, belonging, and social expectations in this relationship choice situation.",
+          "It keeps social acceptance safer and more predictable.",
+          "It avoids paying too much for autonomy, self-definition, and personal fit."
+        ],
+        "costs": [
+          "It may sacrifice autonomy, self-definition, and personal fit.",
+          "It can leave a relationship based on my own attraction out of reach.",
+          "It may make me feel like I am living someone else's script."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I study philosophy or study finance because everyone says it is practical?",
+    "options": [
+      {
+        "title": "Study philosophy",
+        "benefits": [
+          "It supports autonomy, self-definition, and personal fit in a concrete university major decision.",
+          "It can create intellectual work that feels alive.",
+          "It gives the choice a stronger sense that my life should be recognizably mine."
+        ],
+        "costs": [
+          "It weakens approval, belonging, and social expectations that also matters here.",
+          "It may put pressure on approval for a practical path.",
+          "It may create tension with people whose approval matters."
+        ]
+      },
+      {
+        "title": "Study finance",
+        "benefits": [
+          "It protects approval, belonging, and social expectations in this university major situation.",
+          "It keeps approval for a practical path safer and more predictable.",
+          "It avoids paying too much for autonomy, self-definition, and personal fit."
+        ],
+        "costs": [
+          "It may sacrifice autonomy, self-definition, and personal fit.",
+          "It can leave intellectual work that feels alive out of reach.",
+          "It may make me feel like I am living someone else's script."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I live alone in a modest studio or share a family apartment as expected?",
+    "options": [
+      {
+        "title": "Live alone",
+        "benefits": [
+          "It supports autonomy, self-definition, and personal fit in a concrete housing independence decision.",
+          "It can create daily independence.",
+          "It gives the choice a stronger sense that my life should be recognizably mine."
+        ],
+        "costs": [
+          "It weakens approval, belonging, and social expectations that also matters here.",
+          "It may put pressure on family closeness and approval.",
+          "It may create tension with people whose approval matters."
+        ]
+      },
+      {
+        "title": "Share the family apartment",
+        "benefits": [
+          "It protects approval, belonging, and social expectations in this housing independence situation.",
+          "It keeps family closeness and approval safer and more predictable.",
+          "It avoids paying too much for autonomy, self-definition, and personal fit."
+        ],
+        "costs": [
+          "It may sacrifice autonomy, self-definition, and personal fit.",
+          "It can leave daily independence out of reach.",
+          "It may make me feel like I am living someone else's script."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I spend a holiday quietly by myself or join the large family gathering?",
+    "options": [
+      {
+        "title": "Spend it quietly",
+        "benefits": [
+          "It supports autonomy, self-definition, and personal fit in a concrete holiday expectations decision.",
+          "It can create a holiday that restores me.",
+          "It gives the choice a stronger sense that my life should be recognizably mine."
+        ],
+        "costs": [
+          "It weakens approval, belonging, and social expectations that also matters here.",
+          "It may put pressure on family tradition and inclusion.",
+          "It may create tension with people whose approval matters."
+        ]
+      },
+      {
+        "title": "Join the gathering",
+        "benefits": [
+          "It protects approval, belonging, and social expectations in this holiday expectations situation.",
+          "It keeps family tradition and inclusion safer and more predictable.",
+          "It avoids paying too much for autonomy, self-definition, and personal fit."
+        ],
+        "costs": [
+          "It may sacrifice autonomy, self-definition, and personal fit.",
+          "It can leave a holiday that restores me out of reach.",
+          "It may make me feel like I am living someone else's script."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I redesign the app navigation or keep the familiar interface?",
+    "options": [
+      {
+        "title": "Redesign navigation",
+        "benefits": [
+          "It supports change, experimentation, and adaptation in a concrete software design decision.",
+          "It can create a cleaner product for new users.",
+          "It gives the choice a stronger sense that systems should evolve when the context changes."
+        ],
+        "costs": [
+          "It weakens tradition, continuity, and trusted practice that also matters here.",
+          "It may put pressure on current users' familiarity.",
+          "It may break something people already trust."
+        ]
+      },
+      {
+        "title": "Keep the interface",
+        "benefits": [
+          "It protects tradition, continuity, and trusted practice in this software design situation.",
+          "It keeps current users' familiarity safer and more predictable.",
+          "It avoids paying too much for change, experimentation, and adaptation."
+        ],
+        "costs": [
+          "It may sacrifice change, experimentation, and adaptation.",
+          "It can leave a cleaner product for new users out of reach.",
+          "It may let the old way become stale or ineffective."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I change a family recipe or cook it exactly as my grandmother did?",
+    "options": [
+      {
+        "title": "Change the recipe",
+        "benefits": [
+          "It supports change, experimentation, and adaptation in a concrete family cooking decision.",
+          "It can create a dish that fits current tastes.",
+          "It gives the choice a stronger sense that systems should evolve when the context changes."
+        ],
+        "costs": [
+          "It weakens tradition, continuity, and trusted practice that also matters here.",
+          "It may put pressure on family memory.",
+          "It may break something people already trust."
+        ]
+      },
+      {
+        "title": "Keep the recipe",
+        "benefits": [
+          "It protects tradition, continuity, and trusted practice in this family cooking situation.",
+          "It keeps family memory safer and more predictable.",
+          "It avoids paying too much for change, experimentation, and adaptation."
+        ],
+        "costs": [
+          "It may sacrifice change, experimentation, and adaptation.",
+          "It can leave a dish that fits current tastes out of reach.",
+          "It may let the old way become stale or ineffective."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I introduce project-based classes or keep the traditional lecture format?",
+    "options": [
+      {
+        "title": "Introduce projects",
+        "benefits": [
+          "It supports change, experimentation, and adaptation in a concrete education method decision.",
+          "It can create more active learning.",
+          "It gives the choice a stronger sense that systems should evolve when the context changes."
+        ],
+        "costs": [
+          "It weakens tradition, continuity, and trusted practice that also matters here.",
+          "It may put pressure on a proven teaching rhythm.",
+          "It may break something people already trust."
+        ]
+      },
+      {
+        "title": "Keep lectures",
+        "benefits": [
+          "It protects tradition, continuity, and trusted practice in this education method situation.",
+          "It keeps a proven teaching rhythm safer and more predictable.",
+          "It avoids paying too much for change, experimentation, and adaptation."
+        ],
+        "costs": [
+          "It may sacrifice change, experimentation, and adaptation.",
+          "It can leave more active learning out of reach.",
+          "It may let the old way become stale or ineffective."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I renovate an old shop or preserve its original look?",
+    "options": [
+      {
+        "title": "Renovate the shop",
+        "benefits": [
+          "It supports change, experimentation, and adaptation in a concrete small business design decision.",
+          "It can create a fresher customer experience.",
+          "It gives the choice a stronger sense that systems should evolve when the context changes."
+        ],
+        "costs": [
+          "It weakens tradition, continuity, and trusted practice that also matters here.",
+          "It may put pressure on the shop's local character.",
+          "It may break something people already trust."
+        ]
+      },
+      {
+        "title": "Preserve the look",
+        "benefits": [
+          "It protects tradition, continuity, and trusted practice in this small business design situation.",
+          "It keeps the shop's local character safer and more predictable.",
+          "It avoids paying too much for change, experimentation, and adaptation."
+        ],
+        "costs": [
+          "It may sacrifice change, experimentation, and adaptation.",
+          "It can leave a fresher customer experience out of reach.",
+          "It may let the old way become stale or ineffective."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I make a ceremony informal or follow the formal tradition?",
+    "options": [
+      {
+        "title": "Make it informal",
+        "benefits": [
+          "It supports change, experimentation, and adaptation in a concrete ceremony planning decision.",
+          "It can create a more honest shared mood.",
+          "It gives the choice a stronger sense that systems should evolve when the context changes."
+        ],
+        "costs": [
+          "It weakens tradition, continuity, and trusted practice that also matters here.",
+          "It may put pressure on the dignity of the ritual.",
+          "It may break something people already trust."
+        ]
+      },
+      {
+        "title": "Follow tradition",
+        "benefits": [
+          "It protects tradition, continuity, and trusted practice in this ceremony planning situation.",
+          "It keeps the dignity of the ritual safer and more predictable.",
+          "It avoids paying too much for change, experimentation, and adaptation."
+        ],
+        "costs": [
+          "It may sacrifice change, experimentation, and adaptation.",
+          "It can leave a more honest shared mood out of reach.",
+          "It may let the old way become stale or ineffective."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I try regenerative farming methods or keep the familiar conventional method?",
+    "options": [
+      {
+        "title": "Try new farming methods",
+        "benefits": [
+          "It supports change, experimentation, and adaptation in a concrete farming decision.",
+          "It can create learning that may improve the land.",
+          "It gives the choice a stronger sense that systems should evolve when the context changes."
+        ],
+        "costs": [
+          "It weakens tradition, continuity, and trusted practice that also matters here.",
+          "It may put pressure on predictable harvest routines.",
+          "It may break something people already trust."
+        ]
+      },
+      {
+        "title": "Keep the familiar method",
+        "benefits": [
+          "It protects tradition, continuity, and trusted practice in this farming situation.",
+          "It keeps predictable harvest routines safer and more predictable.",
+          "It avoids paying too much for change, experimentation, and adaptation."
+        ],
+        "costs": [
+          "It may sacrifice change, experimentation, and adaptation.",
+          "It can leave learning that may improve the land out of reach.",
+          "It may let the old way become stale or ineffective."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I replace weekly status meetings with async updates or keep the old meeting routine?",
+    "options": [
+      {
+        "title": "Use async updates",
+        "benefits": [
+          "It supports change, experimentation, and adaptation in a concrete team process decision.",
+          "It can create less wasted coordination time.",
+          "It gives the choice a stronger sense that systems should evolve when the context changes."
+        ],
+        "costs": [
+          "It weakens tradition, continuity, and trusted practice that also matters here.",
+          "It may put pressure on a shared communication habit.",
+          "It may break something people already trust."
+        ]
+      },
+      {
+        "title": "Keep meetings",
+        "benefits": [
+          "It protects tradition, continuity, and trusted practice in this team process situation.",
+          "It keeps a shared communication habit safer and more predictable.",
+          "It avoids paying too much for change, experimentation, and adaptation."
+        ],
+        "costs": [
+          "It may sacrifice change, experimentation, and adaptation.",
+          "It can leave less wasted coordination time out of reach.",
+          "It may let the old way become stale or ineffective."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I redesign a historic park for accessibility or preserve the original layout?",
+    "options": [
+      {
+        "title": "Redesign the park",
+        "benefits": [
+          "It supports change, experimentation, and adaptation in a concrete urban planning decision.",
+          "It can create access for more residents.",
+          "It gives the choice a stronger sense that systems should evolve when the context changes."
+        ],
+        "costs": [
+          "It weakens tradition, continuity, and trusted practice that also matters here.",
+          "It may put pressure on historical continuity.",
+          "It may break something people already trust."
+        ]
+      },
+      {
+        "title": "Preserve the layout",
+        "benefits": [
+          "It protects tradition, continuity, and trusted practice in this urban planning situation.",
+          "It keeps historical continuity safer and more predictable.",
+          "It avoids paying too much for change, experimentation, and adaptation."
+        ],
+        "costs": [
+          "It may sacrifice change, experimentation, and adaptation.",
+          "It can leave access for more residents out of reach.",
+          "It may let the old way become stale or ineffective."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I modernize the community group's rules or keep the rules that founders wrote?",
+    "options": [
+      {
+        "title": "Modernize the rules",
+        "benefits": [
+          "It supports change, experimentation, and adaptation in a concrete community governance decision.",
+          "It can create fairness for current members.",
+          "It gives the choice a stronger sense that systems should evolve when the context changes."
+        ],
+        "costs": [
+          "It weakens tradition, continuity, and trusted practice that also matters here.",
+          "It may put pressure on respect for the founders.",
+          "It may break something people already trust."
+        ]
+      },
+      {
+        "title": "Keep founder rules",
+        "benefits": [
+          "It protects tradition, continuity, and trusted practice in this community governance situation.",
+          "It keeps respect for the founders safer and more predictable.",
+          "It avoids paying too much for change, experimentation, and adaptation."
+        ],
+        "costs": [
+          "It may sacrifice change, experimentation, and adaptation.",
+          "It can leave fairness for current members out of reach.",
+          "It may let the old way become stale or ineffective."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I move a local newspaper online-first or keep the printed paper central?",
+    "options": [
+      {
+        "title": "Go online-first",
+        "benefits": [
+          "It supports change, experimentation, and adaptation in a concrete local media decision.",
+          "It can create reach among younger readers.",
+          "It gives the choice a stronger sense that systems should evolve when the context changes."
+        ],
+        "costs": [
+          "It weakens tradition, continuity, and trusted practice that also matters here.",
+          "It may put pressure on the ritual of the printed paper.",
+          "It may break something people already trust."
+        ]
+      },
+      {
+        "title": "Keep print central",
+        "benefits": [
+          "It protects tradition, continuity, and trusted practice in this local media situation.",
+          "It keeps the ritual of the printed paper safer and more predictable.",
+          "It avoids paying too much for change, experimentation, and adaptation."
+        ],
+        "costs": [
+          "It may sacrifice change, experimentation, and adaptation.",
+          "It can leave reach among younger readers out of reach.",
+          "It may let the old way become stale or ineffective."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I enforce the late penalty or accept the assignment because of a family emergency?",
+    "options": [
+      {
+        "title": "Enforce the penalty",
+        "benefits": [
+          "It supports fairness, consistency, and equal rules in a concrete school deadline decision.",
+          "It can create a consistent grading standard.",
+          "It gives the choice a stronger sense that rules lose meaning when they bend too easily."
+        ],
+        "costs": [
+          "It weakens mercy, context, and human exception that also matters here.",
+          "It may put pressure on the student's difficult week.",
+          "It may feel cold toward a person under pressure."
+        ]
+      },
+      {
+        "title": "Accept the assignment",
+        "benefits": [
+          "It protects mercy, context, and human exception in this school deadline situation.",
+          "It keeps the student's difficult week safer and more predictable.",
+          "It avoids paying too much for fairness, consistency, and equal rules."
+        ],
+        "costs": [
+          "It may sacrifice fairness, consistency, and equal rules.",
+          "It can leave a consistent grading standard out of reach.",
+          "It may weaken trust that the rules are equal."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I assign shifts by the written rotation or change the schedule for one employee's childcare issue?",
+    "options": [
+      {
+        "title": "Use the rotation",
+        "benefits": [
+          "It supports fairness, consistency, and equal rules in a concrete work shifts decision.",
+          "It can create predictability for the whole staff.",
+          "It gives the choice a stronger sense that rules lose meaning when they bend too easily."
+        ],
+        "costs": [
+          "It weakens mercy, context, and human exception that also matters here.",
+          "It may put pressure on a parent's urgent constraint.",
+          "It may feel cold toward a person under pressure."
+        ]
+      },
+      {
+        "title": "Make an exception",
+        "benefits": [
+          "It protects mercy, context, and human exception in this work shifts situation.",
+          "It keeps a parent's urgent constraint safer and more predictable.",
+          "It avoids paying too much for fairness, consistency, and equal rules."
+        ],
+        "costs": [
+          "It may sacrifice fairness, consistency, and equal rules.",
+          "It can leave predictability for the whole staff out of reach.",
+          "It may weaken trust that the rules are equal."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I charge the late rent fee or waive it after a tenant's hospital stay?",
+    "options": [
+      {
+        "title": "Charge the fee",
+        "benefits": [
+          "It supports fairness, consistency, and equal rules in a concrete rental payment decision.",
+          "It can create the lease terms staying clear.",
+          "It gives the choice a stronger sense that rules lose meaning when they bend too easily."
+        ],
+        "costs": [
+          "It weakens mercy, context, and human exception that also matters here.",
+          "It may put pressure on the tenant's recovery.",
+          "It may feel cold toward a person under pressure."
+        ]
+      },
+      {
+        "title": "Waive the fee",
+        "benefits": [
+          "It protects mercy, context, and human exception in this rental payment situation.",
+          "It keeps the tenant's recovery safer and more predictable.",
+          "It avoids paying too much for fairness, consistency, and equal rules."
+        ],
+        "costs": [
+          "It may sacrifice fairness, consistency, and equal rules.",
+          "It can leave the lease terms staying clear out of reach.",
+          "It may weaken trust that the rules are equal."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I disqualify a contestant for missing a rule or allow them to continue after a misunderstanding?",
+    "options": [
+      {
+        "title": "Disqualify the contestant",
+        "benefits": [
+          "It supports fairness, consistency, and equal rules in a concrete competition rules decision.",
+          "It can create respect for every other contestant.",
+          "It gives the choice a stronger sense that rules lose meaning when they bend too easily."
+        ],
+        "costs": [
+          "It weakens mercy, context, and human exception that also matters here.",
+          "It may put pressure on an honest misunderstanding.",
+          "It may feel cold toward a person under pressure."
+        ]
+      },
+      {
+        "title": "Let them continue",
+        "benefits": [
+          "It protects mercy, context, and human exception in this competition rules situation.",
+          "It keeps an honest misunderstanding safer and more predictable.",
+          "It avoids paying too much for fairness, consistency, and equal rules."
+        ],
+        "costs": [
+          "It may sacrifice fairness, consistency, and equal rules.",
+          "It can leave respect for every other contestant out of reach.",
+          "It may weaken trust that the rules are equal."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I apply the same chore rule to both children or excuse one child after a hard school day?",
+    "options": [
+      {
+        "title": "Apply the same rule",
+        "benefits": [
+          "It supports fairness, consistency, and equal rules in a concrete family chores decision.",
+          "It can create clear expectations at home.",
+          "It gives the choice a stronger sense that rules lose meaning when they bend too easily."
+        ],
+        "costs": [
+          "It weakens mercy, context, and human exception that also matters here.",
+          "It may put pressure on a child's emotional state.",
+          "It may feel cold toward a person under pressure."
+        ]
+      },
+      {
+        "title": "Excuse one child",
+        "benefits": [
+          "It protects mercy, context, and human exception in this family chores situation.",
+          "It keeps a child's emotional state safer and more predictable.",
+          "It avoids paying too much for fairness, consistency, and equal rules."
+        ],
+        "costs": [
+          "It may sacrifice fairness, consistency, and equal rules.",
+          "It can leave clear expectations at home out of reach.",
+          "It may weaken trust that the rules are equal."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I pay the parking ticket or appeal it because the sign was hidden?",
+    "options": [
+      {
+        "title": "Pay the ticket",
+        "benefits": [
+          "It supports fairness, consistency, and equal rules in a concrete parking fine decision.",
+          "It can create acceptance of public rules.",
+          "It gives the choice a stronger sense that rules lose meaning when they bend too easily."
+        ],
+        "costs": [
+          "It weakens mercy, context, and human exception that also matters here.",
+          "It may put pressure on a confusing situation.",
+          "It may feel cold toward a person under pressure."
+        ]
+      },
+      {
+        "title": "Appeal the ticket",
+        "benefits": [
+          "It protects mercy, context, and human exception in this parking fine situation.",
+          "It keeps a confusing situation safer and more predictable.",
+          "It avoids paying too much for fairness, consistency, and equal rules."
+        ],
+        "costs": [
+          "It may sacrifice fairness, consistency, and equal rules.",
+          "It can leave acceptance of public rules out of reach.",
+          "It may weaken trust that the rules are equal."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I award a scholarship by score only or consider the applicant's hardship?",
+    "options": [
+      {
+        "title": "Use score only",
+        "benefits": [
+          "It supports fairness, consistency, and equal rules in a concrete scholarship selection decision.",
+          "It can create a transparent ranking.",
+          "It gives the choice a stronger sense that rules lose meaning when they bend too easily."
+        ],
+        "costs": [
+          "It weakens mercy, context, and human exception that also matters here.",
+          "It may put pressure on barriers the applicant faced.",
+          "It may feel cold toward a person under pressure."
+        ]
+      },
+      {
+        "title": "Consider hardship",
+        "benefits": [
+          "It protects mercy, context, and human exception in this scholarship selection situation.",
+          "It keeps barriers the applicant faced safer and more predictable.",
+          "It avoids paying too much for fairness, consistency, and equal rules."
+        ],
+        "costs": [
+          "It may sacrifice fairness, consistency, and equal rules.",
+          "It can leave a transparent ranking out of reach.",
+          "It may weaken trust that the rules are equal."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I deny a refund after the deadline or refund someone who missed it during a crisis?",
+    "options": [
+      {
+        "title": "Deny the refund",
+        "benefits": [
+          "It supports fairness, consistency, and equal rules in a concrete refund policy decision.",
+          "It can create a policy that remains enforceable.",
+          "It gives the choice a stronger sense that rules lose meaning when they bend too easily."
+        ],
+        "costs": [
+          "It weakens mercy, context, and human exception that also matters here.",
+          "It may put pressure on a customer's crisis.",
+          "It may feel cold toward a person under pressure."
+        ]
+      },
+      {
+        "title": "Grant the refund",
+        "benefits": [
+          "It protects mercy, context, and human exception in this refund policy situation.",
+          "It keeps a customer's crisis safer and more predictable.",
+          "It avoids paying too much for fairness, consistency, and equal rules."
+        ],
+        "costs": [
+          "It may sacrifice fairness, consistency, and equal rules.",
+          "It can leave a policy that remains enforceable out of reach.",
+          "It may weaken trust that the rules are equal."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I choose players strictly by trial scores or include someone recovering from illness?",
+    "options": [
+      {
+        "title": "Use trial scores",
+        "benefits": [
+          "It supports fairness, consistency, and equal rules in a concrete team selection decision.",
+          "It can create merit-based selection.",
+          "It gives the choice a stronger sense that rules lose meaning when they bend too easily."
+        ],
+        "costs": [
+          "It weakens mercy, context, and human exception that also matters here.",
+          "It may put pressure on the player's temporary setback.",
+          "It may feel cold toward a person under pressure."
+        ]
+      },
+      {
+        "title": "Include the recovering player",
+        "benefits": [
+          "It protects mercy, context, and human exception in this team selection situation.",
+          "It keeps the player's temporary setback safer and more predictable.",
+          "It avoids paying too much for fairness, consistency, and equal rules."
+        ],
+        "costs": [
+          "It may sacrifice fairness, consistency, and equal rules.",
+          "It can leave merit-based selection out of reach.",
+          "It may weaken trust that the rules are equal."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I keep the queue order or let an exhausted parent go first?",
+    "options": [
+      {
+        "title": "Keep queue order",
+        "benefits": [
+          "It supports fairness, consistency, and equal rules in a concrete public queue decision.",
+          "It can create respect for everyone waiting.",
+          "It gives the choice a stronger sense that rules lose meaning when they bend too easily."
+        ],
+        "costs": [
+          "It weakens mercy, context, and human exception that also matters here.",
+          "It may put pressure on a visible human need.",
+          "It may feel cold toward a person under pressure."
+        ]
+      },
+      {
+        "title": "Let the parent go first",
+        "benefits": [
+          "It protects mercy, context, and human exception in this public queue situation.",
+          "It keeps a visible human need safer and more predictable.",
+          "It avoids paying too much for fairness, consistency, and equal rules."
+        ],
+        "costs": [
+          "It may sacrifice fairness, consistency, and equal rules.",
+          "It can leave respect for everyone waiting out of reach.",
+          "It may weaken trust that the rules are equal."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I keep my diagnosis private or tell my family what is happening?",
+    "options": [
+      {
+        "title": "Keep it private",
+        "benefits": [
+          "It supports privacy, control, and personal boundaries in a concrete medical disclosure decision.",
+          "It can create control over a vulnerable fact.",
+          "It gives the choice a stronger sense that not everything important must be shared."
+        ],
+        "costs": [
+          "It weakens openness, trust, and accountability that also matters here.",
+          "It may put pressure on family trust and support.",
+          "It may make others feel excluded or suspicious."
+        ]
+      },
+      {
+        "title": "Tell the family",
+        "benefits": [
+          "It protects openness, trust, and accountability in this medical disclosure situation.",
+          "It keeps family trust and support safer and more predictable.",
+          "It avoids paying too much for privacy, control, and personal boundaries."
+        ],
+        "costs": [
+          "It may sacrifice privacy, control, and personal boundaries.",
+          "It can leave control over a vulnerable fact out of reach.",
+          "It may expose more of me than feels safe."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I keep my salary private or share it with coworkers for pay transparency?",
+    "options": [
+      {
+        "title": "Keep salary private",
+        "benefits": [
+          "It supports privacy, control, and personal boundaries in a concrete salary transparency decision.",
+          "It can create control over financial information.",
+          "It gives the choice a stronger sense that not everything important must be shared."
+        ],
+        "costs": [
+          "It weakens openness, trust, and accountability that also matters here.",
+          "It may put pressure on fair pay conversations.",
+          "It may make others feel excluded or suspicious."
+        ]
+      },
+      {
+        "title": "Share salary",
+        "benefits": [
+          "It protects openness, trust, and accountability in this salary transparency situation.",
+          "It keeps fair pay conversations safer and more predictable.",
+          "It avoids paying too much for privacy, control, and personal boundaries."
+        ],
+        "costs": [
+          "It may sacrifice privacy, control, and personal boundaries.",
+          "It can leave control over financial information out of reach.",
+          "It may expose more of me than feels safe."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I keep my journal locked or show parts of it to my partner?",
+    "options": [
+      {
+        "title": "Keep the journal private",
+        "benefits": [
+          "It supports privacy, control, and personal boundaries in a concrete personal journal decision.",
+          "It can create an inner space that is only mine.",
+          "It gives the choice a stronger sense that not everything important must be shared."
+        ],
+        "costs": [
+          "It weakens openness, trust, and accountability that also matters here.",
+          "It may put pressure on deeper emotional closeness.",
+          "It may make others feel excluded or suspicious."
+        ]
+      },
+      {
+        "title": "Share parts of it",
+        "benefits": [
+          "It protects openness, trust, and accountability in this personal journal situation.",
+          "It keeps deeper emotional closeness safer and more predictable.",
+          "It avoids paying too much for privacy, control, and personal boundaries."
+        ],
+        "costs": [
+          "It may sacrifice privacy, control, and personal boundaries.",
+          "It can leave an inner space that is only mine out of reach.",
+          "It may expose more of me than feels safe."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I keep some friendships separate from my relationship or introduce everyone to my partner?",
+    "options": [
+      {
+        "title": "Keep friendships separate",
+        "benefits": [
+          "It supports privacy, control, and personal boundaries in a concrete relationship boundaries decision.",
+          "It can create independent social space.",
+          "It gives the choice a stronger sense that not everything important must be shared."
+        ],
+        "costs": [
+          "It weakens openness, trust, and accountability that also matters here.",
+          "It may put pressure on shared trust with my partner.",
+          "It may make others feel excluded or suspicious."
+        ]
+      },
+      {
+        "title": "Introduce everyone",
+        "benefits": [
+          "It protects openness, trust, and accountability in this relationship boundaries situation.",
+          "It keeps shared trust with my partner safer and more predictable.",
+          "It avoids paying too much for privacy, control, and personal boundaries."
+        ],
+        "costs": [
+          "It may sacrifice privacy, control, and personal boundaries.",
+          "It can leave independent social space out of reach.",
+          "It may expose more of me than feels safe."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I turn off location sharing or keep it on for my family's peace of mind?",
+    "options": [
+      {
+        "title": "Turn off location sharing",
+        "benefits": [
+          "It supports privacy, control, and personal boundaries in a concrete location tracking decision.",
+          "It can create freedom from constant visibility.",
+          "It gives the choice a stronger sense that not everything important must be shared."
+        ],
+        "costs": [
+          "It weakens openness, trust, and accountability that also matters here.",
+          "It may put pressure on family reassurance.",
+          "It may make others feel excluded or suspicious."
+        ]
+      },
+      {
+        "title": "Keep sharing location",
+        "benefits": [
+          "It protects openness, trust, and accountability in this location tracking situation.",
+          "It keeps family reassurance safer and more predictable.",
+          "It avoids paying too much for privacy, control, and personal boundaries."
+        ],
+        "costs": [
+          "It may sacrifice privacy, control, and personal boundaries.",
+          "It can leave freedom from constant visibility out of reach.",
+          "It may expose more of me than feels safe."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I minimize user data collection or collect more data to improve the product?",
+    "options": [
+      {
+        "title": "Minimize data collection",
+        "benefits": [
+          "It supports privacy, control, and personal boundaries in a concrete product analytics decision.",
+          "It can create stronger respect for users' boundaries.",
+          "It gives the choice a stronger sense that not everything important must be shared."
+        ],
+        "costs": [
+          "It weakens openness, trust, and accountability that also matters here.",
+          "It may put pressure on product learning and accountability.",
+          "It may make others feel excluded or suspicious."
+        ]
+      },
+      {
+        "title": "Collect more data",
+        "benefits": [
+          "It protects openness, trust, and accountability in this product analytics situation.",
+          "It keeps product learning and accountability safer and more predictable.",
+          "It avoids paying too much for privacy, control, and personal boundaries."
+        ],
+        "costs": [
+          "It may sacrifice privacy, control, and personal boundaries.",
+          "It can leave stronger respect for users' boundaries out of reach.",
+          "It may expose more of me than feels safe."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I keep therapy topics private or tell a close friend what I am working through?",
+    "options": [
+      {
+        "title": "Keep therapy private",
+        "benefits": [
+          "It supports privacy, control, and personal boundaries in a concrete therapy disclosure decision.",
+          "It can create protected emotional processing.",
+          "It gives the choice a stronger sense that not everything important must be shared."
+        ],
+        "costs": [
+          "It weakens openness, trust, and accountability that also matters here.",
+          "It may put pressure on support from a trusted person.",
+          "It may make others feel excluded or suspicious."
+        ]
+      },
+      {
+        "title": "Tell the friend",
+        "benefits": [
+          "It protects openness, trust, and accountability in this therapy disclosure situation.",
+          "It keeps support from a trusted person safer and more predictable.",
+          "It avoids paying too much for privacy, control, and personal boundaries."
+        ],
+        "costs": [
+          "It may sacrifice privacy, control, and personal boundaries.",
+          "It can leave protected emotional processing out of reach.",
+          "It may expose more of me than feels safe."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I hide details on my work calendar or make my calendar transparent to the team?",
+    "options": [
+      {
+        "title": "Hide calendar details",
+        "benefits": [
+          "It supports privacy, control, and personal boundaries in a concrete work calendar decision.",
+          "It can create control over my attention.",
+          "It gives the choice a stronger sense that not everything important must be shared."
+        ],
+        "costs": [
+          "It weakens openness, trust, and accountability that also matters here.",
+          "It may put pressure on better team coordination.",
+          "It may make others feel excluded or suspicious."
+        ]
+      },
+      {
+        "title": "Share calendar details",
+        "benefits": [
+          "It protects openness, trust, and accountability in this work calendar situation.",
+          "It keeps better team coordination safer and more predictable.",
+          "It avoids paying too much for privacy, control, and personal boundaries."
+        ],
+        "costs": [
+          "It may sacrifice privacy, control, and personal boundaries.",
+          "It can leave control over my attention out of reach.",
+          "It may expose more of me than feels safe."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I keep my debt private or tell my partner the full picture?",
+    "options": [
+      {
+        "title": "Keep debt private",
+        "benefits": [
+          "It supports privacy, control, and personal boundaries in a concrete family finances decision.",
+          "It can create time to handle shame privately.",
+          "It gives the choice a stronger sense that not everything important must be shared."
+        ],
+        "costs": [
+          "It weakens openness, trust, and accountability that also matters here.",
+          "It may put pressure on honest shared planning.",
+          "It may make others feel excluded or suspicious."
+        ]
+      },
+      {
+        "title": "Tell the full picture",
+        "benefits": [
+          "It protects openness, trust, and accountability in this family finances situation.",
+          "It keeps honest shared planning safer and more predictable.",
+          "It avoids paying too much for privacy, control, and personal boundaries."
+        ],
+        "costs": [
+          "It may sacrifice privacy, control, and personal boundaries.",
+          "It can leave time to handle shame privately out of reach.",
+          "It may expose more of me than feels safe."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I give anonymous feedback or sign my name for accountability?",
+    "options": [
+      {
+        "title": "Give anonymous feedback",
+        "benefits": [
+          "It supports privacy, control, and personal boundaries in a concrete workplace feedback decision.",
+          "It can create protection from retaliation.",
+          "It gives the choice a stronger sense that not everything important must be shared."
+        ],
+        "costs": [
+          "It weakens openness, trust, and accountability that also matters here.",
+          "It may put pressure on trust in the feedback process.",
+          "It may make others feel excluded or suspicious."
+        ]
+      },
+      {
+        "title": "Sign my name",
+        "benefits": [
+          "It protects openness, trust, and accountability in this workplace feedback situation.",
+          "It keeps trust in the feedback process safer and more predictable.",
+          "It avoids paying too much for privacy, control, and personal boundaries."
+        ],
+        "costs": [
+          "It may sacrifice privacy, control, and personal boundaries.",
+          "It can leave protection from retaliation out of reach.",
+          "It may expose more of me than feels safe."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I delay the app release for polish or ship the basic version this week?",
+    "options": [
+      {
+        "title": "Delay for polish",
+        "benefits": [
+          "It supports quality, craft, and durable standards in a concrete software release decision.",
+          "It can create a more reliable user experience.",
+          "It gives the choice a stronger sense that some work deserves enough time to be done well."
+        ],
+        "costs": [
+          "It weakens speed, availability, and timely delivery that also matters here.",
+          "It may put pressure on early user access.",
+          "It may delay value that people need soon."
+        ]
+      },
+      {
+        "title": "Ship this week",
+        "benefits": [
+          "It protects speed, availability, and timely delivery in this software release situation.",
+          "It keeps early user access safer and more predictable.",
+          "It avoids paying too much for quality, craft, and durable standards."
+        ],
+        "costs": [
+          "It may sacrifice quality, craft, and durable standards.",
+          "It can leave a more reliable user experience out of reach.",
+          "It may create a result I do not fully trust."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I rewrite my thesis chapter carefully or submit the acceptable draft now?",
+    "options": [
+      {
+        "title": "Rewrite carefully",
+        "benefits": [
+          "It supports quality, craft, and durable standards in a concrete academic writing decision.",
+          "It can create a clearer argument.",
+          "It gives the choice a stronger sense that some work deserves enough time to be done well."
+        ],
+        "costs": [
+          "It weakens speed, availability, and timely delivery that also matters here.",
+          "It may put pressure on meeting the submission window.",
+          "It may delay value that people need soon."
+        ]
+      },
+      {
+        "title": "Submit now",
+        "benefits": [
+          "It protects speed, availability, and timely delivery in this academic writing situation.",
+          "It keeps meeting the submission window safer and more predictable.",
+          "It avoids paying too much for quality, craft, and durable standards."
+        ],
+        "costs": [
+          "It may sacrifice quality, craft, and durable standards.",
+          "It can leave a clearer argument out of reach.",
+          "It may create a result I do not fully trust."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I cook a proper dinner from scratch or serve a quick simple meal?",
+    "options": [
+      {
+        "title": "Cook from scratch",
+        "benefits": [
+          "It supports quality, craft, and durable standards in a concrete cooking for guests decision.",
+          "It can create a meal I am proud of.",
+          "It gives the choice a stronger sense that some work deserves enough time to be done well."
+        ],
+        "costs": [
+          "It weakens speed, availability, and timely delivery that also matters here.",
+          "It may put pressure on hungry guests eating on time.",
+          "It may delay value that people need soon."
+        ]
+      },
+      {
+        "title": "Serve quickly",
+        "benefits": [
+          "It protects speed, availability, and timely delivery in this cooking for guests situation.",
+          "It keeps hungry guests eating on time safer and more predictable.",
+          "It avoids paying too much for quality, craft, and durable standards."
+        ],
+        "costs": [
+          "It may sacrifice quality, craft, and durable standards.",
+          "It can leave a meal I am proud of out of reach.",
+          "It may create a result I do not fully trust."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I fully repair the bike before riding or make a temporary fix and go?",
+    "options": [
+      {
+        "title": "Repair fully",
+        "benefits": [
+          "It supports quality, craft, and durable standards in a concrete bike repair decision.",
+          "It can create confidence in the repair.",
+          "It gives the choice a stronger sense that some work deserves enough time to be done well."
+        ],
+        "costs": [
+          "It weakens speed, availability, and timely delivery that also matters here.",
+          "It may put pressure on using the bike today.",
+          "It may delay value that people need soon."
+        ]
+      },
+      {
+        "title": "Use a temporary fix",
+        "benefits": [
+          "It protects speed, availability, and timely delivery in this bike repair situation.",
+          "It keeps using the bike today safer and more predictable.",
+          "It avoids paying too much for quality, craft, and durable standards."
+        ],
+        "costs": [
+          "It may sacrifice quality, craft, and durable standards.",
+          "It can leave confidence in the repair out of reach.",
+          "It may create a result I do not fully trust."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I edit a video until it is strong or publish a rough version while the topic is current?",
+    "options": [
+      {
+        "title": "Edit longer",
+        "benefits": [
+          "It supports quality, craft, and durable standards in a concrete video publishing decision.",
+          "It can create a stronger final piece.",
+          "It gives the choice a stronger sense that some work deserves enough time to be done well."
+        ],
+        "costs": [
+          "It weakens speed, availability, and timely delivery that also matters here.",
+          "It may put pressure on relevance while the topic is fresh.",
+          "It may delay value that people need soon."
+        ]
+      },
+      {
+        "title": "Publish rough",
+        "benefits": [
+          "It protects speed, availability, and timely delivery in this video publishing situation.",
+          "It keeps relevance while the topic is fresh safer and more predictable.",
+          "It avoids paying too much for quality, craft, and durable standards."
+        ],
+        "costs": [
+          "It may sacrifice quality, craft, and durable standards.",
+          "It can leave a stronger final piece out of reach.",
+          "It may create a result I do not fully trust."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I verify every number in a report or send a quick estimate to unblock the team?",
+    "options": [
+      {
+        "title": "Verify every number",
+        "benefits": [
+          "It supports quality, craft, and durable standards in a concrete business report decision.",
+          "It can create trustworthy analysis.",
+          "It gives the choice a stronger sense that some work deserves enough time to be done well."
+        ],
+        "costs": [
+          "It weakens speed, availability, and timely delivery that also matters here.",
+          "It may put pressure on team progress today.",
+          "It may delay value that people need soon."
+        ]
+      },
+      {
+        "title": "Send the estimate",
+        "benefits": [
+          "It protects speed, availability, and timely delivery in this business report situation.",
+          "It keeps team progress today safer and more predictable.",
+          "It avoids paying too much for quality, craft, and durable standards."
+        ],
+        "costs": [
+          "It may sacrifice quality, craft, and durable standards.",
+          "It can leave trustworthy analysis out of reach.",
+          "It may create a result I do not fully trust."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I plan the event in detail or announce it now and adjust later?",
+    "options": [
+      {
+        "title": "Plan in detail",
+        "benefits": [
+          "It supports quality, craft, and durable standards in a concrete event planning decision.",
+          "It can create fewer surprises during the event.",
+          "It gives the choice a stronger sense that some work deserves enough time to be done well."
+        ],
+        "costs": [
+          "It weakens speed, availability, and timely delivery that also matters here.",
+          "It may put pressure on time for people to register.",
+          "It may delay value that people need soon."
+        ]
+      },
+      {
+        "title": "Announce now",
+        "benefits": [
+          "It protects speed, availability, and timely delivery in this event planning situation.",
+          "It keeps time for people to register safer and more predictable.",
+          "It avoids paying too much for quality, craft, and durable standards."
+        ],
+        "costs": [
+          "It may sacrifice quality, craft, and durable standards.",
+          "It can leave fewer surprises during the event out of reach.",
+          "It may create a result I do not fully trust."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I review the contract line by line or sign the standard version to move quickly?",
+    "options": [
+      {
+        "title": "Review line by line",
+        "benefits": [
+          "It supports quality, craft, and durable standards in a concrete contract review decision.",
+          "It can create fewer hidden obligations.",
+          "It gives the choice a stronger sense that some work deserves enough time to be done well."
+        ],
+        "costs": [
+          "It weakens speed, availability, and timely delivery that also matters here.",
+          "It may put pressure on fast start of the deal.",
+          "It may delay value that people need soon."
+        ]
+      },
+      {
+        "title": "Sign the standard version",
+        "benefits": [
+          "It protects speed, availability, and timely delivery in this contract review situation.",
+          "It keeps fast start of the deal safer and more predictable.",
+          "It avoids paying too much for quality, craft, and durable standards."
+        ],
+        "costs": [
+          "It may sacrifice quality, craft, and durable standards.",
+          "It can leave fewer hidden obligations out of reach.",
+          "It may create a result I do not fully trust."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I finish the painting slowly or submit the nearly finished piece?",
+    "options": [
+      {
+        "title": "Finish slowly",
+        "benefits": [
+          "It supports quality, craft, and durable standards in a concrete visual art decision.",
+          "It can create a complete artistic statement.",
+          "It gives the choice a stronger sense that some work deserves enough time to be done well."
+        ],
+        "costs": [
+          "It weakens speed, availability, and timely delivery that also matters here.",
+          "It may put pressure on meeting the exhibition deadline.",
+          "It may delay value that people need soon."
+        ]
+      },
+      {
+        "title": "Submit nearly finished",
+        "benefits": [
+          "It protects speed, availability, and timely delivery in this visual art situation.",
+          "It keeps meeting the exhibition deadline safer and more predictable.",
+          "It avoids paying too much for quality, craft, and durable standards."
+        ],
+        "costs": [
+          "It may sacrifice quality, craft, and durable standards.",
+          "It can leave a complete artistic statement out of reach.",
+          "It may create a result I do not fully trust."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I redo the bathroom properly or patch the visible problems before guests arrive?",
+    "options": [
+      {
+        "title": "Redo properly",
+        "benefits": [
+          "It supports quality, craft, and durable standards in a concrete home renovation decision.",
+          "It can create a durable repair.",
+          "It gives the choice a stronger sense that some work deserves enough time to be done well."
+        ],
+        "costs": [
+          "It weakens speed, availability, and timely delivery that also matters here.",
+          "It may put pressure on a presentable home this week.",
+          "It may delay value that people need soon."
+        ]
+      },
+      {
+        "title": "Patch quickly",
+        "benefits": [
+          "It protects speed, availability, and timely delivery in this home renovation situation.",
+          "It keeps a presentable home this week safer and more predictable.",
+          "It avoids paying too much for quality, craft, and durable standards."
+        ],
+        "costs": [
+          "It may sacrifice quality, craft, and durable standards.",
+          "It can leave a durable repair out of reach.",
+          "It may create a result I do not fully trust."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I drive alone to work every day or use slower public transport?",
+    "options": [
+      {
+        "title": "Drive alone",
+        "benefits": [
+          "It supports personal benefit, convenience, and direct advantage in a concrete commuting decision.",
+          "It can create faster and easier mornings.",
+          "It gives the choice a stronger sense that my immediate needs are concrete and close."
+        ],
+        "costs": [
+          "It weakens collective impact, sustainability, and civic responsibility that also matters here.",
+          "It may put pressure on city congestion and emissions.",
+          "It may add harm that is spread across many people."
+        ]
+      },
+      {
+        "title": "Use public transport",
+        "benefits": [
+          "It protects collective impact, sustainability, and civic responsibility in this commuting situation.",
+          "It keeps city congestion and emissions safer and more predictable.",
+          "It avoids paying too much for personal benefit, convenience, and direct advantage."
+        ],
+        "costs": [
+          "It may sacrifice personal benefit, convenience, and direct advantage.",
+          "It can leave faster and easier mornings out of reach.",
+          "It may cost me time, money, or convenience for a diffuse benefit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I buy cheap clothes for the season or pay more for durable ethical clothing?",
+    "options": [
+      {
+        "title": "Buy cheap clothes",
+        "benefits": [
+          "It supports personal benefit, convenience, and direct advantage in a concrete clothing purchase decision.",
+          "It can create lower immediate spending.",
+          "It gives the choice a stronger sense that my immediate needs are concrete and close."
+        ],
+        "costs": [
+          "It weakens collective impact, sustainability, and civic responsibility that also matters here.",
+          "It may put pressure on labor and waste impacts.",
+          "It may add harm that is spread across many people."
+        ]
+      },
+      {
+        "title": "Buy durable clothing",
+        "benefits": [
+          "It protects collective impact, sustainability, and civic responsibility in this clothing purchase situation.",
+          "It keeps labor and waste impacts safer and more predictable.",
+          "It avoids paying too much for personal benefit, convenience, and direct advantage."
+        ],
+        "costs": [
+          "It may sacrifice personal benefit, convenience, and direct advantage.",
+          "It can leave lower immediate spending out of reach.",
+          "It may cost me time, money, or convenience for a diffuse benefit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I take the last convenient appointment or leave it for someone with a greater need?",
+    "options": [
+      {
+        "title": "Take the appointment",
+        "benefits": [
+          "It supports personal benefit, convenience, and direct advantage in a concrete appointment access decision.",
+          "It can create a schedule that works for me.",
+          "It gives the choice a stronger sense that my immediate needs are concrete and close."
+        ],
+        "costs": [
+          "It weakens collective impact, sustainability, and civic responsibility that also matters here.",
+          "It may put pressure on access for someone under more pressure.",
+          "It may add harm that is spread across many people."
+        ]
+      },
+      {
+        "title": "Leave it for others",
+        "benefits": [
+          "It protects collective impact, sustainability, and civic responsibility in this appointment access situation.",
+          "It keeps access for someone under more pressure safer and more predictable.",
+          "It avoids paying too much for personal benefit, convenience, and direct advantage."
+        ],
+        "costs": [
+          "It may sacrifice personal benefit, convenience, and direct advantage.",
+          "It can leave a schedule that works for me out of reach.",
+          "It may cost me time, money, or convenience for a diffuse benefit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I keep watering my lawn during restrictions or let it dry to save water?",
+    "options": [
+      {
+        "title": "Water the lawn",
+        "benefits": [
+          "It supports personal benefit, convenience, and direct advantage in a concrete water use decision.",
+          "It can create a pleasant-looking yard.",
+          "It gives the choice a stronger sense that my immediate needs are concrete and close."
+        ],
+        "costs": [
+          "It weakens collective impact, sustainability, and civic responsibility that also matters here.",
+          "It may put pressure on shared water reserves.",
+          "It may add harm that is spread across many people."
+        ]
+      },
+      {
+        "title": "Save water",
+        "benefits": [
+          "It protects collective impact, sustainability, and civic responsibility in this water use situation.",
+          "It keeps shared water reserves safer and more predictable.",
+          "It avoids paying too much for personal benefit, convenience, and direct advantage."
+        ],
+        "costs": [
+          "It may sacrifice personal benefit, convenience, and direct advantage.",
+          "It can leave a pleasant-looking yard out of reach.",
+          "It may cost me time, money, or convenience for a diffuse benefit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I take a high-paying job in a polluting industry or choose lower-paid work with cleaner impact?",
+    "options": [
+      {
+        "title": "Take the high-paying job",
+        "benefits": [
+          "It supports personal benefit, convenience, and direct advantage in a concrete career ethics decision.",
+          "It can create financial acceleration.",
+          "It gives the choice a stronger sense that my immediate needs are concrete and close."
+        ],
+        "costs": [
+          "It weakens collective impact, sustainability, and civic responsibility that also matters here.",
+          "It may put pressure on environmental consequences.",
+          "It may add harm that is spread across many people."
+        ]
+      },
+      {
+        "title": "Choose cleaner work",
+        "benefits": [
+          "It protects collective impact, sustainability, and civic responsibility in this career ethics situation.",
+          "It keeps environmental consequences safer and more predictable.",
+          "It avoids paying too much for personal benefit, convenience, and direct advantage."
+        ],
+        "costs": [
+          "It may sacrifice personal benefit, convenience, and direct advantage.",
+          "It can leave financial acceleration out of reach.",
+          "It may cost me time, money, or convenience for a diffuse benefit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I turn my flat into a short-term rental or rent it long-term to a local resident?",
+    "options": [
+      {
+        "title": "Use short-term rental",
+        "benefits": [
+          "It supports personal benefit, convenience, and direct advantage in a concrete housing market decision.",
+          "It can create higher income from the flat.",
+          "It gives the choice a stronger sense that my immediate needs are concrete and close."
+        ],
+        "costs": [
+          "It weakens collective impact, sustainability, and civic responsibility that also matters here.",
+          "It may put pressure on local housing availability.",
+          "It may add harm that is spread across many people."
+        ]
+      },
+      {
+        "title": "Rent long-term locally",
+        "benefits": [
+          "It protects collective impact, sustainability, and civic responsibility in this housing market situation.",
+          "It keeps local housing availability safer and more predictable.",
+          "It avoids paying too much for personal benefit, convenience, and direct advantage."
+        ],
+        "costs": [
+          "It may sacrifice personal benefit, convenience, and direct advantage.",
+          "It can leave higher income from the flat out of reach.",
+          "It may cost me time, money, or convenience for a diffuse benefit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I use all my free teaching time for paid tutoring or volunteer some hours for students who cannot pay?",
+    "options": [
+      {
+        "title": "Do paid tutoring only",
+        "benefits": [
+          "It supports personal benefit, convenience, and direct advantage in a concrete education access decision.",
+          "It can create more predictable income.",
+          "It gives the choice a stronger sense that my immediate needs are concrete and close."
+        ],
+        "costs": [
+          "It weakens collective impact, sustainability, and civic responsibility that also matters here.",
+          "It may put pressure on access for students without money.",
+          "It may add harm that is spread across many people."
+        ]
+      },
+      {
+        "title": "Volunteer some hours",
+        "benefits": [
+          "It protects collective impact, sustainability, and civic responsibility in this education access situation.",
+          "It keeps access for students without money safer and more predictable.",
+          "It avoids paying too much for personal benefit, convenience, and direct advantage."
+        ],
+        "costs": [
+          "It may sacrifice personal benefit, convenience, and direct advantage.",
+          "It can leave more predictable income out of reach.",
+          "It may cost me time, money, or convenience for a diffuse benefit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I keep my spare room empty for comfort or host a displaced acquaintance?",
+    "options": [
+      {
+        "title": "Keep the room empty",
+        "benefits": [
+          "It supports personal benefit, convenience, and direct advantage in a concrete housing help decision.",
+          "It can create privacy and convenience at home.",
+          "It gives the choice a stronger sense that my immediate needs are concrete and close."
+        ],
+        "costs": [
+          "It weakens collective impact, sustainability, and civic responsibility that also matters here.",
+          "It may put pressure on a person's urgent shelter need.",
+          "It may add harm that is spread across many people."
+        ]
+      },
+      {
+        "title": "Host the acquaintance",
+        "benefits": [
+          "It protects collective impact, sustainability, and civic responsibility in this housing help situation.",
+          "It keeps a person's urgent shelter need safer and more predictable.",
+          "It avoids paying too much for personal benefit, convenience, and direct advantage."
+        ],
+        "costs": [
+          "It may sacrifice personal benefit, convenience, and direct advantage.",
+          "It can leave privacy and convenience at home out of reach.",
+          "It may cost me time, money, or convenience for a diffuse benefit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I vote for a tax cut that helps me or support funding for public services?",
+    "options": [
+      {
+        "title": "Vote for the tax cut",
+        "benefits": [
+          "It supports personal benefit, convenience, and direct advantage in a concrete public finance decision.",
+          "It can create more money in my household.",
+          "It gives the choice a stronger sense that my immediate needs are concrete and close."
+        ],
+        "costs": [
+          "It weakens collective impact, sustainability, and civic responsibility that also matters here.",
+          "It may put pressure on schools, clinics, and transport.",
+          "It may add harm that is spread across many people."
+        ]
+      },
+      {
+        "title": "Fund public services",
+        "benefits": [
+          "It protects collective impact, sustainability, and civic responsibility in this public finance situation.",
+          "It keeps schools, clinics, and transport safer and more predictable.",
+          "It avoids paying too much for personal benefit, convenience, and direct advantage."
+        ],
+        "costs": [
+          "It may sacrifice personal benefit, convenience, and direct advantage.",
+          "It can leave more money in my household out of reach.",
+          "It may cost me time, money, or convenience for a diffuse benefit."
+        ]
+      }
+    ]
+  },
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I fly to a conference for networking or attend remotely to reduce emissions?",
+    "options": [
+      {
+        "title": "Fly to the conference",
+        "benefits": [
+          "It supports personal benefit, convenience, and direct advantage in a concrete professional travel decision.",
+          "It can create better networking in person.",
+          "It gives the choice a stronger sense that my immediate needs are concrete and close."
+        ],
+        "costs": [
+          "It weakens collective impact, sustainability, and civic responsibility that also matters here.",
+          "It may put pressure on the climate cost of travel.",
+          "It may add harm that is spread across many people."
+        ]
+      },
+      {
+        "title": "Attend remotely",
+        "benefits": [
+          "It protects collective impact, sustainability, and civic responsibility in this professional travel situation.",
+          "It keeps the climate cost of travel safer and more predictable.",
+          "It avoids paying too much for personal benefit, convenience, and direct advantage."
+        ],
+        "costs": [
+          "It may sacrifice personal benefit, convenience, and direct advantage.",
+          "It can leave better networking in person out of reach.",
+          "It may cost me time, money, or convenience for a diffuse benefit."
+        ]
+      }
+    ]
+  }
+]

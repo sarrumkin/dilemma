@@ -1,5 +1,7 @@
 import DecisionModels
+import DecisionUseCases
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct DiaryListView: View {
   let model: DiaryListModel
@@ -135,11 +137,30 @@ private struct JSONImportSheet: View {
 private struct DilemmaJSONImportView: View {
   @Bindable var model: DilemmaJSONImportModel
   @Binding var isPresented: Bool
+  @State private var isChoosingFile = false
+  @State private var isShowingFormatInfo = false
 
   var body: some View {
     NavigationStack {
       Form {
-        Section("JSON") {
+        Section("File") {
+          Button {
+            isChoosingFile = true
+          } label: {
+            Label("Choose JSON file", systemImage: "doc.badge.plus")
+          }
+          .disabled(model.isBusy)
+          .accessibilityIdentifier("choose-json-file-button")
+
+          Button {
+            isShowingFormatInfo = true
+          } label: {
+            Label("Info", systemImage: "info.circle")
+          }
+          .accessibilityIdentifier("json-import-info-button")
+        }
+
+        Section("Paste JSON") {
           TextEditor(text: $model.jsonText)
             .font(.body.monospaced())
             .frame(minHeight: 240)
@@ -154,6 +175,12 @@ private struct DilemmaJSONImportView: View {
               .foregroundStyle(.red)
           }
         }
+
+        if model.isBusy {
+          Section {
+            ImportProgressLoader(progress: model.importProgress)
+          }
+        }
       }
       .navigationTitle("Import JSON")
       .toolbar {
@@ -161,6 +188,7 @@ private struct DilemmaJSONImportView: View {
           Button("Cancel") {
             isPresented = false
           }
+          .disabled(model.isBusy)
         }
         ToolbarItem(placement: .confirmationAction) {
           Button {
@@ -176,11 +204,159 @@ private struct DilemmaJSONImportView: View {
           .accessibilityIdentifier("run-json-import-button")
         }
       }
-      .overlay {
-        if model.isBusy {
-          ProgressView("Analyzing locally")
-            .padding()
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+      .fileImporter(
+        isPresented: $isChoosingFile,
+        allowedContentTypes: [.json]
+      ) { result in
+        switch result {
+        case .success(let url):
+          Task {
+            if await model.importDrafts(from: url) {
+              isPresented = false
+            }
+          }
+        case .failure(let error):
+          model.errorMessage = AppErrorMessage.message(for: error, context: .importJSON)
+        }
+      }
+      .sheet(isPresented: $isShowingFormatInfo) {
+        JSONImportFormatInfoView()
+      }
+    }
+  }
+}
+
+private struct ImportProgressLoader: View {
+  let progress: DilemmaDraftImportProgress?
+
+  private var hasKnownTotal: Bool {
+    progress?.totalCount ?? 0 > 0
+  }
+
+  private var completedCount: Int {
+    progress?.completedCount ?? 0
+  }
+
+  private var totalCount: Int {
+    progress?.totalCount ?? 0
+  }
+
+  private var percentText: String {
+    guard hasKnownTotal else { return "0%" }
+    return "\(Int((progress?.fractionCompleted ?? 0) * 100))%"
+  }
+
+  var body: some View {
+    HStack(alignment: .top, spacing: 12) {
+      Image(systemName: "tray.and.arrow.down")
+        .font(.title3)
+        .foregroundStyle(.tint)
+        .frame(width: 28, height: 28)
+
+      VStack(alignment: .leading, spacing: 10) {
+        HStack(alignment: .firstTextBaseline) {
+          if hasKnownTotal {
+            Text("Analyzing locally")
+              .font(.subheadline.weight(.semibold))
+              .lineLimit(1)
+          } else {
+            Text("Preparing import")
+              .font(.subheadline.weight(.semibold))
+              .lineLimit(1)
+          }
+
+          Spacer(minLength: 12)
+
+          Text(percentText)
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.secondary)
+            .monospacedDigit()
+        }
+
+        VStack(alignment: .leading, spacing: 6) {
+          ProgressView(value: progress?.fractionCompleted ?? 0, total: 1)
+            .progressViewStyle(.linear)
+            .accessibilityIdentifier("json-import-progress-loader")
+
+          if hasKnownTotal {
+            Text("Imported \(completedCount) of \(totalCount) dilemmas")
+              .accessibilityIdentifier("json-import-progress-count")
+          } else {
+            Text("Reading and validating the JSON file")
+              .accessibilityIdentifier("json-import-progress-count")
+          }
+        }
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .lineLimit(1)
+        .minimumScaleFactor(0.85)
+      }
+    }
+    .padding(.vertical, 6)
+  }
+}
+
+private struct JSONImportFormatInfoView: View {
+  @Environment(\.dismiss) private var dismiss
+
+  private let exampleJSON = """
+[
+  {
+    "schemaVersion": 1,
+    "rawText": "Should I accept the promotion or keep the calmer role?",
+    "options": [
+      {
+        "title": "Accept the promotion",
+        "benefits": [
+          "Higher salary",
+          "More influence",
+          "Career growth"
+        ],
+        "costs": [
+          "More stress",
+          "Less free time",
+          "Higher responsibility"
+        ]
+      },
+      {
+        "title": "Keep the calmer role",
+        "benefits": [
+          "Stable schedule",
+          "Lower stress",
+          "More personal time"
+        ],
+        "costs": [
+          "Slower growth",
+          "Lower salary",
+          "Fewer leadership chances"
+        ]
+      }
+    ]
+  }
+]
+"""
+
+  var body: some View {
+    NavigationStack {
+      Form {
+        Section("Required JSON format") {
+          Text("The file must be a JSON array. Each item needs schemaVersion, rawText, and exactly two options. Each option needs title, benefits, and costs.")
+        }
+
+        Section("Example") {
+          ScrollView(.horizontal) {
+            Text(exampleJSON)
+              .font(.caption.monospaced())
+              .textSelection(.enabled)
+          }
+        }
+      }
+      .navigationTitle("Info")
+      .toolbar {
+        ToolbarItem(placement: .confirmationAction) {
+          Button("Close") {
+            dismiss()
+          }
         }
       }
     }

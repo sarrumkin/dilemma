@@ -229,6 +229,21 @@ public struct DilemmaDraftImportResult: Equatable, Sendable {
   }
 }
 
+public struct DilemmaDraftImportProgress: Equatable, Sendable {
+  public var completedCount: Int
+  public var totalCount: Int
+
+  public init(completedCount: Int, totalCount: Int) {
+    self.completedCount = completedCount
+    self.totalCount = totalCount
+  }
+
+  public var fractionCompleted: Double {
+    guard totalCount > 0 else { return 0 }
+    return Double(completedCount) / Double(totalCount)
+  }
+}
+
 public enum DilemmaDraftImportError: LocalizedError, Equatable, Sendable {
   case invalidJSON(String)
   case invalidItem(index: Int, reason: String)
@@ -252,7 +267,10 @@ public struct ImportDilemmaDraftsUseCase: Sendable {
     self.analysisGenerator = analysisGenerator
   }
 
-  public func callAsFunction(jsonData: Data) async throws -> DilemmaDraftImportResult {
+  public func callAsFunction(
+    jsonData: Data,
+    onProgress: (@Sendable (DilemmaDraftImportProgress) async -> Void)? = nil
+  ) async throws -> DilemmaDraftImportResult {
     let drafts = try Self.decodeDrafts(from: jsonData)
 
     let commands = try drafts.enumerated().map { offset, draft in
@@ -271,8 +289,13 @@ public struct ImportDilemmaDraftsUseCase: Sendable {
       analysisGenerator: analysisGenerator
     )
     var snapshot = try LoadDiarySnapshotUseCase(vault: vault)()
-    for command in commands {
+    await onProgress?(DilemmaDraftImportProgress(completedCount: 0, totalCount: commands.count))
+    for (offset, command) in commands.enumerated() {
       snapshot = try await createEntry(command)
+      await onProgress?(DilemmaDraftImportProgress(
+        completedCount: offset + 1,
+        totalCount: commands.count
+      ))
     }
 
     return DilemmaDraftImportResult(snapshot: snapshot, importedCount: commands.count)
