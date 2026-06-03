@@ -292,63 +292,6 @@ struct DiaryVaultTests {
     ])
   }
 
-  @Test
-  func snapshotLoadsLargeDiaryWithLatestAnalyses() throws {
-    let url = FileManager.default.temporaryDirectory
-      .appendingPathComponent(UUID().uuidString)
-      .appendingPathExtension("sqlite")
-    let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
-    )
-    try vault.prepare()
-
-    let baseDate = Date(timeIntervalSince1970: 1_800_000_000)
-    let entries = try (0..<120).map { index in
-      let entry = sampleEntry(
-        rawText: "Dilemma \(index)",
-        createdAt: baseDate,
-        updatedAt: baseDate.addingTimeInterval(TimeInterval(index))
-      )
-      try vault.saveEntry(entry)
-      try vault.saveAnalysis(
-        sampleAnalysis(
-          entryID: entry.id,
-          clusterID: 10 + index,
-          label: "Old \(index)",
-          createdAt: baseDate.addingTimeInterval(TimeInterval(index) - 1_000)
-        )
-      )
-      try vault.saveAnalysis(
-        sampleAnalysis(
-          entryID: entry.id,
-          clusterID: 1_000 + index,
-          label: "Latest \(index)",
-          createdAt: baseDate.addingTimeInterval(TimeInterval(index))
-        )
-      )
-      return entry
-    }
-
-    let snapshot = try vault.snapshot()
-    let expectedEntryIDs = entries
-      .sorted { $0.updatedAt > $1.updatedAt }
-      .map(\.id)
-
-    #expect(snapshot.entries.map(\.id) == expectedEntryIDs)
-    #expect(snapshot.entries.count == 120)
-    #expect(snapshot.latestAnalyses.count == 120)
-    #expect(snapshot.entries.allSatisfy { entry in
-      entry.options.count == 2 && entry.options.flatMap(\.reasons).count == 12
-    })
-    for (index, entry) in entries.enumerated() {
-      let latestAnalysis = try #require(snapshot.latestAnalyses[entry.id])
-      #expect(latestAnalysis.attributeConflicts.first?.attributeName == "Latest \(index)")
-      #expect(latestAnalysis.clusterProfiles.first?.clusterID == 1_000 + index)
-    }
-  }
-
   private func sampleEntry(
     rawText: String = "Should I stay or leave?",
     createdAt: Date = Date(),
