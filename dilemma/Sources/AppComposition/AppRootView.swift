@@ -1,3 +1,4 @@
+import DecisionModels
 import SwiftUI
 
 struct AppRootView: View {
@@ -33,26 +34,19 @@ struct AppRootView: View {
           statisticsModel.reload()
         },
         makeAnalysisDetailModel: { entry, analysis in
-          AnalysisDetailModel(
-            entry: entry,
-            analysis: analysis,
-            allEntries: diaryModel.entries,
-            latestAnalyses: diaryModel.latestAnalyses,
-            saveFeedback: dependencies.useCases.saveFeedback,
-            loadFeedbackForAnalysis: dependencies.useCases.loadFeedbackForAnalysis,
-            exportDilemmaDraft: dependencies.useCases.exportDilemmaDraft,
-            loadPreferenceStatistics: dependencies.useCases.loadPreferenceStatistics,
-            onFeedbackSaved: {
-              statisticsModel.reload()
-            }
-          )
+          makeAnalysisDetailModel(entry: entry, analysis: analysis)
         }
       )
         .tabItem {
           Label("Diary", systemImage: "list.bullet")
         }
 
-      StatisticsView(model: statisticsModel)
+      StatisticsView(
+        model: statisticsModel,
+        makeAnalysisDetailModel: { entry, analysis in
+          makeAnalysisDetailModel(entry: entry, analysis: analysis)
+        }
+      )
         .tabItem {
           Label("Stats", systemImage: "chart.pie")
         }
@@ -78,5 +72,24 @@ struct AppRootView: View {
         diaryModel.errorMessage = settingsModel.errorMessage
       }
     }
+  }
+
+  private func makeAnalysisDetailModel(
+    entry: DiaryEntry,
+    analysis: DiaryAnalysis?
+  ) -> AnalysisDetailModel {
+    AnalysisDetailModel(
+      entry: entry,
+      analysis: analysis,
+      allEntries: diaryModel.entries,
+      latestAnalyses: diaryModel.latestAnalyses,
+      saveFeedback: dependencies.useCases.saveFeedback,
+      loadFeedbackForAnalysis: dependencies.useCases.loadFeedbackForAnalysis,
+      exportDilemmaDraft: dependencies.useCases.exportDilemmaDraft,
+      loadPreferenceStatistics: dependencies.useCases.loadPreferenceStatistics,
+      onFeedbackSaved: {
+        statisticsModel.reload()
+      }
+    )
   }
 }

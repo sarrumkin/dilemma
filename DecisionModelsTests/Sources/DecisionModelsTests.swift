@@ -240,4 +240,113 @@ struct DecisionModelsTests {
     #expect(command.option2Title == "Leave")
     #expect(command.option2Costs == ["Financial risk", "Stress", "Less family time"])
   }
+
+  @Test
+  func clusterDilemmaStatisticsGroupsAnalyzedTopClustersWithoutFeedback() throws {
+    let olderEntry = sampleEntry(
+      id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
+      rawText: "Older dilemma",
+      updatedAt: Date(timeIntervalSince1970: 100)
+    )
+    let newerEntry = sampleEntry(
+      id: UUID(uuidString: "00000000-0000-0000-0000-000000000002")!,
+      rawText: "Newer dilemma",
+      updatedAt: Date(timeIntervalSince1970: 200)
+    )
+    let entryWithoutAnalysis = sampleEntry(
+      id: UUID(uuidString: "00000000-0000-0000-0000-000000000003")!,
+      rawText: "Unanalyzed dilemma",
+      updatedAt: Date(timeIntervalSince1970: 300)
+    )
+
+    let olderAnalysis = sampleAnalysis(
+      entryID: olderEntry.id,
+      clusterProfiles: [
+        ClusterProfile(optionIndex: 1, clusterID: 1, label: "Shared", score: 0.5),
+        ClusterProfile(optionIndex: 1, clusterID: 2, label: "Beta", score: 0.4),
+        ClusterProfile(optionIndex: 1, clusterID: 3, label: "Gamma", score: 0.3),
+        ClusterProfile(optionIndex: 1, clusterID: 4, label: "Not top positive", score: 0.2),
+        ClusterProfile(optionIndex: 1, clusterID: 5, label: "Negative A", score: -0.6),
+        ClusterProfile(optionIndex: 1, clusterID: 6, label: "Negative B", score: -0.5),
+        ClusterProfile(optionIndex: 1, clusterID: 7, label: "Negative C", score: -0.4),
+        ClusterProfile(optionIndex: 1, clusterID: 8, label: "Not top negative", score: -0.3),
+        ClusterProfile(optionIndex: 2, clusterID: 1, label: "Shared", score: -0.7),
+        ClusterProfile(optionIndex: 2, clusterID: 10, label: "Alpha Tie", score: 0.6),
+        ClusterProfile(optionIndex: 2, clusterID: 11, label: "Delta", score: 0.5),
+        ClusterProfile(optionIndex: 2, clusterID: 12, label: "Epsilon", score: 0.4),
+      ]
+    )
+    let newerAnalysis = sampleAnalysis(
+      entryID: newerEntry.id,
+      clusterProfiles: [
+        ClusterProfile(optionIndex: 1, clusterID: 20, label: "Omega", score: 0.9),
+        ClusterProfile(optionIndex: 1, clusterID: 1, label: "Shared", score: 0.7),
+        ClusterProfile(optionIndex: 1, clusterID: 21, label: "Zeta", score: 0.6),
+        ClusterProfile(optionIndex: 1, clusterID: 22, label: "Eta", score: 0.5),
+      ]
+    )
+
+    let statistics = ClusterDilemmaStatistics(snapshot: DiarySnapshot(
+      entries: [olderEntry, newerEntry, entryWithoutAnalysis],
+      latestAnalyses: [
+        olderEntry.id: olderAnalysis,
+        newerEntry.id: newerAnalysis,
+      ]
+    ))
+
+    #expect(statistics.analyzedEntryCount == 2)
+    #expect(statistics.groups.first?.clusterID == 1)
+    #expect(!statistics.groups.contains { $0.clusterID == 4 })
+    #expect(!statistics.groups.contains { $0.clusterID == 8 })
+
+    let sharedGroup = try #require(statistics.groups.first { $0.clusterID == 1 })
+    #expect(sharedGroup.count == 2)
+    #expect(sharedGroup.records.map(\.entry.id) == [newerEntry.id, olderEntry.id])
+
+    let olderSharedRecord = try #require(sharedGroup.records.first { $0.entry.id == olderEntry.id })
+    #expect(olderSharedRecord.optionIndices == [1, 2])
+    #expect(olderSharedRecord.strongestScore == -0.7)
+
+    let alphaTieIndex = try #require(statistics.groups.firstIndex { $0.clusterID == 10 })
+    let betaIndex = try #require(statistics.groups.firstIndex { $0.clusterID == 2 })
+    #expect(alphaTieIndex < betaIndex)
+  }
+
+  private func sampleEntry(id: UUID, rawText: String, updatedAt: Date) -> DiaryEntry {
+    DiaryEntry(
+      id: id,
+      rawText: rawText,
+      options: [
+        DiaryOption(
+          index: 1,
+          title: "Stay",
+          reasons: [
+            DiaryReason(text: "Stable income", polarity: .benefit),
+            DiaryReason(text: "Less growth", polarity: .cost),
+          ]
+        ),
+        DiaryOption(
+          index: 2,
+          title: "Leave",
+          reasons: [
+            DiaryReason(text: "Career growth", polarity: .benefit),
+            DiaryReason(text: "Financial risk", polarity: .cost),
+          ]
+        ),
+      ],
+      createdAt: updatedAt,
+      updatedAt: updatedAt
+    )
+  }
+
+  private func sampleAnalysis(entryID: UUID, clusterProfiles: [ClusterProfile]) -> DiaryAnalysis {
+    DiaryAnalysis(
+      entryID: entryID,
+      assetVersion: 1,
+      modelID: "stub-model",
+      sourceDOI: "stub-doi",
+      attributeConflicts: [],
+      clusterProfiles: clusterProfiles
+    )
+  }
 }
