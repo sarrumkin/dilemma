@@ -123,7 +123,7 @@ final class AnalysisDetailModel {
 
   func prepareExportFile() {
     do {
-      exportURL = try exportDilemmaDraft.makeTemporaryExportFile(entry: entry)
+      exportURL = try exportDilemmaDraft.makeTemporaryExportFile(entry: entry, analysis: analysis)
       errorMessage = nil
     } catch {
       errorMessage = AppErrorMessage.message(for: error, context: .exportEntry)

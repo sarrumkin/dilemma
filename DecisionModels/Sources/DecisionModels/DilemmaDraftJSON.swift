@@ -4,15 +4,18 @@ public struct DilemmaDraftJSON: Codable, Equatable, Sendable {
   public var schemaVersion: Int?
   public var rawText: String
   public var options: [DilemmaDraftOptionJSON]
+  public var analysis: DiaryAnalysis?
 
   public init(
     schemaVersion: Int? = 1,
     rawText: String,
-    options: [DilemmaDraftOptionJSON]
+    options: [DilemmaDraftOptionJSON],
+    analysis: DiaryAnalysis? = nil
   ) {
     self.schemaVersion = schemaVersion
     self.rawText = rawText
     self.options = options
+    self.analysis = analysis
   }
 
   public init(command: EntryDraftCommand) {
@@ -33,7 +36,7 @@ public struct DilemmaDraftJSON: Codable, Equatable, Sendable {
     )
   }
 
-  public init(entry: DiaryEntry) throws {
+  public init(entry: DiaryEntry, analysis: DiaryAnalysis? = nil) throws {
     let sortedOptions = entry.options.sorted { $0.index < $1.index }
     guard sortedOptions.count == 2 else {
       throw DilemmaDraftJSONValidationError.expectedTwoOptions(actual: sortedOptions.count)
@@ -47,7 +50,8 @@ public struct DilemmaDraftJSON: Codable, Equatable, Sendable {
           benefits: option.reasons.filter { $0.polarity == .benefit }.map(\.text),
           costs: option.reasons.filter { $0.polarity == .cost }.map(\.text)
         )
-      }
+      },
+      analysis: analysis
     )
   }
 

@@ -166,7 +166,8 @@ struct DecisionUseCasesTests {
 
     let created = try await useCases.createAnalyzedEntry(command)
     let entry = try #require(created.entries.first)
-    let exportData = try useCases.exportDilemmaDraft(entry: entry)
+    let analysis = try #require(created.latestAnalyses[entry.id])
+    let exportData = try useCases.exportDilemmaDraft(entry: entry, analysis: analysis)
     let decoded = try JSONDecoder().decode(DilemmaDraftJSON.self, from: exportData)
     let decodedCommand = try decoded.makeEntryDraftCommand()
 
@@ -174,6 +175,7 @@ struct DecisionUseCasesTests {
     #expect(decodedCommand.rawText == command.rawText)
     #expect(decodedCommand.option1Benefits == command.option1Benefits)
     #expect(decodedCommand.option2Costs == command.option2Costs)
+    #expect(decoded.analysis == analysis)
   }
 
   @Test

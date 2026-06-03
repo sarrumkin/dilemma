@@ -205,13 +205,17 @@ public struct ExportDiaryDataUseCase: Sendable {
 public struct ExportDilemmaDraftUseCase: Sendable {
   public init() {}
 
-  public func callAsFunction(entry: DiaryEntry) throws -> Data {
+  public func callAsFunction(entry: DiaryEntry, analysis: DiaryAnalysis? = nil) throws -> Data {
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-    return try encoder.encode(try DilemmaDraftJSON(entry: entry).validated())
+    return try encoder.encode(try DilemmaDraftJSON(entry: entry, analysis: analysis).validated())
   }
 
-  public func makeTemporaryExportFile(entry: DiaryEntry, now: Date = Date()) throws -> URL {
+  public func makeTemporaryExportFile(
+    entry: DiaryEntry,
+    analysis: DiaryAnalysis? = nil,
+    now: Date = Date()
+  ) throws -> URL {
     let formatter = ISO8601DateFormatter()
     formatter.formatOptions = [.withInternetDateTime]
     let timestamp = formatter.string(from: now)
@@ -219,7 +223,7 @@ public struct ExportDilemmaDraftUseCase: Sendable {
     let url = FileManager.default.temporaryDirectory
       .appendingPathComponent("dilemma-draft-\(timestamp)")
       .appendingPathExtension("json")
-    try callAsFunction(entry: entry).write(to: url, options: .atomic)
+    try callAsFunction(entry: entry, analysis: analysis).write(to: url, options: .atomic)
     return url
   }
 }
