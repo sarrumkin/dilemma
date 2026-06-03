@@ -30,7 +30,7 @@ struct DiaryListView: View {
             description: Text("Create a structured dilemma to run local analysis.")
           )
         } else {
-          Section("Diary") {
+          Section {
             ForEach(model.entries) { entry in
               let analysis = model.latestAnalysis(for: entry)
               NavigationLink {
@@ -52,7 +52,7 @@ struct DiaryListView: View {
           }
         }
       }
-      .navigationTitle("Dilemma")
+      .navigationTitle("Diary")
       .toolbar {
         ToolbarItemGroup(placement: .topBarTrailing) {
           Button {
