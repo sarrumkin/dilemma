@@ -65,6 +65,80 @@ struct DecisionUseCasesTests {
   }
 
   @Test
+  func savingFeedbackUpdatesExistingDecisionAndAllowsNoDecision() async throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(
+      databaseURL: url,
+      keyProvider: EphemeralKeyProvider(),
+      authenticator: NoOpVaultAuthenticator()
+    )
+    let useCases = DecisionUseCases.testing(
+      vault: vault,
+      analysisGenerator: StubAnalysisGenerator()
+    )
+
+    try useCases.prepareDiary()
+    let created = try await useCases.createAnalyzedEntry(.sample())
+    let entry = try #require(created.entries.first)
+    let analysis = try #require(created.latestAnalyses[entry.id])
+
+    try useCases.saveFeedback(
+      FeedbackCommand(
+        entryID: entry.id,
+        analysisID: analysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: 1,
+        note: "First"
+      )
+    )
+    try useCases.saveFeedback(
+      FeedbackCommand(
+        entryID: entry.id,
+        analysisID: analysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: 2,
+        note: "Changed"
+      )
+    )
+
+    var savedFeedbackResult = try useCases.loadFeedbackForAnalysis(
+      entryID: entry.id,
+      analysisID: analysis.id
+    )
+    var savedFeedback = try #require(savedFeedbackResult)
+    #expect(savedFeedback.chosenOptionIndex == 2)
+    #expect(savedFeedback.note == "Changed")
+    var statistics = try useCases.loadPreferenceStatistics()
+    #expect(statistics.feedbackCount == 1)
+    #expect(statistics.chosenOptionCounts == [2: 1])
+    #expect(statistics.chosenClusterDilemmaCount == 1)
+
+    try useCases.saveFeedback(
+      FeedbackCommand(
+        entryID: entry.id,
+        analysisID: analysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: nil,
+        note: "No final decision"
+      )
+    )
+
+    savedFeedbackResult = try useCases.loadFeedbackForAnalysis(
+      entryID: entry.id,
+      analysisID: analysis.id
+    )
+    savedFeedback = try #require(savedFeedbackResult)
+    #expect(savedFeedback.chosenOptionIndex == nil)
+    #expect(savedFeedback.note == "No final decision")
+    statistics = try useCases.loadPreferenceStatistics()
+    #expect(statistics.feedbackCount == 1)
+    #expect(statistics.chosenOptionCounts.isEmpty)
+    #expect(statistics.chosenClusterDilemmaCount == 0)
+  }
+
+  @Test
   func exportSingleDilemmaAsDraftJSON() async throws {
     let url = FileManager.default.temporaryDirectory
       .appendingPathComponent(UUID().uuidString)

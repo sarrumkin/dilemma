@@ -239,32 +239,89 @@ public final class DiaryVault: @unchecked Sendable {
   public func saveFeedback(_ feedback: Feedback) throws {
     try queue.sync {
       let database = try openDatabase()
-      try database.execute(
-        """
-        INSERT INTO feedback(
-          id, entry_id, analysis_id, conflict_was_useful, corrected_cluster_id,
-          corrected_attribute_name, chosen_option_index, note, created_at
+      try database.transaction {
+        let existingID = try existingFeedbackID(
+          entryID: feedback.entryID,
+          analysisID: feedback.analysisID,
+          database: database
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT(id) DO UPDATE SET
-          conflict_was_useful = excluded.conflict_was_useful,
-          corrected_cluster_id = excluded.corrected_cluster_id,
-          corrected_attribute_name = excluded.corrected_attribute_name,
-          chosen_option_index = excluded.chosen_option_index,
-          note = excluded.note
-        """,
-        [
-          .text(feedback.id.uuidString),
-          .text(feedback.entryID.uuidString),
-          feedback.analysisID.map { .text($0.uuidString) } ?? .null,
-          .integer(feedback.conflictWasUseful ? 1 : 0),
-          feedback.correctedClusterID.map(SQLiteValue.integer) ?? .null,
-          feedback.correctedAttributeName.map(SQLiteValue.text) ?? .null,
-          feedback.chosenOptionIndex.map(SQLiteValue.integer) ?? .null,
-          .text(feedback.note),
-          .real(feedback.createdAt.timeIntervalSince1970),
-        ]
-      )
+
+        if let existingID {
+          try database.execute(
+            """
+            UPDATE feedback
+            SET conflict_was_useful = ?,
+                corrected_cluster_id = ?,
+                corrected_attribute_name = ?,
+                chosen_option_index = ?,
+                note = ?,
+                created_at = ?
+            WHERE id = ?
+            """,
+            [
+              .integer(feedback.conflictWasUseful ? 1 : 0),
+              feedback.correctedClusterID.map(SQLiteValue.integer) ?? .null,
+              feedback.correctedAttributeName.map(SQLiteValue.text) ?? .null,
+              feedback.chosenOptionIndex.map(SQLiteValue.integer) ?? .null,
+              .text(feedback.note),
+              .real(feedback.createdAt.timeIntervalSince1970),
+              .text(existingID.uuidString),
+            ]
+          )
+        } else {
+          try database.execute(
+            """
+            INSERT INTO feedback(
+              id, entry_id, analysis_id, conflict_was_useful, corrected_cluster_id,
+              corrected_attribute_name, chosen_option_index, note, created_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            [
+              .text(feedback.id.uuidString),
+              .text(feedback.entryID.uuidString),
+              feedback.analysisID.map { .text($0.uuidString) } ?? .null,
+              .integer(feedback.conflictWasUseful ? 1 : 0),
+              feedback.correctedClusterID.map(SQLiteValue.integer) ?? .null,
+              feedback.correctedAttributeName.map(SQLiteValue.text) ?? .null,
+              feedback.chosenOptionIndex.map(SQLiteValue.integer) ?? .null,
+              .text(feedback.note),
+              .real(feedback.createdAt.timeIntervalSince1970),
+            ]
+          )
+        }
+      }
+    }
+  }
+
+  public func feedback(entryID: UUID, analysisID: UUID?) throws -> Feedback? {
+    try queue.sync {
+      let database = try openDatabase()
+      let sql: String
+      let bindings: [SQLiteValue]
+      if let analysisID {
+        sql = """
+        SELECT id, entry_id, analysis_id, conflict_was_useful, corrected_cluster_id,
+               corrected_attribute_name, chosen_option_index, note, created_at
+        FROM feedback
+        WHERE entry_id = ? AND analysis_id = ?
+        ORDER BY created_at DESC
+        LIMIT 1
+        """
+        bindings = [.text(entryID.uuidString), .text(analysisID.uuidString)]
+      } else {
+        sql = """
+        SELECT id, entry_id, analysis_id, conflict_was_useful, corrected_cluster_id,
+               corrected_attribute_name, chosen_option_index, note, created_at
+        FROM feedback
+        WHERE entry_id = ? AND analysis_id IS NULL
+        ORDER BY created_at DESC
+        LIMIT 1
+        """
+        bindings = [.text(entryID.uuidString)]
+      }
+
+      return try database.query(sql, bindings).first.map { try feedbackRecord(from: $0) }
     }
   }
 
@@ -545,6 +602,37 @@ public final class DiaryVault: @unchecked Sendable {
     )
   }
 
+  private func existingFeedbackID(
+    entryID: UUID,
+    analysisID: UUID?,
+    database: SQLiteDatabase
+  ) throws -> UUID? {
+    let sql: String
+    let bindings: [SQLiteValue]
+    if let analysisID {
+      sql = """
+      SELECT id
+      FROM feedback
+      WHERE entry_id = ? AND analysis_id = ?
+      ORDER BY created_at DESC
+      LIMIT 1
+      """
+      bindings = [.text(entryID.uuidString), .text(analysisID.uuidString)]
+    } else {
+      sql = """
+      SELECT id
+      FROM feedback
+      WHERE entry_id = ? AND analysis_id IS NULL
+      ORDER BY created_at DESC
+      LIMIT 1
+      """
+      bindings = [.text(entryID.uuidString)]
+    }
+
+    return try database.query(sql, bindings).first
+      .map { try UUID.parse($0.string(0)) }
+  }
+
   private static let schemaSQL = """
     PRAGMA foreign_keys = ON;
     PRAGMA journal_mode = WAL;
@@ -614,9 +702,31 @@ public final class DiaryVault: @unchecked Sendable {
       created_at REAL NOT NULL
     );
 
+    DELETE FROM feedback
+    WHERE id NOT IN (
+      SELECT kept.id
+      FROM feedback kept
+      WHERE NOT EXISTS (
+        SELECT 1
+        FROM feedback newer
+        WHERE newer.entry_id = kept.entry_id
+          AND (
+            newer.analysis_id = kept.analysis_id
+            OR (newer.analysis_id IS NULL AND kept.analysis_id IS NULL)
+          )
+          AND (
+            newer.created_at > kept.created_at
+            OR (newer.created_at = kept.created_at AND newer.id > kept.id)
+          )
+      )
+    );
+
     CREATE INDEX IF NOT EXISTS decision_option_entry_idx ON decision_option(entry_id);
     CREATE INDEX IF NOT EXISTS reason_entry_idx ON reason(entry_id);
     CREATE INDEX IF NOT EXISTS analysis_result_entry_idx ON analysis_result(entry_id);
     CREATE INDEX IF NOT EXISTS feedback_entry_idx ON feedback(entry_id);
+    CREATE UNIQUE INDEX IF NOT EXISTS feedback_entry_analysis_unique_idx
+      ON feedback(entry_id, analysis_id)
+      WHERE analysis_id IS NOT NULL;
   """
 }

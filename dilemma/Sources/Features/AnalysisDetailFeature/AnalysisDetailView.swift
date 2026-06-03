@@ -85,6 +85,7 @@ struct AnalysisDetailView: View {
     }
     .navigationTitle("Analysis")
     .task {
+      model.reloadSavedFeedback()
       model.reloadPreferenceStatistics()
     }
   }
@@ -118,24 +119,53 @@ struct AnalysisDetailView: View {
 
   private func feedbackSection() -> some View {
     Section("Decision Feedback") {
-      Picker("Decision made", selection: $model.chosenOptionIndex) {
-        Text("Not decided yet").tag(Int?.none)
-        ForEach(model.entry.options) { option in
-          Text(option.title).tag(Optional(option.index))
+      if model.isEditingFeedback {
+        Picker("Decision made", selection: $model.chosenOptionIndex) {
+          Text("Not decided yet").tag(Int?.none)
+          ForEach(model.entry.options) { option in
+            Text(option.title).tag(Optional(option.index))
+          }
         }
-      }
-      .pickerStyle(.inline)
+        .pickerStyle(.inline)
 
-      TextField("Note", text: $model.note, axis: .vertical)
-        .lineLimit(1...4)
+        TextField("Note", text: $model.note, axis: .vertical)
+          .lineLimit(1...4)
 
-      Button {
-        model.saveFeedback()
-      } label: {
-        Label("Save decision", systemImage: "checkmark.circle")
+        Button {
+          model.saveFeedback()
+        } label: {
+          Label(model.saveFeedbackButtonTitle, systemImage: "checkmark.circle")
+        }
+        .disabled(!model.canSaveFeedback)
+        .accessibilityIdentifier("save-feedback-button")
+
+        if model.hasSavedFeedback {
+          Button(role: .cancel) {
+            model.cancelEditingFeedback()
+          } label: {
+            Label("Cancel changes", systemImage: "xmark.circle")
+          }
+          .accessibilityIdentifier("cancel-feedback-edit-button")
+        }
+      } else {
+        LabeledContent("Decision", value: model.savedDecisionTitle)
+
+        if !model.savedNote.isEmpty {
+          VStack(alignment: .leading, spacing: 4) {
+            Text("Note")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+            Text(model.savedNote)
+          }
+        }
+
+        Button {
+          model.startEditingFeedback()
+        } label: {
+          Label("Change decision", systemImage: "pencil")
+        }
+        .accessibilityIdentifier("change-feedback-button")
       }
-      .disabled(!model.canSaveFeedback)
-      .accessibilityIdentifier("save-feedback-button")
 
       if model.didSaveFeedback {
         Text("Decision feedback saved locally.")

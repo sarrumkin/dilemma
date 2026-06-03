@@ -87,6 +87,86 @@ struct DiaryVaultTests {
   }
 
   @Test
+  func saveFeedbackUpdatesExistingDecisionAndCanClearChoice() throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(
+      databaseURL: url,
+      keyProvider: EphemeralKeyProvider(),
+      authenticator: NoOpVaultAuthenticator()
+    )
+    try vault.prepare()
+
+    let entry = sampleEntry()
+    let analysis = sampleAnalysis(
+      entryID: entry.id,
+      clusterID: 4,
+      label: "Cluster 4: money"
+    )
+    try vault.saveEntry(entry)
+    try vault.saveAnalysis(analysis)
+
+    try vault.saveFeedback(
+      Feedback(
+        entryID: entry.id,
+        analysisID: analysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: 1,
+        note: "First choice",
+        createdAt: Date(timeIntervalSince1970: 1)
+      )
+    )
+    try vault.saveFeedback(
+      Feedback(
+        entryID: entry.id,
+        analysisID: analysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: 2,
+        note: "Changed choice",
+        createdAt: Date(timeIntervalSince1970: 2)
+      )
+    )
+
+    let changedFeedbackResult = try vault.feedback(entryID: entry.id, analysisID: analysis.id)
+    let changedFeedback = try #require(changedFeedbackResult)
+    #expect(try vault.feedback(entryID: entry.id).count == 1)
+    #expect(changedFeedback.chosenOptionIndex == 2)
+    #expect(changedFeedback.note == "Changed choice")
+
+    var statistics = try vault.statistics()
+    #expect(statistics.feedbackCount == 1)
+    #expect(statistics.chosenOptionCounts == [2: 1])
+    #expect(statistics.chosenClusterDilemmaCount == 1)
+    #expect(statistics.mostFrequentClusters == [
+      ClusterFrequency(clusterID: 104, label: "Other 4", count: 1),
+    ])
+
+    try vault.saveFeedback(
+      Feedback(
+        entryID: entry.id,
+        analysisID: analysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: nil,
+        note: "No final decision",
+        createdAt: Date(timeIntervalSince1970: 3)
+      )
+    )
+
+    let clearedFeedbackResult = try vault.feedback(entryID: entry.id, analysisID: analysis.id)
+    let clearedFeedback = try #require(clearedFeedbackResult)
+    #expect(try vault.feedback(entryID: entry.id).count == 1)
+    #expect(clearedFeedback.chosenOptionIndex == nil)
+    #expect(clearedFeedback.note == "No final decision")
+
+    statistics = try vault.statistics()
+    #expect(statistics.feedbackCount == 1)
+    #expect(statistics.chosenOptionCounts.isEmpty)
+    #expect(statistics.chosenClusterDilemmaCount == 0)
+    #expect(statistics.mostFrequentClusters.isEmpty)
+  }
+
+  @Test
   func deleteEntryRemovesItFromAnalysisStatisticsAndExport() throws {
     let url = FileManager.default.temporaryDirectory
       .appendingPathComponent(UUID().uuidString)

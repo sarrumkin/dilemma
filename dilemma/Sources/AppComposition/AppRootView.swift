@@ -39,6 +39,7 @@ struct AppRootView: View {
             allEntries: diaryModel.entries,
             latestAnalyses: diaryModel.latestAnalyses,
             saveFeedback: dependencies.useCases.saveFeedback,
+            loadFeedbackForAnalysis: dependencies.useCases.loadFeedbackForAnalysis,
             exportDilemmaDraft: dependencies.useCases.exportDilemmaDraft,
             loadPreferenceStatistics: dependencies.useCases.loadPreferenceStatistics,
             onFeedbackSaved: {

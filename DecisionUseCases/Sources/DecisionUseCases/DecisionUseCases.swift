@@ -8,6 +8,7 @@ public struct DecisionUseCases: Sendable {
   public let loadDiarySnapshot: LoadDiarySnapshotUseCase
   public let createAnalyzedEntry: CreateAnalyzedEntryUseCase
   public let saveFeedback: SaveFeedbackUseCase
+  public let loadFeedbackForAnalysis: LoadFeedbackForAnalysisUseCase
   public let loadPreferenceStatistics: LoadPreferenceStatisticsUseCase
   public let exportDiaryData: ExportDiaryDataUseCase
   public let exportDilemmaDraft: ExportDilemmaDraftUseCase
@@ -28,6 +29,7 @@ public struct DecisionUseCases: Sendable {
       loadDiarySnapshot: LoadDiarySnapshotUseCase(vault: vault),
       createAnalyzedEntry: CreateAnalyzedEntryUseCase(vault: vault, analysisGenerator: analysisGenerator),
       saveFeedback: SaveFeedbackUseCase(vault: vault),
+      loadFeedbackForAnalysis: LoadFeedbackForAnalysisUseCase(vault: vault),
       loadPreferenceStatistics: LoadPreferenceStatisticsUseCase(vault: vault),
       exportDiaryData: ExportDiaryDataUseCase(vault: vault),
       exportDilemmaDraft: ExportDilemmaDraftUseCase(),
@@ -44,6 +46,7 @@ public struct DecisionUseCases: Sendable {
       loadDiarySnapshot: LoadDiarySnapshotUseCase(vault: vault),
       createAnalyzedEntry: CreateAnalyzedEntryUseCase(vault: vault, analysisGenerator: analysisGenerator),
       saveFeedback: SaveFeedbackUseCase(vault: vault),
+      loadFeedbackForAnalysis: LoadFeedbackForAnalysisUseCase(vault: vault),
       loadPreferenceStatistics: LoadPreferenceStatisticsUseCase(vault: vault),
       exportDiaryData: ExportDiaryDataUseCase(vault: vault),
       exportDilemmaDraft: ExportDilemmaDraftUseCase(),
@@ -158,6 +161,18 @@ public struct SaveFeedbackUseCase: Sendable {
         note: command.note.trimmed
       )
     )
+  }
+}
+
+public struct LoadFeedbackForAnalysisUseCase: Sendable {
+  private let vault: DiaryVault
+
+  init(vault: DiaryVault) {
+    self.vault = vault
+  }
+
+  public func callAsFunction(entryID: UUID, analysisID: UUID?) throws -> Feedback? {
+    try vault.feedback(entryID: entryID, analysisID: analysisID)
   }
 }
 

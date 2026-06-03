@@ -12,12 +12,15 @@ final class AnalysisDetailModel {
   let latestAnalyses: [UUID: DiaryAnalysis]
   var chosenOptionIndex: Int?
   var note = ""
+  private(set) var savedFeedback: Feedback?
+  private(set) var isEditingFeedback = true
   private(set) var preferenceStatistics = PreferenceStatistics.empty
   var didSaveFeedback = false
   var exportURL: URL?
   var errorMessage: String?
 
   @ObservationIgnored private let saveFeedbackUseCase: SaveFeedbackUseCase
+  @ObservationIgnored private let loadFeedbackForAnalysisUseCase: LoadFeedbackForAnalysisUseCase
   @ObservationIgnored private let exportDilemmaDraft: ExportDilemmaDraftUseCase
   @ObservationIgnored private let loadPreferenceStatisticsUseCase: LoadPreferenceStatisticsUseCase
   @ObservationIgnored private let onFeedbackSaved: @MainActor () -> Void
@@ -28,6 +31,7 @@ final class AnalysisDetailModel {
     allEntries: [DiaryEntry] = [],
     latestAnalyses: [UUID: DiaryAnalysis] = [:],
     saveFeedback: SaveFeedbackUseCase,
+    loadFeedbackForAnalysis: LoadFeedbackForAnalysisUseCase,
     exportDilemmaDraft: ExportDilemmaDraftUseCase,
     loadPreferenceStatistics: LoadPreferenceStatisticsUseCase,
     onFeedbackSaved: @escaping @MainActor () -> Void
@@ -37,14 +41,32 @@ final class AnalysisDetailModel {
     self.allEntries = allEntries
     self.latestAnalyses = latestAnalyses
     self.saveFeedbackUseCase = saveFeedback
+    self.loadFeedbackForAnalysisUseCase = loadFeedbackForAnalysis
     self.exportDilemmaDraft = exportDilemmaDraft
     self.loadPreferenceStatisticsUseCase = loadPreferenceStatistics
     self.onFeedbackSaved = onFeedbackSaved
+    reloadSavedFeedback()
     reloadPreferenceStatistics()
   }
 
   var canSaveFeedback: Bool {
-    chosenOptionIndex != nil
+    analysis != nil && isEditingFeedback
+  }
+
+  var hasSavedFeedback: Bool {
+    savedFeedback != nil
+  }
+
+  var savedDecisionTitle: String {
+    optionTitle(for: savedFeedback?.chosenOptionIndex)
+  }
+
+  var savedNote: String {
+    savedFeedback?.note ?? ""
+  }
+
+  var saveFeedbackButtonTitle: String {
+    hasSavedFeedback ? "Save changes" : "Save decision"
   }
 
   var topChosenCluster: ClusterFrequency? {
@@ -67,13 +89,29 @@ final class AnalysisDetailModel {
           note: note
         )
       )
-      didSaveFeedback = true
+      savedFeedback = try loadFeedbackForAnalysisUseCase(entryID: entry.id, analysisID: analysis.id)
+      applySavedFeedback()
+      isEditingFeedback = false
       errorMessage = nil
       reloadPreferenceStatistics()
       onFeedbackSaved()
+      didSaveFeedback = true
     } catch {
       errorMessage = AppErrorMessage.message(for: error, context: .saveFeedback)
     }
+  }
+
+  func startEditingFeedback() {
+    chosenOptionIndex = savedFeedback?.chosenOptionIndex
+    note = savedFeedback?.note ?? ""
+    isEditingFeedback = true
+    didSaveFeedback = false
+  }
+
+  func cancelEditingFeedback() {
+    applySavedFeedback()
+    isEditingFeedback = false
+    didSaveFeedback = false
   }
 
   func prepareExportFile() {
@@ -90,6 +128,33 @@ final class AnalysisDetailModel {
       preferenceStatistics = try loadPreferenceStatisticsUseCase()
     } catch {
       preferenceStatistics = .empty
+    }
+  }
+
+  func reloadSavedFeedback() {
+    guard let analysis else {
+      savedFeedback = nil
+      chosenOptionIndex = nil
+      note = ""
+      isEditingFeedback = true
+      return
+    }
+
+    do {
+      savedFeedback = try loadFeedbackForAnalysisUseCase(entryID: entry.id, analysisID: analysis.id)
+      if savedFeedback == nil {
+        chosenOptionIndex = nil
+        note = ""
+        isEditingFeedback = true
+      } else {
+        applySavedFeedback()
+        isEditingFeedback = false
+      }
+    } catch {
+      savedFeedback = nil
+      chosenOptionIndex = nil
+      note = ""
+      isEditingFeedback = true
     }
   }
 
@@ -140,6 +205,7 @@ final class AnalysisDetailModel {
       allEntries: allEntries,
       latestAnalyses: latestAnalyses,
       saveFeedback: saveFeedbackUseCase,
+      loadFeedbackForAnalysis: loadFeedbackForAnalysisUseCase,
       exportDilemmaDraft: exportDilemmaDraft,
       loadPreferenceStatistics: loadPreferenceStatisticsUseCase,
       onFeedbackSaved: onFeedbackSaved
@@ -202,6 +268,16 @@ final class AnalysisDetailModel {
       }
       .prefix(limit)
       .compactMap { labels[$0] }
+  }
+
+  private func applySavedFeedback() {
+    chosenOptionIndex = savedFeedback?.chosenOptionIndex
+    note = savedFeedback?.note ?? ""
+  }
+
+  private func optionTitle(for optionIndex: Int?) -> String {
+    guard let optionIndex else { return "Not decided yet" }
+    return entry.options.first { $0.index == optionIndex }?.title ?? "Option \(optionIndex)"
   }
 }
 
