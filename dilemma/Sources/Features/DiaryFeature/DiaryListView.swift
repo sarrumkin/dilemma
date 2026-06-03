@@ -9,9 +9,12 @@ struct DiaryListView: View {
   let makeJSONImportModel: () -> DilemmaJSONImportModel
   let onDeleted: () -> Void
   let makeAnalysisDetailModel: (DiaryEntry, DiaryAnalysis?) -> AnalysisDetailModel
+  @State private var visibleEntryLimit = Self.entryPageSize
   @State private var isCreatingEntry = false
   @State private var isImportingJSON = false
   @State private var pendingDeleteEntry: DiaryEntry?
+
+  private static let entryPageSize = 30
 
   var body: some View {
     NavigationStack {
@@ -31,7 +34,7 @@ struct DiaryListView: View {
           )
         } else {
           Section {
-            ForEach(model.entries) { entry in
+            ForEach(visibleEntries) { entry in
               let analysis = model.latestAnalysis(for: entry)
               NavigationLink {
                 AnalysisDetailView(
@@ -49,10 +52,22 @@ struct DiaryListView: View {
                 .accessibilityIdentifier("delete-entry-button-\(entry.id.uuidString)")
               }
             }
+
+            if hasMoreEntries {
+              ProgressView()
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 8)
+                .onAppear {
+                  showMoreEntries()
+                }
+            }
           }
         }
       }
       .navigationTitle("Diary")
+      .onChange(of: model.entries.map(\.id)) { _, _ in
+        visibleEntryLimit = min(max(visibleEntryLimit, Self.entryPageSize), model.entries.count)
+      }
       .toolbar {
         ToolbarItemGroup(placement: .topBarTrailing) {
           Button {
@@ -94,6 +109,18 @@ struct DiaryListView: View {
         }
       }
     }
+  }
+
+  private var visibleEntries: ArraySlice<DiaryEntry> {
+    model.entries.prefix(visibleEntryLimit)
+  }
+
+  private var hasMoreEntries: Bool {
+    visibleEntryLimit < model.entries.count
+  }
+
+  private func showMoreEntries() {
+    visibleEntryLimit = min(visibleEntryLimit + Self.entryPageSize, model.entries.count)
   }
 
   private var deleteConfirmationBinding: Binding<Bool> {
