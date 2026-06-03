@@ -591,6 +591,12 @@
         "ru" : { "stringUnit" : { "state" : "translated", "value" : "Создайте или импортируйте дилеммы, чтобы увидеть статистику кластеров." } }
       }
     },
+    "Decision" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Decision" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Решение" } }
+      }
+    },
     "Decision Feedback" : {
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Decision Feedback" } },
@@ -1413,6 +1419,12 @@
         }
       }
     },
+    "Recorded Decisions" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Recorded Decisions" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Сохраненные решения" } }
+      }
+    },
     "Require Face ID or passcode" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1484,6 +1496,12 @@
       "localizations" : {
         "en" : { "stringUnit" : { "state" : "translated", "value" : "Save decision" } },
         "ru" : { "stringUnit" : { "state" : "translated", "value" : "Сохранить решение" } }
+      }
+    },
+    "Saved decisions appear after you choose an option in an analyzed dilemma." : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Saved decisions appear after you choose an option in an analyzed dilemma." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Сохраненные решения появятся после выбора варианта в проанализированной дилемме." } }
       }
     },
     "Settings" : {

@@ -14,6 +14,29 @@ struct StatisticsView: View {
           MetricRow(label: "Feedback records", value: "\(model.statistics.feedbackCount)")
         }
 
+        Section("Recorded Decisions") {
+          if model.hasRecordedDecisions {
+            NavigationLink {
+              RecordedDecisionListView(
+                records: model.recordedDecisionRecords,
+                makeAnalysisDetailModel: makeAnalysisDetailModel
+              )
+            } label: {
+              HStack {
+                Label("Recorded Decisions", systemImage: "checkmark.circle")
+                Spacer()
+                Text("\(model.recordedDecisionRecords.count)")
+                  .font(.body.monospacedDigit())
+                  .foregroundStyle(.secondary)
+              }
+            }
+            .accessibilityIdentifier("recorded-decisions-row")
+          } else {
+            Text("Saved decisions appear after you choose an option in an analyzed dilemma.")
+              .foregroundStyle(.secondary)
+          }
+        }
+
         Section("Clusters") {
           if model.hasClusterGroups {
             ForEach(model.clusterStatistics.groups) { group in
@@ -62,6 +85,63 @@ struct StatisticsView: View {
       return "Cluster statistics appear after saved analysis results."
     }
     return "Cluster groups appear after analyzed entries have non-zero cluster scores."
+  }
+}
+
+private struct RecordedDecisionListView: View {
+  let records: [RecordedDecisionRecord]
+  let makeAnalysisDetailModel: (DiaryEntry, DiaryAnalysis?) -> AnalysisDetailModel
+
+  var body: some View {
+    List {
+      Section("Dilemmas") {
+        ForEach(records) { record in
+          NavigationLink {
+            AnalysisDetailView(
+              model: makeAnalysisDetailModel(record.entry, record.analysis)
+            )
+          } label: {
+            RecordedDecisionRow(record: record)
+          }
+          .accessibilityIdentifier("recorded-decision-row-\(record.entry.id.uuidString)")
+        }
+      }
+    }
+    .navigationTitle("Recorded Decisions")
+  }
+}
+
+private struct RecordedDecisionRow: View {
+  let record: RecordedDecisionRecord
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 6) {
+      Text(record.entry.rawText)
+        .font(.subheadline.weight(.semibold))
+        .lineLimit(2)
+
+      Text(record.entry.options.map(\.title).joined(separator: " / "))
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .lineLimit(1)
+
+      HStack(alignment: .firstTextBaseline, spacing: 8) {
+        Text("Decision")
+          .font(.caption2)
+          .foregroundStyle(.secondary)
+        Text(record.chosenOptionTitle)
+          .font(.caption)
+          .lineLimit(1)
+      }
+
+      if !record.feedback.note.isEmpty {
+        Text(record.feedback.note)
+          .font(.caption2)
+          .foregroundStyle(.secondary)
+          .lineLimit(2)
+      }
+    }
+    .padding(.vertical, 3)
   }
 }
 
