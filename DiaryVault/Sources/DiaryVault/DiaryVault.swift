@@ -325,6 +325,8 @@ public final class DiaryVault: @unchecked Sendable {
          AND other.cluster_id = chosen.cluster_id
          AND other.option_index != chosen.option_index
         WHERE f.chosen_option_index IS NOT NULL
+          AND chosen.score > 0
+          AND chosen.score - COALESCE(other.score, 0) > 0
           AND NOT EXISTS (
             SELECT 1
             FROM cluster_profile challenger
@@ -334,13 +336,21 @@ public final class DiaryVault: @unchecked Sendable {
              AND challenger_other.option_index != challenger.option_index
             WHERE challenger.analysis_id = chosen.analysis_id
               AND challenger.option_index = chosen.option_index
+              AND challenger.score > 0
+              AND challenger.score - COALESCE(challenger_other.score, 0) > 0
               AND (
-                ABS(challenger.score - COALESCE(challenger_other.score, 0))
-                  > ABS(chosen.score - COALESCE(other.score, 0))
+                challenger.score - COALESCE(challenger_other.score, 0)
+                  > chosen.score - COALESCE(other.score, 0)
                 OR (
-                  ABS(challenger.score - COALESCE(challenger_other.score, 0))
-                    = ABS(chosen.score - COALESCE(other.score, 0))
-                  AND challenger.cluster_id < chosen.cluster_id
+                  challenger.score - COALESCE(challenger_other.score, 0)
+                    = chosen.score - COALESCE(other.score, 0)
+                  AND (
+                    challenger.score > chosen.score
+                    OR (
+                      challenger.score = chosen.score
+                      AND challenger.cluster_id < chosen.cluster_id
+                    )
+                  )
                 )
               )
           )
