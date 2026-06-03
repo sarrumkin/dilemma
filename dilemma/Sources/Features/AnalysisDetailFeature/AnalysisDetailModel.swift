@@ -133,6 +133,19 @@ final class AnalysisDetailModel {
     .map { $0 }
   }
 
+  func makeSimilarDilemmaModel(for match: SimilarDilemma) -> AnalysisDetailModel {
+    AnalysisDetailModel(
+      entry: match.entry,
+      analysis: latestAnalyses[match.entry.id],
+      allEntries: allEntries,
+      latestAnalyses: latestAnalyses,
+      saveFeedback: saveFeedbackUseCase,
+      exportDilemmaDraft: exportDilemmaDraft,
+      loadPreferenceStatistics: loadPreferenceStatisticsUseCase,
+      onFeedbackSaved: onFeedbackSaved
+    )
+  }
+
   private static func normalizedConflictVector(for analysis: DiaryAnalysis) -> [Int: Double]? {
     let option1 = clusterScores(for: analysis, optionIndex: 1)
     let option2 = clusterScores(for: analysis, optionIndex: 2)
