@@ -103,17 +103,7 @@ public struct LoadDiarySnapshotUseCase: Sendable {
   }
 
   public func callAsFunction() throws -> DiarySnapshot {
-    let entries = try vault.entries()
-    var latestAnalyses: [UUID: DiaryAnalysis] = [:]
-    for entry in entries {
-      if let analysis = try vault.analyses(entryID: entry.id).first {
-        latestAnalyses[entry.id] = analysis
-      }
-    }
-    return DiarySnapshot(
-      entries: entries,
-      latestAnalyses: latestAnalyses
-    )
+    try vault.snapshot()
   }
 }
 
@@ -284,20 +274,21 @@ public struct ImportDilemmaDraftsUseCase: Sendable {
       }
     }
 
-    let createEntry = CreateAnalyzedEntryUseCase(
-      vault: vault,
-      analysisGenerator: analysisGenerator
-    )
-    var snapshot = try LoadDiarySnapshotUseCase(vault: vault)()
     await onProgress?(DilemmaDraftImportProgress(completedCount: 0, totalCount: commands.count))
     for (offset, command) in commands.enumerated() {
-      snapshot = try await createEntry(command)
+      let now = Date()
+      var entry = command.makeEntry(createdAt: now)
+      let analysis = try await analysisGenerator.analysis(for: command, entryID: entry.id)
+      entry.updatedAt = Date()
+      try vault.saveEntry(entry)
+      try vault.saveAnalysis(analysis)
       await onProgress?(DilemmaDraftImportProgress(
         completedCount: offset + 1,
         totalCount: commands.count
       ))
     }
 
+    let snapshot = try LoadDiarySnapshotUseCase(vault: vault)()
     return DilemmaDraftImportResult(snapshot: snapshot, importedCount: commands.count)
   }
 

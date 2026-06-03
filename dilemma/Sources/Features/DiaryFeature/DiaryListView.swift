@@ -32,12 +32,13 @@ struct DiaryListView: View {
         } else {
           Section("Diary") {
             ForEach(model.entries) { entry in
+              let analysis = model.latestAnalysis(for: entry)
               NavigationLink {
                 AnalysisDetailView(
-                  model: makeAnalysisDetailModel(entry, model.latestAnalysis(for: entry))
+                  model: makeAnalysisDetailModel(entry, analysis)
                 )
               } label: {
-                EntryRow(entry: entry, analysis: model.latestAnalysis(for: entry))
+                EntryRow(entry: entry, analysis: analysis)
               }
               .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                 Button(role: .destructive) {

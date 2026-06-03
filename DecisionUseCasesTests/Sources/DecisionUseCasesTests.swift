@@ -176,6 +176,12 @@ struct DecisionUseCasesTests {
     ])
     #expect(result.snapshot.entries.count == 2)
     #expect(result.snapshot.latestAnalyses.count == 2)
+    #expect(result.snapshot.entries.allSatisfy { entry in
+      entry.options.count == 2 && entry.options.flatMap(\.reasons).count == 12
+    })
+    #expect(result.snapshot.latestAnalyses.values.allSatisfy { analysis in
+      analysis.attributeConflicts.count == 1 && analysis.clusterProfiles.count == 2
+    })
     #expect(Set(result.snapshot.entries.map(\.rawText)) == Set([
       "Should I stay or leave?",
       "Should I move cities?",
