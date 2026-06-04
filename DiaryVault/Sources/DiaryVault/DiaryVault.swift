@@ -4,20 +4,14 @@ import SQLite3
 
 public final class DiaryVault: @unchecked Sendable {
   public let databaseURL: URL
-  private let keyProvider: DatabaseKeyProvider
-  private let authenticator: VaultAuthenticator
   // SQLite access and the cached handle are isolated through this serial queue.
   private let queue = DispatchQueue(label: "com.local.dilemma.diary-vault")
   private var database: SQLiteDatabase?
 
   public init(
-    databaseURL: URL = DiaryVault.defaultDatabaseURL(),
-    keyProvider: DatabaseKeyProvider = KeychainDatabaseKeyProvider(),
-    authenticator: VaultAuthenticator = DeviceOwnerAuthenticator()
+    databaseURL: URL = DiaryVault.defaultDatabaseURL()
   ) {
     self.databaseURL = databaseURL
-    self.keyProvider = keyProvider
-    self.authenticator = authenticator
   }
 
   deinit {
@@ -31,13 +25,8 @@ public final class DiaryVault: @unchecked Sendable {
       .appendingPathComponent("DiaryVault.sqlite")
   }
 
-  public func unlock(reason: String = "Unlock your private decision diary.") async throws {
-    try await authenticator.unlock(reason: reason)
-  }
-
   public func prepare() throws {
     try queue.sync {
-      _ = try keyProvider.databaseKey()
       let database = try openDatabase()
       try database.execute(Self.schemaSQL)
     }
@@ -529,7 +518,6 @@ public final class DiaryVault: @unchecked Sendable {
         database.close()
         self.database = nil
       }
-      try keyProvider.deleteDatabaseKey()
       if removeDatabaseFile, FileManager.default.fileExists(atPath: databaseURL.path) {
         try FileManager.default.removeItem(at: databaseURL)
       }

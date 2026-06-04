@@ -124,8 +124,6 @@ let project = Project(
       dependencies: [
         .target(name: "DecisionModels"),
         .sdk(name: "sqlite3", type: .library),
-        .sdk(name: "Security", type: .framework),
-        .sdk(name: "LocalAuthentication", type: .framework),
       ]
     ),
     .target(

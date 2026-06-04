@@ -30,11 +30,6 @@ final class SettingsModel {
     }
   }
 
-  var requiresDeviceUnlock: Bool {
-    didSet {
-      userDefaults.set(requiresDeviceUnlock, forKey: Self.requiresDeviceUnlockKey)
-    }
-  }
   var usesDarkTheme: Bool {
     didSet {
       userDefaults.set(usesDarkTheme, forKey: Self.usesDarkThemeKey)
@@ -44,39 +39,31 @@ final class SettingsModel {
   var errorMessage: String?
 
   @ObservationIgnored private let prepareDiary: PrepareDiaryUseCase
-  @ObservationIgnored private let unlockDiary: UnlockDiaryUseCase
   @ObservationIgnored private let exportDiaryData: ExportDiaryDataUseCase
   @ObservationIgnored private let deleteDiaryData: DeleteDiaryDataUseCase
   @ObservationIgnored private let userDefaults: UserDefaults
   private static let appLanguageKey = "appLanguage"
-  private static let requiresDeviceUnlockKey = "requiresDeviceUnlock"
   private static let usesDarkThemeKey = "usesDarkTheme"
 
   init(
     prepareDiary: PrepareDiaryUseCase,
-    unlockDiary: UnlockDiaryUseCase,
     exportDiaryData: ExportDiaryDataUseCase,
     deleteDiaryData: DeleteDiaryDataUseCase,
     userDefaults: UserDefaults
   ) {
     self.prepareDiary = prepareDiary
-    self.unlockDiary = unlockDiary
     self.exportDiaryData = exportDiaryData
     self.deleteDiaryData = deleteDiaryData
     self.userDefaults = userDefaults
     let storedLanguage = userDefaults.string(forKey: Self.appLanguageKey)
       .flatMap(AppLanguage.init(rawValue:)) ?? .preferred
     self.appLanguage = storedLanguage
-    self.requiresDeviceUnlock = userDefaults.bool(forKey: Self.requiresDeviceUnlockKey)
     self.usesDarkTheme = userDefaults.bool(forKey: Self.usesDarkThemeKey)
     AppLocalization.language = storedLanguage
   }
 
-  func unlockIfNeededAndPrepare() async -> Bool {
+  func prepareDiaryForUse() -> Bool {
     do {
-      if requiresDeviceUnlock {
-        try await unlockDiary(reason: AppLocalization.string("Unlock your private decision diary."))
-      }
       try prepareDiary()
       errorMessage = nil
       return true

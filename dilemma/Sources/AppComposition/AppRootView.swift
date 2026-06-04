@@ -65,7 +65,7 @@ struct AppRootView: View {
     .environment(\.locale, settingsModel.appLanguage.locale)
     .preferredColorScheme(settingsModel.usesDarkTheme ? .dark : .light)
     .task {
-      if await settingsModel.unlockIfNeededAndPrepare() {
+      if settingsModel.prepareDiaryForUse() {
         diaryModel.reload()
         statisticsModel.reload()
       } else {

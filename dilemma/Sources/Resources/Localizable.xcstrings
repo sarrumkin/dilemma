@@ -1719,23 +1719,6 @@
         }
       }
     },
-    "Require Face ID or passcode" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Require Face ID or passcode"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Требовать Face ID или код-пароль"
-          }
-        }
-      }
-    },
     "Required JSON format" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1985,23 +1968,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Главные кластеры"
-          }
-        }
-      }
-    },
-    "Unlock your private decision diary." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlock your private decision diary."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Разблокируйте приватный дневник решений."
           }
         }
       }

@@ -15,7 +15,6 @@ public struct DecisionUseCases: Sendable {
   public let importDilemmaDrafts: ImportDilemmaDraftsUseCase
   public let deleteDiaryEntry: DeleteDiaryEntryUseCase
   public let deleteDiaryData: DeleteDiaryDataUseCase
-  public let unlockDiary: UnlockDiaryUseCase
 
   public static func live() -> DecisionUseCases {
     let vault = DiaryVault()
@@ -35,8 +34,7 @@ public struct DecisionUseCases: Sendable {
       exportDilemmaDraft: ExportDilemmaDraftUseCase(),
       importDilemmaDrafts: ImportDilemmaDraftsUseCase(vault: vault, analysisGenerator: analysisGenerator),
       deleteDiaryEntry: DeleteDiaryEntryUseCase(vault: vault),
-      deleteDiaryData: DeleteDiaryDataUseCase(vault: vault),
-      unlockDiary: UnlockDiaryUseCase(vault: vault)
+      deleteDiaryData: DeleteDiaryDataUseCase(vault: vault)
     )
   }
 
@@ -52,8 +50,7 @@ public struct DecisionUseCases: Sendable {
       exportDilemmaDraft: ExportDilemmaDraftUseCase(),
       importDilemmaDrafts: ImportDilemmaDraftsUseCase(vault: vault, analysisGenerator: analysisGenerator),
       deleteDiaryEntry: DeleteDiaryEntryUseCase(vault: vault),
-      deleteDiaryData: DeleteDiaryDataUseCase(vault: vault),
-      unlockDiary: UnlockDiaryUseCase(vault: vault)
+      deleteDiaryData: DeleteDiaryDataUseCase(vault: vault)
     )
   }
 }
@@ -83,18 +80,6 @@ public struct PrepareDiaryUseCase: Sendable {
 
   public func callAsFunction() throws {
     try vault.prepare()
-  }
-}
-
-public struct UnlockDiaryUseCase: Sendable {
-  private let vault: DiaryVault
-
-  init(vault: DiaryVault) {
-    self.vault = vault
-  }
-
-  public func callAsFunction(reason: String = "Unlock your private decision diary.") async throws {
-    try await vault.unlock(reason: reason)
   }
 }
 

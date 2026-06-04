@@ -13,9 +13,7 @@ struct DecisionUseCasesTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     let useCases = DecisionUseCases.testing(
       vault: vault,
@@ -70,9 +68,7 @@ struct DecisionUseCasesTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     let useCases = DecisionUseCases.testing(
       vault: vault,
@@ -153,9 +149,7 @@ struct DecisionUseCasesTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     let useCases = DecisionUseCases.testing(
       vault: vault,
@@ -184,9 +178,7 @@ struct DecisionUseCasesTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     let useCases = DecisionUseCases.testing(
       vault: vault,
@@ -227,9 +219,7 @@ struct DecisionUseCasesTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     let useCases = DecisionUseCases.testing(
       vault: vault,
@@ -279,9 +269,7 @@ struct DecisionUseCasesTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     let useCases = DecisionUseCases.testing(
       vault: vault,
@@ -325,9 +313,7 @@ struct DecisionUseCasesTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     let useCases = DecisionUseCases.testing(
       vault: vault,
@@ -408,12 +394,4 @@ private struct StubAnalysisGenerator: EntryAnalysisGenerating {
       ]
     )
   }
-}
-
-private struct EphemeralKeyProvider: DatabaseKeyProvider {
-  func databaseKey() throws -> Data {
-    Data(repeating: 9, count: 32)
-  }
-
-  func deleteDatabaseKey() throws {}
 }

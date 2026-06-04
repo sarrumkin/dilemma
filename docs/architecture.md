@@ -86,7 +86,7 @@ DecisionKernel
 
 Слой отвечает за:
 
-- use cases: prepare/unlock diary, create analyzed entry, load diary snapshot,
+- use cases: prepare diary, create analyzed entry, load diary snapshot,
   save feedback, load statistics, export data, delete data.
 - private mapping: `EntryDraftCommand` -> kernel `DecisionDraft`,
   `EntryDraftCommand` -> `DiaryEntry`, kernel `DecisionAnalysisResult` ->

@@ -54,7 +54,6 @@ xcodebuild test -workspace dilemma.xcworkspace -scheme dilemma -destination 'pla
 - Feedback can be saved, then statistics update after refresh.
 - JSON export can be prepared and shared from Privacy settings.
 - Delete all user data removes entries, analyses, feedback, and recreates an empty vault.
-- Face ID/passcode toggle prompts on next app preparation when enabled.
 - Long dilemma, option, reason, cluster, and attribute text remains readable.
 - VoiceOver can find the primary actions by their accessibility identifiers.
 
@@ -62,13 +61,10 @@ xcodebuild test -workspace dilemma.xcworkspace -scheme dilemma -destination 'pla
 
 - Missing or corrupted `DilemmaAssets.sqlite` surfaces a kernel asset error.
 - Missing bundled model surfaces a model-load error instead of writing private data.
-- Authentication failure surfaces a local unlock error and does not prepare the vault.
 - SQLite prepare/save/export/delete failures are routed to the app-level error banner.
 - Exported JSON includes `schemaVersion: 1` so future migrations can branch safely.
 
 ## Known Implementation Note
 
 The Slice 4 storage boundary is implemented as a replaceable local SQLite vault
-with Keychain-managed key material and `LocalAuthentication` unlock. The app
-does not yet link GRDB + SQLCipher directly; that swap should happen inside
-`DiaryVault` without changing kernel or feature boundaries.
+inside `DiaryVault`.

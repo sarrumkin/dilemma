@@ -12,9 +12,7 @@ struct DiaryVaultTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     try vault.prepare()
 
@@ -92,9 +90,7 @@ struct DiaryVaultTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     try vault.prepare()
 
@@ -183,9 +179,7 @@ struct DiaryVaultTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     try vault.prepare()
 
@@ -257,9 +251,7 @@ struct DiaryVaultTests {
       .appendingPathComponent(UUID().uuidString)
       .appendingPathExtension("sqlite")
     let vault = DiaryVault(
-      databaseURL: url,
-      keyProvider: EphemeralKeyProvider(),
-      authenticator: NoOpVaultAuthenticator()
+      databaseURL: url
     )
     try vault.prepare()
 
@@ -368,12 +360,4 @@ struct DiaryVaultTests {
       ]
     )
   }
-}
-
-private struct EphemeralKeyProvider: DatabaseKeyProvider {
-  func databaseKey() throws -> Data {
-    Data(repeating: 7, count: 32)
-  }
-
-  func deleteDatabaseKey() throws {}
 }

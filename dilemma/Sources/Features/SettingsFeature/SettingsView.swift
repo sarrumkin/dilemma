@@ -22,7 +22,6 @@ struct SettingsView: View {
         }
 
         Section("Privacy") {
-          Toggle("Require Face ID or passcode", isOn: $model.requiresDeviceUnlock)
           Label("Analysis runs locally.", systemImage: "checkmark.shield")
           Label("Dilemma text is not sent to a server.", systemImage: "wifi.slash")
           Label("Model, embeddings, and assets are bundled locally.", systemImage: "shippingbox")
