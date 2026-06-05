@@ -185,6 +185,28 @@ public struct ClusterProfile: Codable, Identifiable, Equatable, Sendable {
   }
 }
 
+public struct AttributeProfile: Codable, Identifiable, Equatable, Sendable {
+  public let id: UUID
+  public var optionIndex: Int
+  public var attributeID: Int
+  public var attributeName: String
+  public var score: Double
+
+  public init(
+    id: UUID = UUID(),
+    optionIndex: Int,
+    attributeID: Int,
+    attributeName: String,
+    score: Double
+  ) {
+    self.id = id
+    self.optionIndex = optionIndex
+    self.attributeID = attributeID
+    self.attributeName = attributeName
+    self.score = score
+  }
+}
+
 public struct DiaryAnalysis: Codable, Identifiable, Equatable, Sendable {
   public let id: UUID
   public var entryID: UUID
@@ -193,6 +215,7 @@ public struct DiaryAnalysis: Codable, Identifiable, Equatable, Sendable {
   public var modelID: String
   public var sourceDOI: String
   public var attributeConflicts: [AttributeConflict]
+  public var attributeProfiles: [AttributeProfile]
   public var clusterProfiles: [ClusterProfile]
 
   public init(
@@ -203,6 +226,7 @@ public struct DiaryAnalysis: Codable, Identifiable, Equatable, Sendable {
     modelID: String,
     sourceDOI: String,
     attributeConflicts: [AttributeConflict],
+    attributeProfiles: [AttributeProfile] = [],
     clusterProfiles: [ClusterProfile]
   ) {
     self.id = id
@@ -212,7 +236,35 @@ public struct DiaryAnalysis: Codable, Identifiable, Equatable, Sendable {
     self.modelID = modelID
     self.sourceDOI = sourceDOI
     self.attributeConflicts = attributeConflicts
+    self.attributeProfiles = attributeProfiles
     self.clusterProfiles = clusterProfiles
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case id
+    case entryID
+    case createdAt
+    case assetVersion
+    case modelID
+    case sourceDOI
+    case attributeConflicts
+    case attributeProfiles
+    case clusterProfiles
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.init(
+      id: try container.decode(UUID.self, forKey: .id),
+      entryID: try container.decode(UUID.self, forKey: .entryID),
+      createdAt: try container.decode(Date.self, forKey: .createdAt),
+      assetVersion: try container.decode(Int.self, forKey: .assetVersion),
+      modelID: try container.decode(String.self, forKey: .modelID),
+      sourceDOI: try container.decode(String.self, forKey: .sourceDOI),
+      attributeConflicts: try container.decode([AttributeConflict].self, forKey: .attributeConflicts),
+      attributeProfiles: try container.decodeIfPresent([AttributeProfile].self, forKey: .attributeProfiles) ?? [],
+      clusterProfiles: try container.decode([ClusterProfile].self, forKey: .clusterProfiles)
+    )
   }
 }
 

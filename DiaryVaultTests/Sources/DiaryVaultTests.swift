@@ -38,12 +38,18 @@ struct DiaryVaultTests {
           rank: 1
         ),
       ],
+      attributeProfiles: [
+        AttributeProfile(optionIndex: 1, attributeID: 7, attributeName: "money", score: 0.9),
+        AttributeProfile(optionIndex: 2, attributeID: 11, attributeName: "career", score: 0.8),
+      ],
       clusterProfiles: [
         ClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.7),
         ClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.6),
       ]
     )
     try vault.saveAnalysis(analysis)
+    let loadedAnalysis = try #require(try vault.analyses(entryID: entry.id).first)
+    #expect(loadedAnalysis.attributeProfiles.map(\.attributeName) == ["money", "career"])
 
     let feedback = Feedback(
       entryID: entry.id,

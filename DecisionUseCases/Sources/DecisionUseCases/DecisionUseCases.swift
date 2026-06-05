@@ -420,6 +420,16 @@ private extension DiaryAnalysis {
           rank: offset + 1
         )
       },
+      attributeProfiles: analysis.topAttributesByOption.flatMap { optionIndex, attributes in
+        attributes.map {
+          AttributeProfile(
+            optionIndex: optionIndex,
+            attributeID: $0.attribute.attributeID,
+            attributeName: $0.attribute.name,
+            score: Double($0.score)
+          )
+        }
+      },
       clusterProfiles: analysis.clusterProfiles.flatMap { optionIndex, clusters in
         clusters.map {
           ClusterProfile(

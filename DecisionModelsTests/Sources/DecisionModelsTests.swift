@@ -63,6 +63,9 @@ struct DecisionModelsTests {
               rank: 1
             ),
           ],
+          attributeProfiles: [
+            AttributeProfile(optionIndex: 1, attributeID: 7, attributeName: "money", score: 0.9),
+          ],
           clusterProfiles: [
             ClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.7),
           ]
@@ -92,7 +95,30 @@ struct DecisionModelsTests {
     #expect(decoded.entries.first?.id == entryID)
     #expect(decoded.entries.first?.options.first?.reasons.count == 2)
     #expect(decoded.analyses.first?.id == analysisID)
+    #expect(decoded.analyses.first?.attributeProfiles.first?.attributeName == "money")
     #expect(decoded.feedback.first?.analysisID == analysisID)
+  }
+
+  @Test
+  func diaryAnalysisDecodesLegacyPayloadWithoutAttributeProfiles() throws {
+    let data = """
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "entryID": "00000000-0000-0000-0000-000000000002",
+      "createdAt": "2026-01-01T00:00:00Z",
+      "assetVersion": 1,
+      "modelID": "stub-model",
+      "sourceDOI": "stub-doi",
+      "attributeConflicts": [],
+      "clusterProfiles": []
+    }
+    """.data(using: .utf8)!
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .iso8601
+
+    let analysis = try decoder.decode(DiaryAnalysis.self, from: data)
+
+    #expect(analysis.attributeProfiles.isEmpty)
   }
 
   @Test

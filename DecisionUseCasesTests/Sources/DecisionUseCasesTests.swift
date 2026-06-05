@@ -34,6 +34,7 @@ struct DecisionUseCasesTests {
     let analysis = try #require(created.latestAnalyses[entry.id])
     #expect(analysis.modelID == "stub-model")
     #expect(analysis.attributeConflicts.first?.attributeName == "money")
+    #expect(analysis.attributeProfiles.first?.attributeName == "money")
 
     try useCases.saveFeedback(
       FeedbackCommand(
@@ -255,7 +256,9 @@ struct DecisionUseCasesTests {
       entry.options.count == 2 && entry.options.flatMap(\.reasons).count == 12
     })
     #expect(result.snapshot.latestAnalyses.values.allSatisfy { analysis in
-      analysis.attributeConflicts.count == 1 && analysis.clusterProfiles.count == 2
+      analysis.attributeConflicts.count == 1
+        && analysis.attributeProfiles.count == 2
+        && analysis.clusterProfiles.count == 2
     })
     #expect(Set(result.snapshot.entries.map(\.rawText)) == Set([
       "Should I stay or leave?",
@@ -387,6 +390,10 @@ private struct StubAnalysisGenerator: EntryAnalysisGenerating {
           difference: 0.9,
           rank: 1
         ),
+      ],
+      attributeProfiles: [
+        AttributeProfile(optionIndex: 1, attributeID: 7, attributeName: "money", score: 0.9),
+        AttributeProfile(optionIndex: 2, attributeID: 11, attributeName: "career", score: 0.8),
       ],
       clusterProfiles: [
         ClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.7),

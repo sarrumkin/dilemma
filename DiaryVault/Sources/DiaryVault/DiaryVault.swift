@@ -189,6 +189,7 @@ public final class DiaryVault: @unchecked Sendable {
           ]
         )
         try database.execute("DELETE FROM attribute_match WHERE analysis_id = ?", [.text(analysis.id.uuidString)])
+        try database.execute("DELETE FROM attribute_profile WHERE analysis_id = ?", [.text(analysis.id.uuidString)])
         try database.execute("DELETE FROM cluster_profile WHERE analysis_id = ?", [.text(analysis.id.uuidString)])
 
         for conflict in analysis.attributeConflicts.sorted(by: { $0.rank < $1.rank }) {
@@ -207,6 +208,23 @@ public final class DiaryVault: @unchecked Sendable {
               .real(conflict.option2Score),
               .real(conflict.difference),
               .integer(conflict.rank),
+            ]
+          )
+        }
+
+        for profile in analysis.attributeProfiles {
+          try database.execute(
+            """
+            INSERT INTO attribute_profile(id, analysis_id, option_index, attribute_id, attribute_name, score)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            [
+              .text(profile.id.uuidString),
+              .text(analysis.id.uuidString),
+              .integer(profile.optionIndex),
+              .integer(profile.attributeID),
+              .text(profile.attributeName),
+              .real(profile.score),
             ]
           )
         }
@@ -634,6 +652,10 @@ public final class DiaryVault: @unchecked Sendable {
       for: analysisIDs,
       database: database
     )
+    let attributesByAnalysisID = try attributeProfilesByAnalysisID(
+      for: analysisIDs,
+      database: database
+    )
     let clustersByAnalysisID = try clusterProfilesByAnalysisID(
       for: analysisIDs,
       database: database
@@ -651,6 +673,7 @@ public final class DiaryVault: @unchecked Sendable {
         modelID: try row.string(4),
         sourceDOI: try row.string(5),
         attributeConflicts: conflictsByAnalysisID[analysisID] ?? [],
+        attributeProfiles: attributesByAnalysisID[analysisID] ?? [],
         clusterProfiles: clustersByAnalysisID[analysisID] ?? []
       )
     }
@@ -716,6 +739,36 @@ public final class DiaryVault: @unchecked Sendable {
       )
     }
     return clustersByAnalysisID
+  }
+
+  private func attributeProfilesByAnalysisID(
+    for analysisIDs: [UUID],
+    database: SQLiteDatabase
+  ) throws -> [UUID: [AttributeProfile]] {
+    guard !analysisIDs.isEmpty else { return [:] }
+    let rows = try database.query(
+      """
+      SELECT analysis_id, id, option_index, attribute_id, attribute_name, score
+      FROM attribute_profile
+      WHERE analysis_id IN (\(Self.placeholders(count: analysisIDs.count)))
+      ORDER BY analysis_id, option_index, ABS(score) DESC
+      """,
+      Self.bindings(for: analysisIDs)
+    )
+
+    var attributesByAnalysisID: [UUID: [AttributeProfile]] = [:]
+    for row in rows {
+      attributesByAnalysisID[try UUID.parse(row.string(0)), default: []].append(
+        AttributeProfile(
+          id: try UUID.parse(row.string(1)),
+          optionIndex: try row.int(2),
+          attributeID: try row.int(3),
+          attributeName: try row.string(4),
+          score: try row.double(5)
+        )
+      )
+    }
+    return attributesByAnalysisID
   }
 
   private static func placeholders(count: Int) -> String {
@@ -787,6 +840,15 @@ public final class DiaryVault: @unchecked Sendable {
       """,
       [.text(analysisID.uuidString)]
     )
+    let attributeProfileRows = try database.query(
+      """
+      SELECT id, option_index, attribute_id, attribute_name, score
+      FROM attribute_profile
+      WHERE analysis_id = ?
+      ORDER BY option_index, ABS(score) DESC
+      """,
+      [.text(analysisID.uuidString)]
+    )
     let clusterRows = try database.query(
       """
       SELECT id, option_index, cluster_id, label, score
@@ -812,6 +874,15 @@ public final class DiaryVault: @unchecked Sendable {
           option2Score: try $0.double(3),
           difference: try $0.double(4),
           rank: try $0.int(5)
+        )
+      },
+      attributeProfiles: try attributeProfileRows.map {
+        AttributeProfile(
+          id: try UUID.parse($0.string(0)),
+          optionIndex: try $0.int(1),
+          attributeID: try $0.int(2),
+          attributeName: try $0.string(3),
+          score: try $0.double(4)
         )
       },
       clusterProfiles: try clusterRows.map {
@@ -935,6 +1006,15 @@ public final class DiaryVault: @unchecked Sendable {
       option2_score REAL NOT NULL,
       difference REAL NOT NULL,
       rank INTEGER NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS attribute_profile (
+      id TEXT PRIMARY KEY,
+      analysis_id TEXT NOT NULL REFERENCES analysis_result(id) ON DELETE CASCADE,
+      option_index INTEGER NOT NULL,
+      attribute_id INTEGER NOT NULL,
+      attribute_name TEXT NOT NULL,
+      score REAL NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS cluster_profile (

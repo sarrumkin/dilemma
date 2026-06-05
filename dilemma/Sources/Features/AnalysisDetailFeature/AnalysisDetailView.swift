@@ -40,6 +40,27 @@ struct AnalysisDetailView: View {
         }
         */
 
+        Section("Top Attributes") {
+          ForEach(model.entry.options) { option in
+            let attributes = topAttributes(for: option, in: analysis)
+
+            VStack(alignment: .leading, spacing: 8) {
+              Text(option.title)
+                .font(.subheadline.weight(.semibold))
+              ForEach(attributes) { attribute in
+                HStack {
+                  Text(attribute.attributeName)
+                    .lineLimit(2)
+                  Spacer()
+                  Text(format(attribute.score))
+                    .font(.caption.monospacedDigit())
+                    .foregroundStyle(scoreColor(attribute.score))
+                }
+              }
+            }
+          }
+        }
+
         Section("Top Clusters") {
           ForEach(model.entry.options) { option in
             let clusters = topClusters(for: option, in: analysis)
@@ -181,6 +202,33 @@ struct AnalysisDetailView: View {
 
   private func format(_ value: Double) -> String {
     value.formatted(.number.precision(.fractionLength(3)))
+  }
+
+  private func topAttributes(for option: DiaryOption, in analysis: DiaryAnalysis) -> [AttributeProfile] {
+    let optionAttributes = analysis.attributeProfiles
+      .filter { $0.optionIndex == option.index && $0.score != 0 }
+
+    let positives = optionAttributes
+      .filter { $0.score > 0 }
+      .sorted { left, right in
+        if left.score == right.score {
+          return left.attributeID < right.attributeID
+        }
+        return left.score > right.score
+      }
+      .prefix(3)
+
+    let negatives = optionAttributes
+      .filter { $0.score < 0 }
+      .sorted { left, right in
+        if left.score == right.score {
+          return left.attributeID < right.attributeID
+        }
+        return left.score < right.score
+      }
+      .prefix(3)
+
+    return Array(positives) + Array(negatives)
   }
 
   private func topClusters(for option: DiaryOption, in analysis: DiaryAnalysis) -> [ClusterProfile] {
