@@ -1,4 +1,5 @@
 import Accelerate
+import DecisionModels
 import Foundation
 
 enum AttributeScoring {

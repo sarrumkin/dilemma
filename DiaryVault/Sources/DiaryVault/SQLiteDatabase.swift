@@ -6,6 +6,7 @@ enum SQLiteValue {
   case integer(Int)
   case real(Double)
   case text(String)
+  case blob(Data)
 }
 
 struct SQLiteRow {
@@ -48,6 +49,13 @@ struct SQLiteRow {
     default:
       throw DiaryVaultError.database("Expected real at column \(index).")
     }
+  }
+
+  func data(_ index: Int) throws -> Data {
+    guard case .blob(let value) = values[index] else {
+      throw DiaryVaultError.database("Expected blob at column \(index).")
+    }
+    return value
   }
 }
 
@@ -182,6 +190,10 @@ final class SQLiteDatabase {
         result = sqlite3_bind_double(statement, index, value)
       case .text(let value):
         result = sqlite3_bind_text(statement, index, value, -1, SQLITE_TRANSIENT)
+      case .blob(let value):
+        result = value.withUnsafeBytes { buffer in
+          sqlite3_bind_blob(statement, index, buffer.baseAddress, Int32(buffer.count), SQLITE_TRANSIENT)
+        }
       }
 
       guard result == SQLITE_OK else {
@@ -202,6 +214,10 @@ final class SQLiteDatabase {
       case SQLITE_TEXT:
         guard let text = sqlite3_column_text(statement, index) else { return .text("") }
         return .text(String(cString: text))
+      case SQLITE_BLOB:
+        guard let bytes = sqlite3_column_blob(statement, index) else { return .blob(Data()) }
+        let count = Int(sqlite3_column_bytes(statement, index))
+        return .blob(Data(bytes: bytes, count: count))
       default:
         return .null
       }

@@ -7,14 +7,14 @@ import Observation
 @Observable
 final class AnalysisDetailModel {
   let entry: DiaryEntry
-  let analysis: DiaryAnalysis?
+  let analysis: DecisionAnalysis?
   let allEntries: [DiaryEntry]
-  let latestAnalyses: [UUID: DiaryAnalysis]
+  let latestAnalyses: [UUID: DecisionAnalysis]
   var chosenOptionIndex: Int?
   var note = ""
   private(set) var savedFeedback: Feedback?
   private(set) var isEditingFeedback = false
-  private(set) var preferenceStatistics = PreferenceStatistics.empty
+  private(set) var likelyChoiceAdvice: LikelyChoiceAdvice?
   var didSaveFeedback = false
   var exportURL: URL?
   var errorMessage: String?
@@ -22,18 +22,16 @@ final class AnalysisDetailModel {
   @ObservationIgnored private let saveFeedbackUseCase: SaveFeedbackUseCase
   @ObservationIgnored private let loadFeedbackForAnalysisUseCase: LoadFeedbackForAnalysisUseCase
   @ObservationIgnored private let exportDilemmaDraft: ExportDilemmaDraftUseCase
-  @ObservationIgnored private let loadPreferenceStatisticsUseCase: LoadPreferenceStatisticsUseCase
   @ObservationIgnored private let onFeedbackSaved: @MainActor () -> Void
 
   init(
     entry: DiaryEntry,
-    analysis: DiaryAnalysis?,
+    analysis: DecisionAnalysis?,
     allEntries: [DiaryEntry] = [],
-    latestAnalyses: [UUID: DiaryAnalysis] = [:],
+    latestAnalyses: [UUID: DecisionAnalysis] = [:],
     saveFeedback: SaveFeedbackUseCase,
     loadFeedbackForAnalysis: LoadFeedbackForAnalysisUseCase,
     exportDilemmaDraft: ExportDilemmaDraftUseCase,
-    loadPreferenceStatistics: LoadPreferenceStatisticsUseCase,
     onFeedbackSaved: @escaping @MainActor () -> Void
   ) {
     self.entry = entry
@@ -43,10 +41,9 @@ final class AnalysisDetailModel {
     self.saveFeedbackUseCase = saveFeedback
     self.loadFeedbackForAnalysisUseCase = loadFeedbackForAnalysis
     self.exportDilemmaDraft = exportDilemmaDraft
-    self.loadPreferenceStatisticsUseCase = loadPreferenceStatistics
     self.onFeedbackSaved = onFeedbackSaved
     reloadSavedFeedback()
-    reloadPreferenceStatistics()
+    reloadLikelyChoiceAdvice()
   }
 
   var canSaveFeedback: Bool {
@@ -65,16 +62,12 @@ final class AnalysisDetailModel {
     savedFeedback?.note ?? ""
   }
 
+  var optionTitlesByIndex: [Int: String] {
+    Dictionary(uniqueKeysWithValues: entry.options.map { ($0.index, $0.title) })
+  }
+
   var saveFeedbackButtonTitle: String {
     hasSavedFeedback ? "Save changes" : "Save decision"
-  }
-
-  var topChosenCluster: ClusterFrequency? {
-    preferenceStatistics.mostFrequentClusters.first
-  }
-
-  var chosenClusterDilemmaCount: Int {
-    preferenceStatistics.chosenClusterDilemmaCount
   }
 
   func saveFeedback() {
@@ -101,7 +94,7 @@ final class AnalysisDetailModel {
         didSaveFeedback = true
       }
       errorMessage = nil
-      reloadPreferenceStatistics()
+      reloadLikelyChoiceAdvice()
       onFeedbackSaved()
     } catch {
       errorMessage = AppErrorMessage.message(for: error, context: .saveFeedback)
@@ -127,14 +120,6 @@ final class AnalysisDetailModel {
       errorMessage = nil
     } catch {
       errorMessage = AppErrorMessage.message(for: error, context: .exportEntry)
-    }
-  }
-
-  func reloadPreferenceStatistics() {
-    do {
-      preferenceStatistics = try loadPreferenceStatisticsUseCase()
-    } catch {
-      preferenceStatistics = .empty
     }
   }
 
@@ -165,44 +150,40 @@ final class AnalysisDetailModel {
     }
   }
 
-  func similarDilemmas(limit: Int = 5) -> [SimilarDilemma] {
-    guard
-      let analysis,
-      let queryVector = Self.normalizedConflictVector(for: analysis)
-    else {
-      return []
+  func reloadLikelyChoiceAdvice(limit: Int = 5) {
+    guard let analysis else {
+      likelyChoiceAdvice = nil
+      return
     }
 
-    return allEntries.compactMap { candidateEntry in
-      guard
-        candidateEntry.id != entry.id,
-        let candidateAnalysis = latestAnalyses[candidateEntry.id],
-        let candidateVector = Self.normalizedConflictVector(for: candidateAnalysis)
-      else {
-        return nil
-      }
-
-      let score = Self.dot(queryVector, candidateVector)
-      guard score.isFinite, score > 0 else { return nil }
-
-      return SimilarDilemma(
-        entry: candidateEntry,
-        score: score,
-        sharedClusters: Self.sharedClusters(
-          query: analysis,
-          candidate: candidateAnalysis,
-          limit: 3
-        )
+    do {
+      likelyChoiceAdvice = LikelyChoiceAdvice(
+        currentAnalysis: analysis,
+        currentOptionIndices: entry.options.map(\.index),
+        decidedChoices: try similarDecidedChoices(limit: limit),
+        limit: limit
       )
+    } catch {
+      likelyChoiceAdvice = nil
     }
-    .sorted {
-      if $0.score == $1.score {
-        return $0.entry.updatedAt > $1.entry.updatedAt
+  }
+
+  func similarDilemmas(limit: Int = 5) -> [SimilarDilemma] {
+    guard let analysis else { return [] }
+
+    return similarDilemmaCandidates()
+      .prefix(limit)
+      .map { candidate in
+        SimilarDilemma(
+          entry: candidate.entry,
+          score: candidate.score,
+          sharedClusters: Self.sharedClusterLabels(
+            query: analysis,
+            candidate: candidate.analysis,
+            limit: 3
+          )
+        )
       }
-      return $0.score > $1.score
-    }
-    .prefix(limit)
-    .map { $0 }
   }
 
   func makeSimilarDilemmaModel(for match: SimilarDilemma) -> AnalysisDetailModel {
@@ -214,12 +195,68 @@ final class AnalysisDetailModel {
       saveFeedback: saveFeedbackUseCase,
       loadFeedbackForAnalysis: loadFeedbackForAnalysisUseCase,
       exportDilemmaDraft: exportDilemmaDraft,
-      loadPreferenceStatistics: loadPreferenceStatisticsUseCase,
       onFeedbackSaved: onFeedbackSaved
     )
   }
 
-  private static func normalizedConflictVector(for analysis: DiaryAnalysis) -> [Int: Double]? {
+  private func similarDilemmaCandidates() -> [SimilarDilemmaCandidate] {
+    guard
+      let analysis
+    else {
+      return []
+    }
+
+    return allEntries.compactMap { candidateEntry in
+      guard
+        candidateEntry.id != entry.id,
+        let candidateAnalysis = latestAnalyses[candidateEntry.id],
+        let score = LikelyChoiceAdvice.conflictSimilarity(
+          between: analysis,
+          and: candidateAnalysis
+        )
+      else {
+        return nil
+      }
+
+      guard score.isFinite, score > 0 else { return nil }
+
+      return SimilarDilemmaCandidate(
+        entry: candidateEntry,
+        analysis: candidateAnalysis,
+        score: score
+      )
+    }
+    .sorted {
+      if $0.score == $1.score {
+        return $0.entry.updatedAt > $1.entry.updatedAt
+      }
+      return $0.score > $1.score
+    }
+  }
+
+  private func similarDecidedChoices(limit: Int) throws -> [SimilarDecidedChoice] {
+    var choices: [SimilarDecidedChoice] = []
+    for candidate in similarDilemmaCandidates() {
+      guard choices.count < limit else { break }
+      guard
+        let feedback = try loadFeedbackForAnalysisUseCase(
+          entryID: candidate.entry.id,
+          analysisID: candidate.analysis.id
+        ),
+        let chosenOptionIndex = feedback.chosenOptionIndex
+      else {
+        continue
+      }
+
+      choices.append(SimilarDecidedChoice(
+        analysis: candidate.analysis,
+        chosenOptionIndex: chosenOptionIndex
+      ))
+    }
+    return choices
+  }
+
+  private static func normalizedConflictVector(for analysis: DecisionAnalysis) -> [Int: Double]? {
     let option1 = clusterScores(for: analysis, optionIndex: 1)
     let option2 = clusterScores(for: analysis, optionIndex: 2)
     let clusterIDs = Set(option1.keys).union(option2.keys)
@@ -234,7 +271,7 @@ final class AnalysisDetailModel {
     return vector.mapValues { $0 / magnitude }
   }
 
-  private static func clusterScores(for analysis: DiaryAnalysis, optionIndex: Int) -> [Int: Double] {
+  private static func clusterScores(for analysis: DecisionAnalysis, optionIndex: Int) -> [Int: Double] {
     let pairs: [(Int, Double)] = analysis.clusterProfiles
       .filter { $0.optionIndex == optionIndex }
       .map { ($0.clusterID, $0.score) }
@@ -247,9 +284,9 @@ final class AnalysisDetailModel {
     }
   }
 
-  private static func sharedClusters(
-    query: DiaryAnalysis,
-    candidate: DiaryAnalysis,
+  private static func sharedClusterLabels(
+    query: DecisionAnalysis,
+    candidate: DecisionAnalysis,
     limit: Int
   ) -> [SharedCluster] {
     guard
@@ -304,4 +341,10 @@ struct SharedCluster: Identifiable {
   var id: Int { clusterID }
   let clusterID: Int
   let label: String
+}
+
+private struct SimilarDilemmaCandidate {
+  let entry: DiaryEntry
+  let analysis: DecisionAnalysis
+  let score: Double
 }

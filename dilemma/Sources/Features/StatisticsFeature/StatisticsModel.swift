@@ -82,7 +82,7 @@ final class StatisticsModel {
 struct RecordedDecisionRecord: Identifiable, Equatable, Sendable {
   var id: UUID { entry.id }
   let entry: DiaryEntry
-  let analysis: DiaryAnalysis
+  let analysis: DecisionAnalysis
   let feedback: Feedback
 
   var chosenOptionTitle: String {

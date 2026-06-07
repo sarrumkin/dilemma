@@ -7,6 +7,7 @@ enum AppErrorContext {
   case saveFeedback
   case exportEntry
   case prepareDiary
+  case migrateAnalyses
   case exportDiary
   case deleteEntry
   case deleteData
@@ -29,6 +30,8 @@ enum AppErrorMessage {
       AppLocalization.string("Could not prepare this export.")
     case .prepareDiary:
       AppLocalization.string("Could not prepare the private diary.")
+    case .migrateAnalyses:
+      AppLocalization.string("Could not migrate saved analyses.")
     case .exportDiary:
       AppLocalization.string("Could not export diary data.")
     case .deleteEntry:

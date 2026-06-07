@@ -1,6 +1,28 @@
 import Accelerate
+import DecisionModels
 import Foundation
 import SQLite3
+
+struct AttributeAssetModel: Codable, Sendable {
+  let id: String
+  let shortName: String
+  let embeddingDimension: Int
+}
+
+struct AttributeVectorFile: Codable, Sendable {
+  let file: String
+  let dtype: String
+  let layout: String
+  let normalized: Bool
+}
+
+struct AttributeAssetMetadata: Codable, Sendable {
+  let assetVersion: Int
+  let sourceDoi: String
+  let model: AttributeAssetModel
+  let vectors: AttributeVectorFile
+  let attributes: [AttributeMetadata]
+}
 
 struct AttributeEmbeddingStore: Sendable {
   let metadata: AttributeAssetMetadata

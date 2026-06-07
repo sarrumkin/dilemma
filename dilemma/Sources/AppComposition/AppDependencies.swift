@@ -45,6 +45,7 @@ struct AppDependencies {
   func makeSettingsModel() -> SettingsModel {
     SettingsModel(
       prepareDiary: useCases.prepareDiary,
+      reanalyzeIncompleteAnalyses: useCases.reanalyzeIncompleteAnalyses,
       exportDiaryData: useCases.exportDiaryData,
       deleteDiaryData: useCases.deleteDiaryData,
       userDefaults: userDefaults

@@ -1,16 +1,18 @@
 import Foundation
 
+/// JSON DTO for importing or exporting one dilemma draft.
+/// It is intentionally close to file format, then maps into `EntryDraftCommand` for validation and analysis.
 public struct DilemmaDraftJSON: Codable, Equatable, Sendable {
   public var schemaVersion: Int?
   public var rawText: String
   public var options: [DilemmaDraftOptionJSON]
-  public var analysis: DiaryAnalysis?
+  public var analysis: DecisionAnalysis?
 
   public init(
     schemaVersion: Int? = 1,
     rawText: String,
     options: [DilemmaDraftOptionJSON],
-    analysis: DiaryAnalysis? = nil
+    analysis: DecisionAnalysis? = nil
   ) {
     self.schemaVersion = schemaVersion
     self.rawText = rawText
@@ -36,7 +38,7 @@ public struct DilemmaDraftJSON: Codable, Equatable, Sendable {
     )
   }
 
-  public init(entry: DiaryEntry, analysis: DiaryAnalysis? = nil) throws {
+  public init(entry: DiaryEntry, analysis: DecisionAnalysis? = nil) throws {
     let sortedOptions = entry.options.sorted { $0.index < $1.index }
     guard sortedOptions.count == 2 else {
       throw DilemmaDraftJSONValidationError.expectedTwoOptions(actual: sortedOptions.count)
@@ -87,6 +89,8 @@ public struct DilemmaDraftJSON: Codable, Equatable, Sendable {
   }
 }
 
+/// JSON DTO for one option inside an imported or exported dilemma draft.
+/// It keeps benefits and costs as separate arrays because that is the external file contract.
 public struct DilemmaDraftOptionJSON: Codable, Equatable, Sendable {
   public var title: String
   public var benefits: [String]
@@ -123,6 +127,8 @@ public struct DilemmaDraftOptionJSON: Codable, Equatable, Sendable {
   }
 }
 
+/// Validation errors for the dilemma draft JSON contract.
+/// They make import failures precise before any diary entry or analysis is saved.
 public enum DilemmaDraftJSONValidationError: LocalizedError, Equatable, Sendable {
   case unsupportedSchemaVersion(Int)
   case missingDilemmaText

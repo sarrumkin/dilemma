@@ -1,3 +1,4 @@
+import DecisionModels
 import Foundation
 
 public enum SimilarityMethod: String, Codable, CaseIterable, Sendable {

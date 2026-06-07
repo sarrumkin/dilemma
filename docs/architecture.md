@@ -71,12 +71,28 @@ DecisionKernel
 
 - commands: `EntryDraftCommand`, `FeedbackCommand`;
 - diary graph: `DiaryEntry`, `DiaryOption`, `DiaryReason`;
-- analysis data: `DiaryAnalysis`, `AttributeConflict`, `ClusterProfile`;
+- analysis data: `DecisionAnalysis`, `AttributeConflict`, `ClusterProfile`;
 - aggregate data: `DiarySnapshot`, `PreferenceStatistics`, `ClusterFrequency`,
   `DiaryExport`.
 
-`DiaryVault` хранит и возвращает эти canonical models напрямую. Отдельных
-`Stored*` storage records и отдельных UI snapshot types больше нет.
+`DiaryVault` не импортирует `DecisionModels`. Внутри vault лежат только
+storage models (`StoredDiaryEntry`, `StoredDecisionAnalysis`,
+`StoredFeedback`, aggregate `Stored*` records), которые описывают persisted
+shape и SQL projection fields.
+
+`DecisionUseCases` выполняет mapping между canonical models из
+`DecisionModels` и storage models из `DiaryVault`. Для анализа vault хранит
+полный normalized `StoredDecisionAnalysis` graph: metadata, raw text inside
+embeddings, question/option/reason embeddings, reason matches, option
+attribute profiles, option cluster profiles, metrics и warnings. Projection
+tables для текущей статистики остаются derived storage, но не являются source
+of truth для анализа.
+
+Если существующая база содержит старые projection-only analysis rows,
+`ReanalyzeIncompleteAnalysesUseCase` переанализирует такие entries после
+`prepareDiary`, сохраняет полный normalized graph в тот же `analysisID` и
+отдает progress (`totalCount`, `completedCount`, `remainingCount`,
+`currentEntryID`, `failedCount`, `isRunning`) для UI.
 
 ## Application Layer
 
@@ -89,8 +105,12 @@ DecisionKernel
 - use cases: prepare diary, create analyzed entry, load diary snapshot,
   save feedback, load statistics, export data, delete data.
 - private mapping: `EntryDraftCommand` -> kernel `DecisionDraft`,
-  `EntryDraftCommand` -> `DiaryEntry`, kernel `DecisionAnalysisResult` ->
-  `DiaryAnalysis`, `FeedbackCommand` -> `Feedback`.
+  `EntryDraftCommand` -> `DiaryEntry`, `DecisionAnalysis` -> vault
+  `StoredDecisionAnalysis`, vault `Stored*` records -> canonical
+  `DecisionModels`, `FeedbackCommand` -> vault `StoredFeedback`.
+- reanalysis: incomplete or outdated `StoredDecisionAnalysis` rows -> fresh
+  full `DecisionAnalysis` saved under the same analysis identity, with
+  progress callback for startup UI.
 
 UI получает models из `DecisionModels`, а kernel/storage implementation details
 остаются внутри `DecisionUseCases` и `DiaryVault`.
