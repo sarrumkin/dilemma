@@ -27,7 +27,7 @@ struct AnalysisDetailView: View {
         Section("Likely Attribute Conflict") {
           ForEach(analysis.attributeConflicts.prefix(8)) { conflict in
             VStack(alignment: .leading, spacing: 4) {
-              Text(conflict.attributeName)
+              Text(TaxonomyLocalization.attributeName(sourceName: conflict.attributeName))
               HStack {
                 Text("O1 \(format(conflict.option1Score))")
                 Text("O2 \(format(conflict.option2Score))")
@@ -49,7 +49,7 @@ struct AnalysisDetailView: View {
                 .font(.subheadline.weight(.semibold))
               ForEach(clusters) { cluster in
                 HStack {
-                  Text(cluster.label)
+                  Text(TaxonomyLocalization.clusterName(clusterID: cluster.clusterID, fallback: cluster.label))
                     .lineLimit(2)
                   Spacer()
                   Text(format(cluster.score))
@@ -269,7 +269,7 @@ private struct ChosenClusterCircle: View {
 
       VStack(alignment: .leading, spacing: 6) {
         if let topCluster {
-          Text(topCluster.label)
+          Text(TaxonomyLocalization.clusterName(clusterID: topCluster.clusterID, fallback: topCluster.label))
             .font(.headline)
             .lineLimit(3)
         } else {
@@ -314,8 +314,12 @@ private struct SimilarDilemmaRow: View {
         .foregroundStyle(.secondary)
         .lineLimit(1)
 
-      if !match.sharedClusterLabels.isEmpty {
-        Text(match.sharedClusterLabels.joined(separator: " • "))
+      if !match.sharedClusters.isEmpty {
+        Text(
+          match.sharedClusters
+            .map { TaxonomyLocalization.clusterName(clusterID: $0.clusterID, fallback: $0.label) }
+            .joined(separator: " • ")
+        )
           .font(.caption2)
           .foregroundStyle(.secondary)
           .lineLimit(2)

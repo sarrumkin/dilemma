@@ -188,7 +188,7 @@ final class AnalysisDetailModel {
       return SimilarDilemma(
         entry: candidateEntry,
         score: score,
-        sharedClusterLabels: Self.sharedClusterLabels(
+        sharedClusters: Self.sharedClusters(
           query: analysis,
           candidate: candidateAnalysis,
           limit: 3
@@ -247,11 +247,11 @@ final class AnalysisDetailModel {
     }
   }
 
-  private static func sharedClusterLabels(
+  private static func sharedClusters(
     query: DiaryAnalysis,
     candidate: DiaryAnalysis,
     limit: Int
-  ) -> [String] {
+  ) -> [SharedCluster] {
     guard
       let queryVector = normalizedConflictVector(for: query),
       let candidateVector = normalizedConflictVector(for: candidate)
@@ -274,7 +274,12 @@ final class AnalysisDetailModel {
         return left > right
       }
       .prefix(limit)
-      .compactMap { labels[$0] }
+      .map { clusterID in
+        SharedCluster(
+          clusterID: clusterID,
+          label: labels[clusterID] ?? "Cluster \(clusterID)"
+        )
+      }
   }
 
   private func applySavedFeedback() {
@@ -292,5 +297,11 @@ struct SimilarDilemma: Identifiable {
   var id: UUID { entry.id }
   let entry: DiaryEntry
   let score: Double
-  let sharedClusterLabels: [String]
+  let sharedClusters: [SharedCluster]
+}
+
+struct SharedCluster: Identifiable {
+  var id: Int { clusterID }
+  let clusterID: Int
+  let label: String
 }

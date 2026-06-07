@@ -152,7 +152,7 @@ private struct ClusterDilemmaListView: View {
   var body: some View {
     List {
       Section("Cluster") {
-        Text(group.label)
+        Text(TaxonomyLocalization.clusterName(clusterID: group.clusterID, fallback: group.label))
           .font(.headline)
           .lineLimit(3)
         MetricRow(label: "Dilemmas", value: "\(group.count)")
@@ -181,7 +181,7 @@ private struct ClusterDilemmaGroupRow: View {
   var body: some View {
     HStack(alignment: .top, spacing: 12) {
       VStack(alignment: .leading, spacing: 6) {
-        Text(group.label)
+        Text(TaxonomyLocalization.clusterName(clusterID: group.clusterID, fallback: group.label))
           .font(.subheadline.weight(.semibold))
           .lineLimit(2)
 
