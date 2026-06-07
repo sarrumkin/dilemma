@@ -89,6 +89,7 @@ let project = Project(
         "DecisionKernel/Sources",
       ],
       dependencies: [
+        .target(name: "DecisionModels"),
         .package(product: "Embeddings"),
         .package(product: "MLTensorUtils"),
         .sdk(name: "sqlite3", type: .library),
@@ -109,6 +110,7 @@ let project = Project(
       ],
       dependencies: [
         .target(name: "DecisionKernel"),
+        .target(name: "DecisionModels"),
       ]
     ),
     .target(
@@ -122,7 +124,6 @@ let project = Project(
         "DiaryVault/Sources",
       ],
       dependencies: [
-        .target(name: "DecisionModels"),
         .sdk(name: "sqlite3", type: .library),
       ]
     ),
@@ -137,7 +138,6 @@ let project = Project(
         "DiaryVaultTests/Sources",
       ],
       dependencies: [
-        .target(name: "DecisionModels"),
         .target(name: "DiaryVault"),
       ]
     ),

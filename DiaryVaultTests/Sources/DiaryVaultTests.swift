@@ -1,7 +1,6 @@
 import Foundation
 import Testing
 
-import DecisionModels
 @testable import DiaryVault
 
 @Suite
@@ -24,13 +23,13 @@ struct DiaryVaultTests {
     #expect(loaded.options.count == 2)
     #expect(loaded.options.flatMap(\.reasons).count == 12)
 
-    let analysis = DiaryAnalysis(
+    let analysis = StoredDecisionAnalysis(
       entryID: entry.id,
       assetVersion: 1,
       modelID: "sentence-transformers/all-MiniLM-L12-v2",
       sourceDOI: "10.1073/pnas.2406489122",
       attributeConflicts: [
-        AttributeConflict(
+        StoredAttributeConflict(
           attributeName: "money",
           option1Score: 0.8,
           option2Score: -0.2,
@@ -39,13 +38,13 @@ struct DiaryVaultTests {
         ),
       ],
       clusterProfiles: [
-        ClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.7),
-        ClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.6),
+        StoredClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.7),
+        StoredClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.6),
       ]
     )
     try vault.saveAnalysis(analysis)
 
-    let feedback = Feedback(
+    let feedback = StoredFeedback(
       entryID: entry.id,
       analysisID: analysis.id,
       conflictWasUseful: true,
@@ -60,7 +59,7 @@ struct DiaryVaultTests {
     #expect(statistics.feedbackCount == 1)
     #expect(statistics.acceptedConflictCount == 1)
     #expect(statistics.mostFrequentClusters == [
-      ClusterFrequency(clusterID: 4, label: "Cluster 4: money", count: 1),
+      StoredClusterFrequency(clusterID: 4, label: "Cluster 4: money", count: 1),
     ])
     #expect(statistics.chosenOptionCounts[1] == 1)
     #expect(statistics.chosenClusterDilemmaCount == 1)
@@ -74,7 +73,7 @@ struct DiaryVaultTests {
     #expect(!exportData.isEmpty)
     let decoder = JSONDecoder()
     decoder.dateDecodingStrategy = .iso8601
-    let decodedExport = try decoder.decode(DiaryExport.self, from: exportData)
+    let decodedExport = try decoder.decode(StoredDiaryExport.self, from: exportData)
     #expect(decodedExport.schemaVersion == 1)
     #expect(decodedExport.entries.first?.options.flatMap(\.reasons).count ?? 0 == 12)
 
@@ -104,7 +103,7 @@ struct DiaryVaultTests {
     try vault.saveAnalysis(analysis)
 
     try vault.saveFeedback(
-      Feedback(
+      StoredFeedback(
         entryID: entry.id,
         analysisID: analysis.id,
         conflictWasUseful: true,
@@ -117,7 +116,7 @@ struct DiaryVaultTests {
     #expect(try vault.feedback(entryID: entry.id).isEmpty)
 
     try vault.saveFeedback(
-      Feedback(
+      StoredFeedback(
         entryID: entry.id,
         analysisID: analysis.id,
         conflictWasUseful: true,
@@ -127,7 +126,7 @@ struct DiaryVaultTests {
       )
     )
     try vault.saveFeedback(
-      Feedback(
+      StoredFeedback(
         entryID: entry.id,
         analysisID: analysis.id,
         conflictWasUseful: true,
@@ -148,11 +147,11 @@ struct DiaryVaultTests {
     #expect(statistics.chosenOptionCounts == [2: 1])
     #expect(statistics.chosenClusterDilemmaCount == 1)
     #expect(statistics.mostFrequentClusters == [
-      ClusterFrequency(clusterID: 104, label: "Other 4", count: 1),
+      StoredClusterFrequency(clusterID: 104, label: "Other 4", count: 1),
     ])
 
     try vault.saveFeedback(
-      Feedback(
+      StoredFeedback(
         entryID: entry.id,
         analysisID: analysis.id,
         conflictWasUseful: true,
@@ -171,6 +170,59 @@ struct DiaryVaultTests {
     #expect(statistics.chosenOptionCounts.isEmpty)
     #expect(statistics.chosenClusterDilemmaCount == 0)
     #expect(statistics.mostFrequentClusters.isEmpty)
+  }
+
+  @Test
+  func saveLoadFullAnalysisRoundTripAndUpdate() throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(databaseURL: url)
+    try vault.prepare()
+
+    let entry = sampleEntry(
+      rawText: "Should I keep consulting or join a product team?",
+      createdAt: Date(timeIntervalSince1970: 100),
+      updatedAt: Date(timeIntervalSince1970: 101)
+    )
+    try vault.saveEntry(entry)
+
+    let reasonIDs = entry.options.flatMap(\.reasons).map(\.id)
+    let analysisID = UUID()
+    let analysis = fullSampleAnalysis(
+      id: analysisID,
+      entryID: entry.id,
+      rawText: entry.rawText,
+      reasonIDs: Array(reasonIDs.prefix(2)),
+      createdAt: Date(timeIntervalSince1970: 200),
+      variant: "initial"
+    )
+    try vault.saveAnalysis(analysis)
+
+    let loaded = try #require(try vault.analyses(entryID: entry.id).first)
+    #expect(loaded == analysis)
+    #expect(loaded.hasFullAnalysisPayload)
+    #expect(loaded.embeddings.rawText == entry.rawText)
+    #expect(loaded.embeddings.dilemmaText.values == [0.125, -0.25, 0.5])
+
+    let snapshotAnalysis = try #require(try vault.snapshot().latestAnalyses[entry.id])
+    #expect(snapshotAnalysis == analysis)
+
+    let updated = fullSampleAnalysis(
+      id: analysisID,
+      entryID: entry.id,
+      rawText: "\(entry.rawText) Updated.",
+      reasonIDs: Array(reasonIDs.prefix(1)),
+      createdAt: Date(timeIntervalSince1970: 300),
+      variant: "updated"
+    )
+    try vault.saveAnalysis(updated)
+
+    let reloaded = try #require(try vault.analyses(entryID: entry.id).first)
+    #expect(reloaded == updated)
+    #expect(reloaded.reasonMatches.count == 1)
+    #expect(reloaded.embeddings.reasons.count == 1)
+    #expect(reloaded.warnings == ["updated warning"])
   }
 
   @Test
@@ -201,7 +253,7 @@ struct DiaryVaultTests {
     try vault.saveAnalysis(deletedAnalysis)
     try vault.saveAnalysis(keptAnalysis)
     try vault.saveFeedback(
-      Feedback(
+      StoredFeedback(
         entryID: deletedEntry.id,
         analysisID: deletedAnalysis.id,
         conflictWasUseful: true,
@@ -209,7 +261,7 @@ struct DiaryVaultTests {
       )
     )
     try vault.saveFeedback(
-      Feedback(
+      StoredFeedback(
         entryID: keptEntry.id,
         analysisID: keptAnalysis.id,
         conflictWasUseful: true,
@@ -236,7 +288,7 @@ struct DiaryVaultTests {
     #expect(statistics.feedbackCount == 1)
     #expect(statistics.chosenClusterDilemmaCount == 1)
     #expect(statistics.mostFrequentClusters == [
-      ClusterFrequency(clusterID: 10, label: "Cluster 10: career", count: 1),
+      StoredClusterFrequency(clusterID: 10, label: "Cluster 10: career", count: 1),
     ])
 
     let export = try vault.exportData()
@@ -258,13 +310,13 @@ struct DiaryVaultTests {
     let entry = sampleEntry()
     try vault.saveEntry(entry)
 
-    let analysis = DiaryAnalysis(
+    let analysis = StoredDecisionAnalysis(
       entryID: entry.id,
       assetVersion: 1,
       modelID: "sentence-transformers/all-MiniLM-L12-v2",
       sourceDOI: "10.1073/pnas.2406489122",
       attributeConflicts: [
-        AttributeConflict(
+        StoredAttributeConflict(
           attributeName: "money",
           option1Score: 0.8,
           option2Score: -0.2,
@@ -273,14 +325,14 @@ struct DiaryVaultTests {
         ),
       ],
       clusterProfiles: [
-        ClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.4),
-        ClusterProfile(optionIndex: 1, clusterID: 8, label: "Cluster 8: stress", score: -0.95),
-        ClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.2),
+        StoredClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.4),
+        StoredClusterProfile(optionIndex: 1, clusterID: 8, label: "Cluster 8: stress", score: -0.95),
+        StoredClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.2),
       ]
     )
     try vault.saveAnalysis(analysis)
     try vault.saveFeedback(
-      Feedback(
+      StoredFeedback(
         entryID: entry.id,
         analysisID: analysis.id,
         conflictWasUseful: true,
@@ -291,7 +343,7 @@ struct DiaryVaultTests {
     let statistics = try vault.statistics()
     #expect(statistics.chosenClusterDilemmaCount == 1)
     #expect(statistics.mostFrequentClusters == [
-      ClusterFrequency(clusterID: 4, label: "Cluster 4: money", count: 1),
+      StoredClusterFrequency(clusterID: 4, label: "Cluster 4: money", count: 1),
     ])
   }
 
@@ -299,32 +351,32 @@ struct DiaryVaultTests {
     rawText: String = "Should I stay or leave?",
     createdAt: Date = Date(),
     updatedAt: Date = Date()
-  ) -> DiaryEntry {
-    DiaryEntry(
+  ) -> StoredDiaryEntry {
+    StoredDiaryEntry(
       rawText: rawText,
       options: [
-        DiaryOption(
+        StoredDiaryOption(
           index: 1,
           title: "Stay",
           reasons: [
-            DiaryReason(text: "Stable income", polarity: .benefit),
-            DiaryReason(text: "Close to family", polarity: .benefit),
-            DiaryReason(text: "Lower risk", polarity: .benefit),
-            DiaryReason(text: "Less growth", polarity: .cost),
-            DiaryReason(text: "Boredom", polarity: .cost),
-            DiaryReason(text: "Missed opportunity", polarity: .cost),
+            StoredDiaryReason(text: "Stable income", polarity: .benefit),
+            StoredDiaryReason(text: "Close to family", polarity: .benefit),
+            StoredDiaryReason(text: "Lower risk", polarity: .benefit),
+            StoredDiaryReason(text: "Less growth", polarity: .cost),
+            StoredDiaryReason(text: "Boredom", polarity: .cost),
+            StoredDiaryReason(text: "Missed opportunity", polarity: .cost),
           ]
         ),
-        DiaryOption(
+        StoredDiaryOption(
           index: 2,
           title: "Leave",
           reasons: [
-            DiaryReason(text: "Career growth", polarity: .benefit),
-            DiaryReason(text: "New skills", polarity: .benefit),
-            DiaryReason(text: "Independence", polarity: .benefit),
-            DiaryReason(text: "Financial risk", polarity: .cost),
-            DiaryReason(text: "Stress", polarity: .cost),
-            DiaryReason(text: "Less family time", polarity: .cost),
+            StoredDiaryReason(text: "Career growth", polarity: .benefit),
+            StoredDiaryReason(text: "New skills", polarity: .benefit),
+            StoredDiaryReason(text: "Independence", polarity: .benefit),
+            StoredDiaryReason(text: "Financial risk", polarity: .cost),
+            StoredDiaryReason(text: "Stress", polarity: .cost),
+            StoredDiaryReason(text: "Less family time", polarity: .cost),
           ]
         ),
       ],
@@ -338,15 +390,15 @@ struct DiaryVaultTests {
     clusterID: Int,
     label: String,
     createdAt: Date = Date()
-  ) -> DiaryAnalysis {
-    DiaryAnalysis(
+  ) -> StoredDecisionAnalysis {
+    StoredDecisionAnalysis(
       entryID: entryID,
       createdAt: createdAt,
       assetVersion: 1,
       modelID: "sentence-transformers/all-MiniLM-L12-v2",
       sourceDOI: "10.1073/pnas.2406489122",
       attributeConflicts: [
-        AttributeConflict(
+        StoredAttributeConflict(
           attributeName: label,
           option1Score: 0.8,
           option2Score: -0.2,
@@ -355,8 +407,160 @@ struct DiaryVaultTests {
         ),
       ],
       clusterProfiles: [
-        ClusterProfile(optionIndex: 1, clusterID: clusterID, label: label, score: 0.7),
-        ClusterProfile(optionIndex: 2, clusterID: clusterID + 100, label: "Other \(clusterID)", score: 0.1),
+        StoredClusterProfile(optionIndex: 1, clusterID: clusterID, label: label, score: 0.7),
+        StoredClusterProfile(optionIndex: 2, clusterID: clusterID + 100, label: "Other \(clusterID)", score: 0.1),
+      ]
+    )
+  }
+
+  private func fullSampleAnalysis(
+    id: UUID,
+    entryID: UUID,
+    rawText: String,
+    reasonIDs: [UUID],
+    createdAt: Date,
+    variant: String
+  ) -> StoredDecisionAnalysis {
+    let modelID = "sentence-transformers/all-MiniLM-L12-v2"
+    let modelName = "MiniLM L12"
+    let attribute = StoredAttributeDefinition(
+      attributeID: variant == "initial" ? 10 : 20,
+      name: variant == "initial" ? "career growth" : "focus",
+      source: "bhatia",
+      clusterID: 4
+    )
+    let cluster = StoredClusterMetadata(
+      clusterID: variant == "initial" ? 4 : 8,
+      label: variant == "initial" ? "Cluster 4: career" : "Cluster 8: focus",
+      representativeAttributeName: attribute.name,
+      sortOrder: 1
+    )
+
+    return StoredDecisionAnalysis(
+      id: id,
+      entryID: entryID,
+      createdAt: createdAt,
+      schemaVersion: StoredDecisionAnalysis.currentSchemaVersion,
+      model: StoredAnalysisModelMetadata(id: modelID, name: modelName, embeddingDimension: 3),
+      asset: StoredAnalysisAssetMetadata(
+        version: variant == "initial" ? 1 : 2,
+        resourceName: "bhatia_attributes.sqlite",
+        sourceDOI: "10.1073/pnas.2406489122"
+      ),
+      clusterMethod: StoredAnalysisClusterMethodMetadata(
+        id: "k_means_attribute_embeddings",
+        label: "K-means attribute embeddings"
+      ),
+      embeddings: StoredDecisionAnalysisEmbeddings(
+        rawText: rawText,
+        dilemmaText: StoredEmbeddingVector(
+          modelID: modelID,
+          modelName: modelName,
+          dimension: 3,
+          values: [0.125, -0.25, 0.5]
+        ),
+        options: [
+          StoredOptionEmbedding(
+            optionIndex: 1,
+            title: "Keep consulting",
+            embedding: StoredEmbeddingVector(
+              modelID: modelID,
+              modelName: modelName,
+              dimension: 3,
+              values: [0.5, 0.25, 0.125]
+            )
+          ),
+          StoredOptionEmbedding(
+            optionIndex: 2,
+            title: "Join product",
+            embedding: StoredEmbeddingVector(
+              modelID: modelID,
+              modelName: modelName,
+              dimension: 3,
+              values: [-0.5, 0.25, -0.125]
+            )
+          ),
+        ],
+        reasons: reasonIDs.enumerated().map { offset, reasonID in
+          StoredReasonEmbedding(
+            reasonID: reasonID,
+            optionIndex: offset == 0 ? 1 : 2,
+            polarity: offset == 0 ? .benefit : .cost,
+            text: offset == 0 ? "High autonomy" : "Less learning",
+            embedding: StoredEmbeddingVector(
+              modelID: modelID,
+              modelName: modelName,
+              dimension: 3,
+              values: [Float(offset) + 0.25, -0.5, 0.75]
+            )
+          )
+        }
+      ),
+      reasonMatches: reasonIDs.enumerated().map { offset, reasonID in
+        StoredReasonMatchResult(
+          reason: StoredReasonInput(
+            id: reasonID,
+            text: offset == 0 ? "High autonomy" : "Less learning",
+            optionIndex: offset == 0 ? 1 : 2,
+            polarity: offset == 0 ? .benefit : .cost
+          ),
+          rawScores: [0.5, -0.25, Float(offset)],
+          centeredScores: [0.25, -0.5, Float(offset) + 0.125],
+          topMatches: [
+            StoredAttributeScore(
+              attribute: StoredAttributeMetadata(
+                attributeID: attribute.attributeID,
+                rowIndex: offset,
+                name: attribute.name,
+                source: attribute.source,
+                direction: offset == 0 ? .pro : .con,
+                vectorOffset: offset * 3,
+                clusterID: attribute.clusterID
+              ),
+              score: 0.5
+            ),
+          ]
+        )
+      },
+      optionAttributeProfiles: [
+        StoredOptionAttributeProfile(
+          optionIndex: 1,
+          scores: [StoredAttributeProfileScore(attribute: attribute, score: 0.5)]
+        ),
+        StoredOptionAttributeProfile(
+          optionIndex: 2,
+          scores: [StoredAttributeProfileScore(attribute: attribute, score: -0.25)]
+        ),
+      ],
+      optionClusterProfiles: [
+        StoredOptionClusterProfile(
+          optionIndex: 1,
+          scores: [StoredClusterScore(cluster: cluster, score: 0.75)]
+        ),
+        StoredOptionClusterProfile(
+          optionIndex: 2,
+          scores: [StoredClusterScore(cluster: cluster, score: -0.25)]
+        ),
+      ],
+      metrics: StoredAnalysisMetrics(
+        modelLoadMilliseconds: 1.5,
+        embeddingMilliseconds: 2.5,
+        scoringMilliseconds: 3.5,
+        approximateMemoryMegabytes: 4.5
+      ),
+      warnings: ["\(variant) warning"],
+      attributeConflicts: [
+        StoredAttributeConflict(
+          attributeName: attribute.name,
+          option1Score: 0.5,
+          option2Score: -0.25,
+          difference: 0.75,
+          rank: 1
+        ),
+      ],
+      clusterProfiles: [
+        StoredClusterProfile(optionIndex: 1, clusterID: cluster.clusterID, label: cluster.label, score: 0.75),
+        StoredClusterProfile(optionIndex: 2, clusterID: cluster.clusterID, label: cluster.label, score: -0.25),
       ]
     )
   }

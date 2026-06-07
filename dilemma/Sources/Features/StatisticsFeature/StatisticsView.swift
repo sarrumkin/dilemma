@@ -3,7 +3,7 @@ import SwiftUI
 
 struct StatisticsView: View {
   let model: StatisticsModel
-  let makeAnalysisDetailModel: (DiaryEntry, DiaryAnalysis?) -> AnalysisDetailModel
+  let makeAnalysisDetailModel: (DiaryEntry, DecisionAnalysis?) -> AnalysisDetailModel
 
   var body: some View {
     NavigationStack {
@@ -90,7 +90,7 @@ struct StatisticsView: View {
 
 private struct RecordedDecisionListView: View {
   let records: [RecordedDecisionRecord]
-  let makeAnalysisDetailModel: (DiaryEntry, DiaryAnalysis?) -> AnalysisDetailModel
+  let makeAnalysisDetailModel: (DiaryEntry, DecisionAnalysis?) -> AnalysisDetailModel
 
   var body: some View {
     List {
@@ -147,7 +147,7 @@ private struct RecordedDecisionRow: View {
 
 private struct ClusterDilemmaListView: View {
   let group: ClusterDilemmaGroup
-  let makeAnalysisDetailModel: (DiaryEntry, DiaryAnalysis?) -> AnalysisDetailModel
+  let makeAnalysisDetailModel: (DiaryEntry, DecisionAnalysis?) -> AnalysisDetailModel
 
   var body: some View {
     List {

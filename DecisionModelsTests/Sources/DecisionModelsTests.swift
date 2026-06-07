@@ -48,7 +48,7 @@ struct DecisionModelsTests {
         ),
       ],
       analyses: [
-        DiaryAnalysis(
+        DecisionAnalysis(
           id: analysisID,
           entryID: entryID,
           assetVersion: 1,
@@ -242,6 +242,140 @@ struct DecisionModelsTests {
   }
 
   @Test
+  func likelyChoiceAdviceWeightsSideBasedDecidedChoices() throws {
+    let currentAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+    let strongOption1Choice = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+    let weakerOption2Choice = sampleSideAnalysis(axisScores: [(1, 1), (2, -0.2)])
+
+    let advice = try #require(LikelyChoiceAdvice(
+      currentAnalysis: currentAnalysis,
+      currentOptionIndices: [1, 2],
+      decidedChoices: [
+        SimilarDecidedChoice(analysis: strongOption1Choice, chosenOptionIndex: 1),
+        SimilarDecidedChoice(analysis: weakerOption2Choice, chosenOptionIndex: 2),
+      ]
+    ))
+
+    #expect(advice.optionIndex == 1)
+    #expect(advice.decidedDilemmaCount == 2)
+    #expect((advice.optionWeights[1] ?? 0) > (advice.optionWeights[2] ?? 0))
+    #expect(advice.support > 0.5)
+    #expect(advice.support < 1)
+  }
+
+  @Test
+  func likelyChoiceAdviceAllowsOneSimilarDecidedChoice() throws {
+    let currentAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+    let pastAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+
+    let advice = try #require(LikelyChoiceAdvice(
+      currentAnalysis: currentAnalysis,
+      currentOptionIndices: [1, 2],
+      decidedChoices: [
+        SimilarDecidedChoice(analysis: pastAnalysis, chosenOptionIndex: 2),
+      ]
+    ))
+
+    #expect(advice.optionIndex == 2)
+    #expect(advice.decidedDilemmaCount == 1)
+    #expect(abs(advice.support - 1) < 0.0001)
+  }
+
+  @Test
+  func likelyChoiceAdviceMapsPastChoiceBySideNotOptionNumber() throws {
+    let currentAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+    let pastAnalysis = sampleSideAnalysis(axisScores: [(1, -1), (2, 1)])
+
+    let advice = try #require(LikelyChoiceAdvice(
+      currentAnalysis: currentAnalysis,
+      currentOptionIndices: [1, 2],
+      decidedChoices: [
+        SimilarDecidedChoice(analysis: pastAnalysis, chosenOptionIndex: 1),
+      ]
+    ))
+
+    #expect(advice.optionIndex == 2)
+  }
+
+  @Test
+  func likelyChoiceAdviceReturnsAmbiguousAdviceForTie() throws {
+    let currentAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+    let option1Choice = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+    let option2Choice = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+
+    let advice = try #require(LikelyChoiceAdvice(
+      currentAnalysis: currentAnalysis,
+      currentOptionIndices: [1, 2],
+      decidedChoices: [
+        SimilarDecidedChoice(analysis: option1Choice, chosenOptionIndex: 1),
+        SimilarDecidedChoice(analysis: option2Choice, chosenOptionIndex: 2),
+      ]
+    ))
+
+    #expect(advice.optionIndex == nil)
+    #expect(advice.decidedDilemmaCount == 2)
+    #expect(abs(advice.support - 0.5) < 0.0001)
+    #expect(abs((advice.supportByOption[1] ?? 0) - 0.5) < 0.0001)
+    #expect(abs((advice.supportByOption[2] ?? 0) - 0.5) < 0.0001)
+  }
+
+  @Test
+  func likelyChoiceAdviceReturnsNilForNoSupport() {
+    let currentAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, 0)])
+    let noisyChoice = sampleSideAnalysis(
+      axisScores: [(1, 0.02), (2, 1)]
+    )
+
+    let unsupportedAdvice = LikelyChoiceAdvice(
+      currentAnalysis: currentAnalysis,
+      currentOptionIndices: [1, 2],
+      decidedChoices: [
+        SimilarDecidedChoice(analysis: noisyChoice, chosenOptionIndex: 1),
+      ]
+    )
+
+    #expect(unsupportedAdvice == nil)
+  }
+
+  @Test
+  func likelyChoiceAdviceMapsQualitySpeedSidesForSocks() throws {
+    let socksAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+    let bikeRepairAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+    let workReportAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
+
+    let speedAdvice = try #require(LikelyChoiceAdvice(
+      currentAnalysis: socksAnalysis,
+      currentOptionIndices: [1, 2],
+      decidedChoices: [
+        SimilarDecidedChoice(analysis: bikeRepairAnalysis, chosenOptionIndex: 2),
+      ]
+    ))
+    let qualityAdvice = try #require(LikelyChoiceAdvice(
+      currentAnalysis: socksAnalysis,
+      currentOptionIndices: [1, 2],
+      decidedChoices: [
+        SimilarDecidedChoice(analysis: workReportAnalysis, chosenOptionIndex: 1),
+      ]
+    ))
+    let combinedAdvice = try #require(LikelyChoiceAdvice(
+      currentAnalysis: socksAnalysis,
+      currentOptionIndices: [1, 2],
+      decidedChoices: [
+        SimilarDecidedChoice(analysis: bikeRepairAnalysis, chosenOptionIndex: 2),
+        SimilarDecidedChoice(analysis: workReportAnalysis, chosenOptionIndex: 1),
+      ]
+    ))
+
+    #expect(speedAdvice.optionIndex == 2)
+    #expect(qualityAdvice.optionIndex == 1)
+    #expect(combinedAdvice.optionIndex == nil)
+    #expect(combinedAdvice.decidedDilemmaCount == 2)
+    #expect(abs(combinedAdvice.support - 0.5) < 0.0001)
+    #expect(abs((combinedAdvice.supportByOption[1] ?? 0) - 0.5) < 0.0001)
+    #expect(abs((combinedAdvice.supportByOption[2] ?? 0) - 0.5) < 0.0001)
+  }
+
+  @Test
   func clusterDilemmaStatisticsGroupsAnalyzedTopClustersWithoutFeedback() throws {
     let olderEntry = sampleEntry(
       id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
@@ -339,14 +473,59 @@ struct DecisionModelsTests {
     )
   }
 
-  private func sampleAnalysis(entryID: UUID, clusterProfiles: [ClusterProfile]) -> DiaryAnalysis {
-    DiaryAnalysis(
+  private func sampleAnalysis(
+    entryID: UUID,
+    attributeConflicts: [AttributeConflict] = [],
+    clusterProfiles: [ClusterProfile]
+  ) -> DecisionAnalysis {
+    DecisionAnalysis(
       entryID: entryID,
       assetVersion: 1,
       modelID: "stub-model",
       sourceDOI: "stub-doi",
-      attributeConflicts: [],
+      attributeConflicts: attributeConflicts,
       clusterProfiles: clusterProfiles
     )
+  }
+
+  private func sampleSideAnalysis(axisScores: [(Int, Double)]) -> DecisionAnalysis {
+    sampleAnalysis(
+      entryID: UUID(),
+      attributeConflicts: attributeConflicts(axisScores: axisScores),
+      clusterProfiles: clusterProfiles(
+        optionIndex: 1,
+        scores: axisScores.map { ($0.0, $0.1 / 2) }
+      )
+        + clusterProfiles(
+          optionIndex: 2,
+          scores: axisScores.map { ($0.0, -$0.1 / 2) }
+        )
+    )
+  }
+
+  private func attributeConflicts(axisScores: [(Int, Double)]) -> [AttributeConflict] {
+    axisScores.enumerated().map { offset, pair in
+      AttributeConflict(
+        attributeName: "Axis \(pair.0)",
+        option1Score: pair.1 / 2,
+        option2Score: -pair.1 / 2,
+        difference: abs(pair.1),
+        rank: offset + 1
+      )
+    }
+  }
+
+  private func clusterProfiles(
+    optionIndex: Int,
+    scores: [(Int, Double)]
+  ) -> [ClusterProfile] {
+    scores.map { clusterID, score in
+      ClusterProfile(
+        optionIndex: optionIndex,
+        clusterID: clusterID,
+        label: "Cluster \(clusterID)",
+        score: score
+      )
+    }
   }
 }

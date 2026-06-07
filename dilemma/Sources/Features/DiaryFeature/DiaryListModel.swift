@@ -7,7 +7,7 @@ import Observation
 @Observable
 final class DiaryListModel {
   private(set) var entries: [DiaryEntry] = []
-  private(set) var latestAnalyses: [UUID: DiaryAnalysis] = [:]
+  private(set) var latestAnalyses: [UUID: DecisionAnalysis] = [:]
   var errorMessage: String?
 
   @ObservationIgnored private let loadDiarySnapshot: LoadDiarySnapshotUseCase
@@ -35,7 +35,7 @@ final class DiaryListModel {
     errorMessage = nil
   }
 
-  func latestAnalysis(for entry: DiaryEntry) -> DiaryAnalysis? {
+  func latestAnalysis(for entry: DiaryEntry) -> DecisionAnalysis? {
     latestAnalyses[entry.id]
   }
 

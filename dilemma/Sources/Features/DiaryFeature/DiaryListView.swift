@@ -8,7 +8,7 @@ struct DiaryListView: View {
   let makeNewEntryModel: () -> NewEntryModel
   let makeJSONImportModel: () -> DilemmaJSONImportModel
   let onDeleted: () -> Void
-  let makeAnalysisDetailModel: (DiaryEntry, DiaryAnalysis?) -> AnalysisDetailModel
+  let makeAnalysisDetailModel: (DiaryEntry, DecisionAnalysis?) -> AnalysisDetailModel
   @State private var isCreatingEntry = false
   @State private var isImportingJSON = false
   @State private var pendingDeleteEntry: DiaryEntry?
@@ -366,7 +366,7 @@ private struct JSONImportFormatInfoView: View {
 
 private struct EntryRow: View {
   let entry: DiaryEntry
-  let analysis: DiaryAnalysis?
+  let analysis: DecisionAnalysis?
 
   var body: some View {
     VStack(alignment: .leading, spacing: 6) {

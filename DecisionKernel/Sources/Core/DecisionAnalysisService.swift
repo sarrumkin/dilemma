@@ -1,3 +1,4 @@
+import DecisionModels
 import Foundation
 
 public struct DecisionAnalysisService: Sendable {
@@ -36,7 +37,7 @@ public struct DecisionAnalysisService: Sendable {
   }
 
   /// Runs validation, local embedding, attribute scoring, clustering, and conflict extraction for one draft.
-  public func analyze(_ draft: DecisionDraft) async throws -> DecisionAnalysisResult {
+  public func analyze(_ draft: DecisionDraft) async throws -> DecisionAnalysis {
     let validatedDraft = try draft.validated()
     var metrics = AnalysisMetrics()
     let memoryBefore = MemorySnapshot.currentResidentMegabytes()
@@ -51,14 +52,23 @@ public struct DecisionAnalysisService: Sendable {
     let model = try await runtime.loadModel()
     metrics.modelLoadMilliseconds = elapsedMilliseconds(since: loadStart)
 
+    let sortedOptions = validatedDraft.options.sorted { $0.index < $1.index }
     let reasons = validatedDraft.reasonInputs
+    let embeddingTexts = [validatedDraft.rawText]
+      + sortedOptions.map(\.title)
+      + reasons.map(\.text)
     let embeddingStart = ContinuousClock.now
-    let embeddings = try await model.embed(texts: reasons.map(\.text))
+    let embeddings = try await model.embed(texts: embeddingTexts)
     metrics.embeddingMilliseconds = elapsedMilliseconds(since: embeddingStart)
+    let optionEmbeddingStart = 1
+    let reasonEmbeddingStart = optionEmbeddingStart + sortedOptions.count
+    let dilemmaEmbedding = embeddings[0]
+    let optionEmbeddings = Array(embeddings[optionEmbeddingStart..<reasonEmbeddingStart])
+    let reasonEmbeddings = Array(embeddings[reasonEmbeddingStart...])
 
     let scoringStart = ContinuousClock.now
     let mapper = AttributeMapper(store: store, topK: topK)
-    let reasonResults = zip(reasons, embeddings).map { reason, embedding in
+    let reasonResults = zip(reasons, reasonEmbeddings).map { reason, embedding in
       mapper.map(reason: reason, embedding: embedding)
     }
     let optionProfiles = AttributeScoring.optionAttributeProfiles(
@@ -67,43 +77,95 @@ public struct DecisionAnalysisService: Sendable {
     )
     let clusterAggregator = ClusterAggregator(store: store)
     let clusterProfiles = clusterAggregator.profiles(optionProfiles: optionProfiles)
-    let conflicts = AttributeScoring.conflictDimensions(
-      optionProfiles: optionProfiles,
-      attributes: store.attributeDefinitions,
-      topK: topK
-    )
-    let clusterConflicts = clusterAggregator.conflicts(
-      optionProfiles: optionProfiles,
-      topK: topK
-    )
     metrics.scoringMilliseconds = elapsedMilliseconds(since: scoringStart)
 
     let memoryAfter = MemorySnapshot.currentResidentMegabytes()
     metrics.approximateMemoryMegabytes = max(0, memoryAfter - memoryBefore)
 
-    return DecisionAnalysisResult(
-      draftID: validatedDraft.id,
-      modelName: store.metadata.model.id,
-      assetVersion: store.assetVersion,
-      sourceDOI: store.sourceDOI,
-      assetResourceName: assetResourceName,
-      clusterMethodID: clusterMethod?.rawValue
-        ?? store.assetMetadata["cluster_method"]
-        ?? assetResourceName,
-      clusterMethodLabel: clusterMethod?.label
-        ?? store.assetMetadata["cluster_method"]
-        ?? assetResourceName,
-      metrics: metrics,
-      reasonResults: reasonResults,
-      optionProfiles: optionProfiles,
-      topAttributesByOption: AttributeScoring.topAttributes(
-        optionProfiles: optionProfiles,
-        attributes: store.attributeDefinitions,
-        topK: topK
+    let modelMetadata = AnalysisModelMetadata(
+      id: store.metadata.model.id,
+      name: store.metadata.model.shortName,
+      embeddingDimension: store.dimension
+    )
+    let embeddingModelID = store.metadata.model.id
+    let embeddingModelName = store.metadata.model.shortName
+    let clusterMethodID = clusterMethod?.rawValue
+      ?? store.assetMetadata["cluster_method"]
+      ?? assetResourceName
+    let clusterMethodLabel = clusterMethod?.label
+      ?? store.assetMetadata["cluster_method"]
+      ?? assetResourceName
+
+    return DecisionAnalysis(
+      id: UUID(),
+      entryID: validatedDraft.id,
+      createdAt: Date(),
+      model: modelMetadata,
+      asset: AnalysisAssetMetadata(
+        version: store.assetVersion,
+        resourceName: assetResourceName,
+        sourceDOI: store.sourceDOI
       ),
-      clusterProfiles: clusterProfiles,
-      conflictDimensions: conflicts,
-      clusterConflictDimensions: clusterConflicts,
+      clusterMethod: AnalysisClusterMethodMetadata(
+        id: clusterMethodID,
+        label: clusterMethodLabel
+      ),
+      embeddings: DecisionAnalysisEmbeddings(
+        rawText: validatedDraft.rawText,
+        dilemmaText: EmbeddingVector(
+          modelID: embeddingModelID,
+          modelName: embeddingModelName,
+          dimension: dilemmaEmbedding.count,
+          values: dilemmaEmbedding
+        ),
+        options: zip(sortedOptions, optionEmbeddings).map { option, embedding in
+          OptionEmbedding(
+            optionIndex: option.index,
+            title: option.title,
+            embedding: EmbeddingVector(
+              modelID: embeddingModelID,
+              modelName: embeddingModelName,
+              dimension: embedding.count,
+              values: embedding
+            )
+          )
+        },
+        reasons: zip(reasons, reasonEmbeddings).map { reason, embedding in
+          ReasonEmbedding(
+            reasonID: reason.id,
+            optionIndex: reason.optionIndex,
+            polarity: reason.polarity,
+            text: reason.text,
+            embedding: EmbeddingVector(
+              modelID: embeddingModelID,
+              modelName: embeddingModelName,
+              dimension: embedding.count,
+              values: embedding
+            )
+          )
+        }
+      ),
+      reasonMatches: reasonResults,
+      optionAttributeProfiles: optionProfiles
+        .sorted { $0.key < $1.key }
+        .map { optionIndex, profile in
+          OptionAttributeProfile(
+            optionIndex: optionIndex,
+            scores: profile.enumerated().compactMap { offset, score in
+              guard offset < store.attributeDefinitions.count else { return nil }
+              return AttributeProfileScore(
+                attribute: store.attributeDefinitions[offset],
+                score: score
+              )
+            }
+          )
+        },
+      optionClusterProfiles: clusterProfiles
+        .sorted { $0.key < $1.key }
+        .map { optionIndex, scores in
+          OptionClusterProfile(optionIndex: optionIndex, scores: scores)
+        },
+      metrics: metrics,
       warnings: store.clusters.isEmpty ? ["Cluster metadata is not available in the loaded asset."] : []
     )
   }
@@ -163,7 +225,7 @@ struct ClusterAggregator: Sendable {
     let scoreByClusterID = Dictionary(uniqueKeysWithValues: scores.map {
       ($0.cluster.clusterID, $0.score)
     })
-    return store.clusters.map { scoreByClusterID[$0.clusterID] ?? 0 }
+    return store.clusters.map { Float(scoreByClusterID[$0.clusterID] ?? 0) }
   }
 
   /// Computes ranked cluster-level differences between option 1 and option 2 profiles.
@@ -190,9 +252,9 @@ struct ClusterAggregator: Sendable {
       }
       return ClusterConflictDimension(
         cluster: cluster,
-        option1Score: score1,
-        option2Score: score2,
-        difference: score1 - score2
+        option1Score: Float(score1),
+        option2Score: Float(score2),
+        difference: Float(score1 - score2)
       )
     }
     .sorted { abs($0.difference) > abs($1.difference) }
@@ -219,7 +281,7 @@ struct ClusterAggregator: Sendable {
             count > 0 else {
         return nil
       }
-      return ClusterScore(cluster: cluster, score: total / count)
+      return ClusterScore(cluster: cluster, score: Double(total / count))
     }
     .sorted { abs($0.score) > abs($1.score) }
   }

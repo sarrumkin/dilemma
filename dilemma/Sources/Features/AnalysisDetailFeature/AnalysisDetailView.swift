@@ -61,7 +61,7 @@ struct AnalysisDetailView: View {
           }
         }
 
-        chosenClusterSection()
+        likelyChoiceSection()
         similarDilemmasSection()
         feedbackSection()
       } else {
@@ -83,7 +83,7 @@ struct AnalysisDetailView: View {
     .navigationTitle("Analysis")
     .task {
       model.reloadSavedFeedback()
-      model.reloadPreferenceStatistics()
+      model.reloadLikelyChoiceAdvice()
     }
   }
 
@@ -105,12 +105,13 @@ struct AnalysisDetailView: View {
     }
   }
 
-  private func chosenClusterSection() -> some View {
-    Section("Chosen Cluster") {
-      ChosenClusterCircle(
-        topCluster: model.topChosenCluster,
-        dilemmaCount: model.chosenClusterDilemmaCount
+  private func likelyChoiceSection() -> some View {
+    Section("Likely Choice") {
+      LikelyChoiceAdvicePanel(
+        advice: model.likelyChoiceAdvice,
+        optionTitles: model.optionTitlesByIndex
       )
+      .accessibilityIdentifier("likely-choice-advice")
     }
   }
 
@@ -183,7 +184,7 @@ struct AnalysisDetailView: View {
     value.formatted(.number.precision(.fractionLength(3)))
   }
 
-  private func topClusters(for option: DiaryOption, in analysis: DiaryAnalysis) -> [ClusterProfile] {
+  private func topClusters(for option: DiaryOption, in analysis: DecisionAnalysis) -> [ClusterProfile] {
     let optionClusters = analysis.clusterProfiles
       .filter { $0.optionIndex == option.index && $0.score != 0 }
 
@@ -215,82 +216,124 @@ struct AnalysisDetailView: View {
   }
 }
 
-private struct ChosenClusterCircle: View {
-  let topCluster: ClusterFrequency?
-  let dilemmaCount: Int
-
-  private var hasData: Bool {
-    topCluster != nil && dilemmaCount > 0
-  }
-
-  private var progress: Double {
-    guard let topCluster, dilemmaCount > 0 else { return 0 }
-    return Double(topCluster.count) / Double(dilemmaCount)
-  }
+private struct LikelyChoiceAdvicePanel: View {
+  let advice: LikelyChoiceAdvice?
+  let optionTitles: [Int: String]
 
   var body: some View {
+    if let advice {
+      if let optionIndex = advice.optionIndex {
+        decisiveAdvice(advice, optionTitle: optionTitle(for: optionIndex))
+      } else {
+        ambiguousAdvice(advice)
+      }
+    } else {
+      Text("Save choices in similar dilemmas to see a likely choice here.")
+        .foregroundStyle(.secondary)
+    }
+  }
+
+  private func decisiveAdvice(_ advice: LikelyChoiceAdvice, optionTitle: String) -> some View {
     HStack(spacing: 18) {
       ZStack {
         Circle()
-          .fill(hasData ? Color.teal.opacity(0.08) : Color.gray.opacity(0.12))
+          .fill(Color.teal.opacity(0.08))
 
         Circle()
-          .stroke(hasData ? Color.secondary.opacity(0.14) : Color.gray.opacity(0.35), lineWidth: 14)
+          .stroke(Color.secondary.opacity(0.14), lineWidth: 14)
 
-        if hasData {
-          Circle()
-            .trim(from: 0, to: progress)
-            .stroke(
-              AngularGradient(
-                colors: [.teal, .indigo, .mint],
-                center: .center
-              ),
-              style: StrokeStyle(lineWidth: 14, lineCap: .round)
-            )
-            .rotationEffect(.degrees(-90))
-        }
+        Circle()
+          .trim(from: 0, to: clamped(advice.support))
+          .stroke(.teal, style: StrokeStyle(lineWidth: 14, lineCap: .round))
+          .rotationEffect(.degrees(-90))
 
         VStack(spacing: 2) {
-          Text(hasData ? progress.formatted(.percent.precision(.fractionLength(0))) : "0")
+          Text(advice.support.formatted(.percent.precision(.fractionLength(0))))
             .font(.title2.monospacedDigit().weight(.bold))
-          if hasData {
-            Text("top")
-              .font(.caption2.weight(.semibold))
-              .foregroundStyle(.secondary)
-          } else {
-            Text("cases")
-              .font(.caption2.weight(.semibold))
-              .foregroundStyle(.secondary)
-          }
+          Text("support")
+            .font(.caption2.weight(.semibold))
+            .foregroundStyle(.secondary)
         }
       }
       .frame(width: 118, height: 118)
       .accessibilityHidden(true)
 
       VStack(alignment: .leading, spacing: 6) {
-        if let topCluster {
-          Text(TaxonomyLocalization.clusterName(clusterID: topCluster.clusterID, fallback: topCluster.label))
-            .font(.headline)
-            .lineLimit(3)
-        } else {
-          Text("No chosen cluster yet")
-            .font(.headline)
-            .lineLimit(3)
-        }
+        Text(optionTitle)
+          .font(.headline)
+          .lineLimit(3)
 
-        Text("Dilemmas in analysis: \(dilemmaCount)")
-          .font(.subheadline.monospacedDigit())
+        Text(sourceText(for: advice.decidedDilemmaCount))
+          .font(.caption)
           .foregroundStyle(.secondary)
-
-        if let topCluster {
-          Text("\(topCluster.count) chose this cluster")
-            .font(.caption)
-            .foregroundStyle(.secondary)
-        }
       }
       .frame(maxWidth: .infinity, alignment: .leading)
     }
     .padding(.vertical, 8)
+  }
+
+  private func ambiguousAdvice(_ advice: LikelyChoiceAdvice) -> some View {
+    VStack(alignment: .leading, spacing: 12) {
+      VStack(alignment: .leading, spacing: 4) {
+        Text("No clear likely choice yet")
+          .font(.headline)
+
+        Text(sourceText(for: advice.decidedDilemmaCount))
+          .font(.caption)
+          .foregroundStyle(.secondary)
+      }
+
+      VStack(spacing: 10) {
+        ForEach(supportRows(for: advice), id: \.optionIndex) { row in
+          VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .firstTextBaseline) {
+              Text(row.title)
+                .font(.subheadline)
+                .lineLimit(2)
+              Spacer()
+              Text(row.support.formatted(.percent.precision(.fractionLength(0))))
+                .font(.caption.monospacedDigit().weight(.semibold))
+                .foregroundStyle(.secondary)
+            }
+
+            ProgressView(value: clamped(row.support))
+              .tint(.teal)
+          }
+        }
+      }
+    }
+    .padding(.vertical, 8)
+  }
+
+  private func optionTitle(for optionIndex: Int) -> String {
+    optionTitles[optionIndex] ?? "Option \(optionIndex)"
+  }
+
+  private func supportRows(for advice: LikelyChoiceAdvice) -> [SupportRow] {
+    optionTitles.keys.sorted().map { optionIndex in
+      SupportRow(
+        optionIndex: optionIndex,
+        title: optionTitle(for: optionIndex),
+        support: advice.supportByOption[optionIndex] ?? 0
+      )
+    }
+  }
+
+  private func clamped(_ value: Double) -> Double {
+    min(max(value, 0), 1)
+  }
+
+  private func sourceText(for count: Int) -> String {
+    if count == 1 {
+      return "Based on 1 similar decided dilemma"
+    }
+    return "Based on \(count) similar decided dilemmas"
+  }
+
+  private struct SupportRow {
+    let optionIndex: Int
+    let title: String
+    let support: Double
   }
 }
 

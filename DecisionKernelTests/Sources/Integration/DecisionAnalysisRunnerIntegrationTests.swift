@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+import DecisionModels
 
 @testable import DecisionKernel
 
@@ -31,7 +32,7 @@ struct DecisionAnalysisRunnerIntegrationTests {
     #expect(!result.conflictDimensions.isEmpty)
     #expect(!result.clusterConflictDimensions.isEmpty)
     #expect(result.optionProfiles[1]?.count == 207)
-    #expect(result.clusterProfiles[1]?.count == 25)
+    #expect(result.clusterProfilesByOption[1]?.count == 25)
     #expect(result.assetVersion == 2)
     #expect(result.modelName == Self.multilingualModelID)
     #expect(result.assetResourceName == DecisionClusterMethod.bhatiaWardReddit.assetResourceName)
@@ -68,7 +69,7 @@ struct DecisionAnalysisRunnerIntegrationTests {
 
     #expect(result.reasonResults.count == 12)
     #expect(result.optionProfiles[1]?.count == 207)
-    #expect(result.clusterProfiles[1]?.count == 25)
+    #expect(result.clusterProfilesByOption[1]?.count == 25)
     #expect(result.assetVersion == 2)
     #expect(result.modelName == Self.multilingualModelID)
     #expect(result.assetResourceName == DecisionClusterMethod.kMeansAttributeEmbeddings.assetResourceName)
@@ -89,7 +90,7 @@ struct DecisionAnalysisRunnerIntegrationTests {
     #expect(!result.conflictDimensions.isEmpty)
     #expect(!result.clusterConflictDimensions.isEmpty)
     #expect(result.optionProfiles[1]?.count == 207)
-    #expect(result.clusterProfiles[1]?.count == 25)
+    #expect(result.clusterProfilesByOption[1]?.count == 25)
     #expect(result.assetVersion == 2)
     #expect(result.modelName == Self.multilingualModelID)
     #expect(result.assetResourceName == DecisionClusterMethod.bhatiaWardReddit.assetResourceName)

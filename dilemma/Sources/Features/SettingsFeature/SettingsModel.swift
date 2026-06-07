@@ -37,8 +37,10 @@ final class SettingsModel {
   }
   var exportURL: URL?
   var errorMessage: String?
+  private(set) var analysisMigrationProgress: ReanalyzeIncompleteAnalysesProgress?
 
   @ObservationIgnored private let prepareDiary: PrepareDiaryUseCase
+  @ObservationIgnored private let reanalyzeIncompleteAnalyses: ReanalyzeIncompleteAnalysesUseCase
   @ObservationIgnored private let exportDiaryData: ExportDiaryDataUseCase
   @ObservationIgnored private let deleteDiaryData: DeleteDiaryDataUseCase
   @ObservationIgnored private let userDefaults: UserDefaults
@@ -47,11 +49,13 @@ final class SettingsModel {
 
   init(
     prepareDiary: PrepareDiaryUseCase,
+    reanalyzeIncompleteAnalyses: ReanalyzeIncompleteAnalysesUseCase,
     exportDiaryData: ExportDiaryDataUseCase,
     deleteDiaryData: DeleteDiaryDataUseCase,
     userDefaults: UserDefaults
   ) {
     self.prepareDiary = prepareDiary
+    self.reanalyzeIncompleteAnalyses = reanalyzeIncompleteAnalyses
     self.exportDiaryData = exportDiaryData
     self.deleteDiaryData = deleteDiaryData
     self.userDefaults = userDefaults
@@ -70,6 +74,22 @@ final class SettingsModel {
     } catch {
       errorMessage = AppErrorMessage.message(for: error, context: .prepareDiary)
       return false
+    }
+  }
+
+  func reanalyzeIncompleteAnalysesForUse() async -> ReanalyzeIncompleteAnalysesResult? {
+    analysisMigrationProgress = nil
+    do {
+      let result = try await reanalyzeIncompleteAnalyses { [weak self] progress in
+        await self?.setAnalysisMigrationProgress(progress)
+      }
+      analysisMigrationProgress = nil
+      errorMessage = nil
+      return result
+    } catch {
+      analysisMigrationProgress = nil
+      errorMessage = AppErrorMessage.message(for: error, context: .migrateAnalyses)
+      return nil
     }
   }
 
@@ -93,5 +113,9 @@ final class SettingsModel {
       errorMessage = AppErrorMessage.message(for: error, context: .deleteData)
       return false
     }
+  }
+
+  private func setAnalysisMigrationProgress(_ progress: ReanalyzeIncompleteAnalysesProgress) {
+    analysisMigrationProgress = progress.totalCount > 0 && progress.isRunning ? progress : nil
   }
 }

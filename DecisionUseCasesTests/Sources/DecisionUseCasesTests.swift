@@ -34,6 +34,10 @@ struct DecisionUseCasesTests {
     let analysis = try #require(created.latestAnalyses[entry.id])
     #expect(analysis.modelID == "stub-model")
     #expect(analysis.attributeConflicts.first?.attributeName == "money")
+    #expect(analysis.embeddings.rawText == command.rawText)
+    #expect(analysis.embeddings.dilemmaText.modelName == "Stub Model")
+    #expect(analysis.embeddings.options.map(\.title) == [command.option1Title, command.option2Title])
+    #expect(analysis.embeddings.reasons.count == 12)
 
     try useCases.saveFeedback(
       FeedbackCommand(
@@ -55,6 +59,11 @@ struct DecisionUseCasesTests {
 
     let exportData = try useCases.exportDiaryData()
     #expect(!exportData.isEmpty)
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .iso8601
+    let decodedExport = try decoder.decode(DiaryExport.self, from: exportData)
+    let exportedAnalysis = try #require(decodedExport.analyses.first)
+    #expect(exportedAnalysis.embeddings == analysis.embeddings)
 
     try useCases.deleteDiaryData()
     try useCases.prepareDiary()
@@ -141,6 +150,58 @@ struct DecisionUseCasesTests {
     #expect(statistics.feedbackCount == 0)
     #expect(statistics.chosenOptionCounts.isEmpty)
     #expect(statistics.chosenClusterDilemmaCount == 0)
+  }
+
+  @Test
+  func reanalyzeIncompleteAnalysesMigratesLegacyProjectionRows() async throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(
+      databaseURL: url
+    )
+    let useCases = DecisionUseCases.testing(
+      vault: vault,
+      analysisGenerator: StubAnalysisGenerator()
+    )
+
+    try useCases.prepareDiary()
+    let command = EntryDraftCommand.sample()
+    let created = try await useCases.createAnalyzedEntry(command)
+    let entry = try #require(created.entries.first)
+    let analysis = try #require(created.latestAnalyses[entry.id])
+    try vault.saveAnalysis(analysis.legacyStoredModel())
+
+    let legacySnapshot = try useCases.loadDiarySnapshot()
+    let legacyAnalysis = try #require(legacySnapshot.latestAnalyses[entry.id])
+    #expect(legacyAnalysis.id == analysis.id)
+    #expect(legacyAnalysis.embeddings.reasons.isEmpty)
+
+    let progressRecorder = ReanalysisProgressRecorder()
+    let result = try await useCases.reanalyzeIncompleteAnalyses { progress in
+      await progressRecorder.append(progress)
+    }
+    let progressEvents = await progressRecorder.events
+
+    #expect(result.updatedCount == 1)
+    #expect(result.failedCount == 0)
+    #expect(progressEvents == [
+      ReanalyzeIncompleteAnalysesProgress(totalCount: 1, completedCount: 0, isRunning: true),
+      ReanalyzeIncompleteAnalysesProgress(
+        totalCount: 1,
+        completedCount: 0,
+        currentEntryID: entry.id,
+        isRunning: true
+      ),
+      ReanalyzeIncompleteAnalysesProgress(totalCount: 1, completedCount: 1, isRunning: false),
+    ])
+    let migratedAnalysis = try #require(result.snapshot.latestAnalyses[entry.id])
+    #expect(migratedAnalysis.id == analysis.id)
+    #expect(migratedAnalysis.embeddings.rawText == command.rawText)
+    #expect(migratedAnalysis.embeddings.reasons.count == 12)
+
+    let reloaded = try useCases.loadDiarySnapshot()
+    #expect(reloaded.latestAnalyses[entry.id]?.embeddings.reasons.count == 12)
   }
 
   @Test
@@ -372,26 +433,143 @@ private actor ProgressRecorder {
   }
 }
 
-private struct StubAnalysisGenerator: EntryAnalysisGenerating {
-  func analysis(for command: EntryDraftCommand, entryID: UUID) async throws -> DiaryAnalysis {
-    DiaryAnalysis(
+private actor ReanalysisProgressRecorder {
+  private(set) var events: [ReanalyzeIncompleteAnalysesProgress] = []
+
+  func append(_ progress: ReanalyzeIncompleteAnalysesProgress) {
+    events.append(progress)
+  }
+}
+
+private extension DecisionAnalysis {
+  func legacyStoredModel() -> StoredDecisionAnalysis {
+    StoredDecisionAnalysis(
+      id: id,
       entryID: entryID,
-      assetVersion: 1,
-      modelID: "stub-model",
-      sourceDOI: "stub-doi",
-      attributeConflicts: [
-        AttributeConflict(
-          attributeName: "money",
-          option1Score: 0.8,
-          option2Score: -0.1,
-          difference: 0.9,
-          rank: 1
+      createdAt: createdAt,
+      assetVersion: assetVersion,
+      modelID: modelID,
+      sourceDOI: sourceDOI,
+      attributeConflicts: attributeConflicts.map {
+        StoredAttributeConflict(
+          id: $0.id,
+          attributeName: $0.attributeName,
+          option1Score: $0.option1Score,
+          option2Score: $0.option2Score,
+          difference: $0.difference,
+          rank: $0.rank
+        )
+      },
+      clusterProfiles: clusterProfiles.map {
+        StoredClusterProfile(
+          id: $0.id,
+          optionIndex: $0.optionIndex,
+          clusterID: $0.clusterID,
+          label: $0.label,
+          score: $0.score
+        )
+      }
+    )
+  }
+}
+
+private struct StubAnalysisGenerator: EntryAnalysisGenerating {
+  func analysis(for command: EntryDraftCommand, entryID: UUID) async throws -> DecisionAnalysis {
+    let option1Reasons = command.option1Benefits.map { ($0, ReasonPolarity.benefit) }
+      + command.option1Costs.map { ($0, ReasonPolarity.cost) }
+    let option2Reasons = command.option2Benefits.map { ($0, ReasonPolarity.benefit) }
+      + command.option2Costs.map { ($0, ReasonPolarity.cost) }
+    let reasonInputs = option1Reasons.map {
+      ReasonInput(text: $0.0, optionIndex: 1, polarity: $0.1)
+    } + option2Reasons.map {
+      ReasonInput(text: $0.0, optionIndex: 2, polarity: $0.1)
+    }
+    let moneyAttribute = AttributeDefinition(
+      attributeID: 1,
+      name: "money",
+      source: "stub",
+      clusterID: 4
+    )
+
+    return DecisionAnalysis(
+      entryID: entryID,
+      model: AnalysisModelMetadata(id: "stub-model", name: "Stub Model", embeddingDimension: 3),
+      asset: AnalysisAssetMetadata(version: 1, resourceName: "stub-assets", sourceDOI: "stub-doi"),
+      clusterMethod: AnalysisClusterMethodMetadata(id: "stub-cluster-method", label: "Stub clusters"),
+      embeddings: DecisionAnalysisEmbeddings(
+        rawText: command.rawText,
+        dilemmaText: embedding(values: [1, 0, 0]),
+        options: [
+          OptionEmbedding(optionIndex: 1, title: command.option1Title, embedding: embedding(values: [0, 1, 0])),
+          OptionEmbedding(optionIndex: 2, title: command.option2Title, embedding: embedding(values: [0, 0, 1])),
+        ],
+        reasons: [1, 2].flatMap { optionIndex in
+          reasonInputs
+            .filter { $0.optionIndex == optionIndex }
+            .enumerated()
+            .map { offset, reason in
+              ReasonEmbedding(
+                reasonID: reason.id,
+                optionIndex: reason.optionIndex,
+                polarity: reason.polarity,
+                text: reason.text,
+                embedding: embedding(values: [Float(optionIndex), Float(offset + 1), 1])
+              )
+            }
+        }
+      ),
+      reasonMatches: [],
+      optionAttributeProfiles: [
+        OptionAttributeProfile(
+          optionIndex: 1,
+          scores: [AttributeProfileScore(attribute: moneyAttribute, score: 0.8)]
+        ),
+        OptionAttributeProfile(
+          optionIndex: 2,
+          scores: [AttributeProfileScore(attribute: moneyAttribute, score: -0.1)]
         ),
       ],
-      clusterProfiles: [
-        ClusterProfile(optionIndex: 1, clusterID: 4, label: "Cluster 4: money", score: 0.7),
-        ClusterProfile(optionIndex: 2, clusterID: 10, label: "Cluster 10: career", score: 0.5),
-      ]
+      optionClusterProfiles: [
+        OptionClusterProfile(
+          optionIndex: 1,
+          scores: [
+            ClusterScore(
+              cluster: ClusterMetadata(
+                clusterID: 4,
+                label: "Cluster 4: money",
+                representativeAttributeName: "money",
+                sortOrder: 4
+              ),
+              score: 0.7
+            ),
+          ]
+        ),
+        OptionClusterProfile(
+          optionIndex: 2,
+          scores: [
+            ClusterScore(
+              cluster: ClusterMetadata(
+                clusterID: 10,
+                label: "Cluster 10: career",
+                representativeAttributeName: "career",
+                sortOrder: 10
+              ),
+              score: 0.5
+            ),
+          ]
+        ),
+      ],
+      metrics: AnalysisMetrics(),
+      warnings: []
+    )
+  }
+
+  private func embedding(values: [Float]) -> EmbeddingVector {
+    EmbeddingVector(
+      modelID: "stub-model",
+      modelName: "Stub Model",
+      dimension: values.count,
+      values: values
     )
   }
 }

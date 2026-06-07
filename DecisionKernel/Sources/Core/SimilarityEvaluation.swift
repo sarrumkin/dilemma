@@ -1,3 +1,4 @@
+import DecisionModels
 import Foundation
 
 public struct SimilarityEvaluationQuery: Identifiable, Sendable {

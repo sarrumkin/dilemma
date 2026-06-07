@@ -1,3 +1,4 @@
+import DecisionModels
 import Foundation
 
 public struct DecisionAnalysisRunner: Sendable {
@@ -31,7 +32,7 @@ public struct DecisionAnalysisRunner: Sendable {
   }
 
   /// Executes the built-in smoke analysis draft through `DecisionAnalysisService`.
-  public func run() async throws -> DecisionAnalysisResult {
+  public func run() async throws -> DecisionAnalysis {
     if let clusterMethod {
       return try await DecisionAnalysisService(
         bundle: bundle,
