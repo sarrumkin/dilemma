@@ -376,6 +376,30 @@ struct DecisionModelsTests {
   }
 
   @Test
+  func likelyChoiceAdviceUsesFullAttributeProfilesBeyondTopConflictProjection() throws {
+    let currentAnalysis = sampleFullAttributeSideAnalysis(
+      axisScores: (1...8).map { ($0, 1.0) } + [(9, 0.1)]
+    )
+    let pastAnalysis = sampleFullAttributeSideAnalysis(
+      axisScores: (1...8).map { ($0, 0.0) } + [(9, 0.1)]
+    )
+
+    #expect(currentAnalysis.attributeConflicts.allSatisfy { $0.attributeName != "Axis 9" })
+
+    let advice = try #require(LikelyChoiceAdvice(
+      currentAnalysis: currentAnalysis,
+      currentOptionIndices: [1, 2],
+      decidedChoices: [
+        SimilarDecidedChoice(analysis: pastAnalysis, chosenOptionIndex: 1),
+      ]
+    ))
+
+    #expect(advice.optionIndex == 1)
+    #expect((advice.optionWeights[1] ?? 0) > 0)
+    #expect((advice.optionWeights[2] ?? 0) == 0)
+  }
+
+  @Test
   func clusterDilemmaStatisticsGroupsAnalyzedTopClustersWithoutFeedback() throws {
     let olderEntry = sampleEntry(
       id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
@@ -503,6 +527,79 @@ struct DecisionModelsTests {
     )
   }
 
+  private func sampleFullAttributeSideAnalysis(axisScores: [(Int, Double)]) -> DecisionAnalysis {
+    let embedding = EmbeddingVector(
+      modelID: "stub-model",
+      modelName: "Stub model",
+      dimension: 2,
+      values: [1, 0]
+    )
+
+    return DecisionAnalysis(
+      entryID: UUID(),
+      model: AnalysisModelMetadata(id: "stub-model", name: "Stub model", embeddingDimension: 2),
+      asset: AnalysisAssetMetadata(version: 1, resourceName: "stub-asset", sourceDOI: "stub-doi"),
+      clusterMethod: AnalysisClusterMethodMetadata(id: "stub-cluster", label: "Stub cluster"),
+      embeddings: DecisionAnalysisEmbeddings(
+        rawText: "Stub dilemma",
+        dilemmaText: embedding,
+        options: [
+          OptionEmbedding(optionIndex: 1, title: "Option 1", embedding: embedding),
+          OptionEmbedding(optionIndex: 2, title: "Option 2", embedding: embedding),
+        ],
+        reasons: [
+          ReasonEmbedding(
+            reasonID: UUID(),
+            optionIndex: 1,
+            polarity: .benefit,
+            text: "Reason",
+            embedding: embedding
+          ),
+        ]
+      ),
+      reasonMatches: [],
+      optionAttributeProfiles: [
+        OptionAttributeProfile(
+          optionIndex: 1,
+          scores: attributeProfileScores(axisScores: axisScores, multiplier: 0.5)
+        ),
+        OptionAttributeProfile(
+          optionIndex: 2,
+          scores: attributeProfileScores(axisScores: axisScores, multiplier: -0.5)
+        ),
+      ],
+      optionClusterProfiles: [
+        OptionClusterProfile(
+          optionIndex: 1,
+          scores: [ClusterScore(cluster: sampleClusterMetadata(id: 1), score: 0.5)]
+        ),
+        OptionClusterProfile(
+          optionIndex: 2,
+          scores: [ClusterScore(cluster: sampleClusterMetadata(id: 1), score: -0.5)]
+        ),
+      ],
+      metrics: AnalysisMetrics(),
+      warnings: []
+    )
+  }
+
+  private func attributeProfileScores(
+    axisScores: [(Int, Double)],
+    multiplier: Double
+  ) -> [AttributeProfileScore] {
+    axisScores.map { attributeID, score in
+      AttributeProfileScore(
+        attribute: AttributeDefinition(
+          attributeID: attributeID,
+          name: "Axis \(attributeID)",
+          source: "stub",
+          clusterID: nil
+        ),
+        score: Float(score * multiplier)
+      )
+    }
+  }
+
   private func attributeConflicts(axisScores: [(Int, Double)]) -> [AttributeConflict] {
     axisScores.enumerated().map { offset, pair in
       AttributeConflict(
@@ -527,5 +624,14 @@ struct DecisionModelsTests {
         score: score
       )
     }
+  }
+
+  private func sampleClusterMetadata(id: Int) -> ClusterMetadata {
+    ClusterMetadata(
+      clusterID: id,
+      label: "Cluster \(id)",
+      representativeAttributeName: "Axis \(id)",
+      sortOrder: id
+    )
   }
 }

@@ -198,13 +198,13 @@ struct LikelyChoiceRecommendationRegressionTests {
   }
 
   private enum DiagnosticAxisKey: Hashable {
-    case attribute(String)
+    case attribute(Int)
     case cluster(Int)
 
     var description: String {
       switch self {
-      case let .attribute(name):
-        return "attribute:\(name)"
+      case let .attribute(attributeID):
+        return "attributeID:\(attributeID)"
       case let .cluster(clusterID):
         return "cluster:\(clusterID)"
       }
@@ -254,12 +254,34 @@ struct LikelyChoiceRecommendationRegressionTests {
   }
 
   private static func signedAttributeAxis(for analysis: DecisionAnalysis) -> [DiagnosticAxisKey: Double]? {
-    let pairs: [(DiagnosticAxisKey, Double)] = analysis.attributeConflicts.compactMap { conflict in
-      let value = conflict.option1Score - conflict.option2Score
-      guard abs(value) > 0.000_000_001 else { return nil }
-      return (.attribute(conflict.attributeName), value)
+    guard
+      analysis.hasStoredEmbeddings,
+      let option1 = attributeScores(for: analysis, optionIndex: 1),
+      let option2 = attributeScores(for: analysis, optionIndex: 2)
+    else {
+      return nil
     }
-    return normalized(Dictionary(pairs, uniquingKeysWith: { first, _ in first }))
+
+    let attributeIDs = Set(option1.keys).union(option2.keys)
+    let pairs: [(DiagnosticAxisKey, Double)] = attributeIDs.compactMap { attributeID in
+      let value = Double(option1[attributeID] ?? 0) - Double(option2[attributeID] ?? 0)
+      guard abs(value) > 0.000_000_001 else { return nil }
+      return (.attribute(attributeID), value)
+    }
+    return normalized(Dictionary(uniqueKeysWithValues: pairs))
+  }
+
+  private static func attributeScores(for analysis: DecisionAnalysis, optionIndex: Int) -> [Int: Float]? {
+    guard let profile = analysis.optionAttributeProfiles.first(where: { $0.optionIndex == optionIndex }) else {
+      return nil
+    }
+
+    let pairs: [(Int, Float)] = profile.scores.compactMap { score in
+      guard abs(score.score) > 0.000_000_001 else { return nil }
+      return (score.attribute.attributeID, score.score)
+    }
+    let scores = Dictionary(pairs, uniquingKeysWith: { first, _ in first })
+    return scores.isEmpty ? nil : scores
   }
 
   private static func signedClusterAxis(for analysis: DecisionAnalysis) -> [DiagnosticAxisKey: Double]? {
@@ -295,6 +317,21 @@ struct LikelyChoiceRecommendationRegressionTests {
     lhs.reduce(0) { total, pair in
       total + (pair.value * (rhs[pair.key] ?? 0))
     }
+  }
+}
+
+private extension DecisionAnalysis {
+  var hasStoredEmbeddings: Bool {
+    embeddings.dilemmaText.dimension > 0
+      && embeddings.dilemmaText.values.count == embeddings.dilemmaText.dimension
+      && embeddings.options.contains { option in
+        option.embedding.dimension > 0
+          && option.embedding.values.count == option.embedding.dimension
+      }
+      && embeddings.reasons.contains { reason in
+        reason.embedding.dimension > 0
+          && reason.embedding.values.count == reason.embedding.dimension
+      }
   }
 }
 
