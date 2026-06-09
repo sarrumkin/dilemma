@@ -159,6 +159,7 @@ struct DilemmaAnalysisView: View {
     List {
       supportSection()
       similarDilemmasSection()
+      attributesSection()
       clustersSection()
     }
     .navigationTitle("Analysis")
@@ -198,6 +199,17 @@ struct DilemmaAnalysisView: View {
     Section("Clusters") {
       if let analysis = model.analysis {
         DilemmaClustersContent(entry: model.entry, analysis: analysis)
+      } else {
+        Text("No saved analysis is available for this entry.")
+          .foregroundStyle(.secondary)
+      }
+    }
+  }
+
+  private func attributesSection() -> some View {
+    Section("Attributes") {
+      if let analysis = model.analysis {
+        DilemmaAttributesContent(entry: model.entry, analysis: analysis)
       } else {
         Text("No saved analysis is available for this entry.")
           .foregroundStyle(.secondary)
@@ -387,6 +399,55 @@ private struct SimilarDilemmaRow: View {
       }
     }
     .padding(.vertical, 3)
+  }
+}
+
+private struct DilemmaAttributesContent: View {
+  let entry: DiaryEntry
+  let analysis: DecisionAnalysis
+
+  var body: some View {
+    ForEach(entry.options) { option in
+      let attributes = topAttributes(for: option)
+
+      VStack(alignment: .leading, spacing: 8) {
+        Text(option.title)
+          .font(.subheadline.weight(.semibold))
+        if attributes.isEmpty {
+          Text("No non-zero attributes for this option.")
+            .font(.caption)
+            .foregroundStyle(.secondary)
+        } else {
+          ForEach(attributes) { attribute in
+            HStack {
+              Text(TaxonomyLocalization.attributeName(
+                attributeID: attribute.attribute.attributeID,
+                fallback: attribute.attribute.name
+              ))
+                .lineLimit(2)
+              Spacer()
+              Text(format(Double(attribute.score)))
+                .font(.caption.monospacedDigit())
+                .foregroundStyle(scoreColor(Double(attribute.score)))
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private func topAttributes(for option: DiaryOption) -> [AttributeProfileScore] {
+    analysis.optionAttributeProfiles
+      .first { $0.optionIndex == option.index }?
+      .strongestSignedAttributes() ?? []
+  }
+
+  private func format(_ value: Double) -> String {
+    value.formatted(.number.precision(.fractionLength(3)))
+  }
+
+  private func scoreColor(_ score: Double) -> Color {
+    score > 0 ? .green : .red
   }
 }
 

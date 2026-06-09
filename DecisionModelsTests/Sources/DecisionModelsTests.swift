@@ -312,6 +312,40 @@ struct DecisionModelsTests {
     #expect(alphaTieIndex < betaIndex)
   }
 
+  @Test
+  func optionAttributeProfileHighlightsTopPositiveAndNegativeScores() {
+    let profile = OptionAttributeProfile(
+      optionIndex: 1,
+      scores: [
+        sampleAttributeScore(id: 1, name: "Positive highest", score: 0.9),
+        sampleAttributeScore(id: 2, name: "Positive tie first", score: 0.7),
+        sampleAttributeScore(id: 3, name: "Positive tie second", score: 0.7),
+        sampleAttributeScore(id: 4, name: "Positive excluded", score: 0.2),
+        sampleAttributeScore(id: 5, name: "Negative tie first", score: -0.4),
+        sampleAttributeScore(id: 6, name: "Negative tie second", score: -0.4),
+        sampleAttributeScore(id: 7, name: "Negative strongest", score: -0.8),
+        sampleAttributeScore(id: 8, name: "Negative excluded", score: -0.1),
+        sampleAttributeScore(id: 9, name: "Zero excluded", score: 0),
+      ]
+    )
+
+    let highlights = profile.strongestSignedAttributes()
+
+    #expect(highlights.map(\.attribute.attributeID) == [1, 2, 3, 7, 5, 6])
+  }
+
+  @Test
+  func optionAttributeProfileHighlightsEmptyStateWhenOnlyZeroScoresExist() {
+    let profile = OptionAttributeProfile(
+      optionIndex: 1,
+      scores: [
+        sampleAttributeScore(id: 1, name: "Zero", score: 0),
+      ]
+    )
+
+    #expect(profile.strongestSignedAttributes().isEmpty)
+  }
+
   private func sampleEntry(id: UUID, rawText: String, updatedAt: Date) -> DiaryEntry {
     DiaryEntry(
       id: id,
@@ -351,6 +385,18 @@ struct DecisionModelsTests {
       sourceDOI: "stub-doi",
       attributeConflicts: attributeConflicts,
       clusterProfiles: clusterProfiles
+    )
+  }
+
+  private func sampleAttributeScore(id: Int, name: String, score: Float) -> AttributeProfileScore {
+    AttributeProfileScore(
+      attribute: AttributeDefinition(
+        attributeID: id,
+        name: name,
+        source: "stub-source",
+        clusterID: nil
+      ),
+      score: score
     )
   }
 }
