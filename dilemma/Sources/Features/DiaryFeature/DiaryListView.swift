@@ -33,12 +33,13 @@ struct DiaryListView: View {
           Section {
             ForEach(model.entries) { entry in
               let analysis = model.latestAnalysis(for: entry)
+              let feedback = model.latestFeedback(for: entry)
               NavigationLink {
                 AnalysisDetailView(
                   model: makeAnalysisDetailModel(entry, analysis)
                 )
               } label: {
-                EntryRow(entry: entry, analysis: analysis)
+                EntryRow(entry: entry, feedback: feedback)
               }
               .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                 Button(role: .destructive) {
@@ -366,26 +367,33 @@ private struct JSONImportFormatInfoView: View {
 
 private struct EntryRow: View {
   let entry: DiaryEntry
-  let analysis: DecisionAnalysis?
+  let feedback: Feedback?
+
+  private var selectedOptionTitle: String? {
+    guard let chosenOptionIndex = feedback?.chosenOptionIndex else { return nil }
+    return entry.options.first { $0.index == chosenOptionIndex }?.title ?? "Option \(chosenOptionIndex)"
+  }
 
   var body: some View {
     VStack(alignment: .leading, spacing: 6) {
       Text(entry.rawText)
         .font(.headline)
-        .lineLimit(2)
+        .lineLimit(nil)
+        .fixedSize(horizontal: false, vertical: true)
       Text(entry.options.map(\.title).joined(separator: " / "))
         .font(.subheadline)
         .foregroundStyle(.secondary)
         .lineLimit(1)
-      if let analysis {
-        (
-          Text("\(analysis.attributeConflicts.count) ")
-            + Text("conflicts")
-            + Text(" • \(analysis.modelID)")
-        )
-          .font(.caption)
-          .foregroundStyle(.secondary)
-          .lineLimit(1)
+      if let selectedOptionTitle {
+        HStack(alignment: .firstTextBaseline, spacing: 4) {
+          Image(systemName: "checkmark.circle.fill")
+            .imageScale(.small)
+          Text("Recorded choice") + Text(verbatim: ": \(selectedOptionTitle)")
+        }
+        .font(.caption)
+        .foregroundStyle(.tint)
+        .lineLimit(nil)
+        .fixedSize(horizontal: false, vertical: true)
       }
     }
     .padding(.vertical, 4)

@@ -8,9 +8,13 @@ extension StoredDiarySnapshot {
     for (entryID, analysis) in latestAnalyses {
       analyses[entryID] = try analysis.decisionModel()
     }
+    let feedback = Dictionary(uniqueKeysWithValues: latestFeedback.map { entryID, feedback in
+      (entryID, feedback.decisionModel())
+    })
     return DiarySnapshot(
       entries: entries.map { $0.decisionModel() },
-      latestAnalyses: analyses
+      latestAnalyses: analyses,
+      latestFeedback: feedback
     )
   }
 }

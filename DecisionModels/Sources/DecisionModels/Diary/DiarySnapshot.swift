@@ -5,9 +5,15 @@ import Foundation
 public struct DiarySnapshot: Equatable, Sendable {
   public var entries: [DiaryEntry]
   public var latestAnalyses: [UUID: DecisionAnalysis]
+  public var latestFeedback: [UUID: Feedback]
 
-  public init(entries: [DiaryEntry], latestAnalyses: [UUID: DecisionAnalysis]) {
+  public init(
+    entries: [DiaryEntry],
+    latestAnalyses: [UUID: DecisionAnalysis],
+    latestFeedback: [UUID: Feedback] = [:]
+  ) {
     self.entries = entries
     self.latestAnalyses = latestAnalyses
+    self.latestFeedback = latestFeedback
   }
 }

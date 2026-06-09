@@ -134,7 +134,8 @@ public final class DiaryVault: @unchecked Sendable {
 
       return StoredDiarySnapshot(
         entries: entries,
-        latestAnalyses: try latestAnalysesByEntryID(for: entryIDs, database: database)
+        latestAnalyses: try latestAnalysesByEntryID(for: entryIDs, database: database),
+        latestFeedback: try latestFeedbackByEntryID(for: entryIDs, database: database)
       )
     }
   }
@@ -620,6 +621,35 @@ public final class DiaryVault: @unchecked Sendable {
       latestAnalyses[entryID] = try analysis(from: row, database: database)
     }
     return latestAnalyses
+  }
+
+  private func latestFeedbackByEntryID(
+    for entryIDs: [UUID],
+    database: SQLiteDatabase
+  ) throws -> [UUID: StoredFeedback] {
+    guard !entryIDs.isEmpty else { return [:] }
+    let rows = try database.query(
+      """
+      SELECT id, entry_id, analysis_id, conflict_was_useful, corrected_cluster_id,
+             corrected_attribute_name, chosen_option_index, note, created_at
+      FROM feedback
+      WHERE entry_id IN (\(Self.placeholders(count: entryIDs.count)))
+        AND chosen_option_index IS NOT NULL
+      ORDER BY entry_id, created_at DESC
+      """,
+      Self.bindings(for: entryIDs)
+    )
+    guard !rows.isEmpty else { return [:] }
+
+    var latestFeedback: [UUID: StoredFeedback] = [:]
+    var seenEntryIDs = Set<UUID>()
+    for row in rows {
+      let entryID = try UUID.parse(row.string(1))
+      guard !seenEntryIDs.contains(entryID) else { continue }
+      seenEntryIDs.insert(entryID)
+      latestFeedback[entryID] = try feedbackRecord(from: row)
+    }
+    return latestFeedback
   }
 
   private func attributeConflictsByAnalysisID(

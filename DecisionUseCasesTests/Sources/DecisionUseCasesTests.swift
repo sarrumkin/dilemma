@@ -57,6 +57,9 @@ struct DecisionUseCasesTests {
     #expect(statistics.chosenOptionCounts[1] == 1)
     #expect(statistics.chosenClusterDilemmaCount == 1)
 
+    let snapshotWithFeedback = try useCases.loadDiarySnapshot()
+    #expect(snapshotWithFeedback.latestFeedback[entry.id]?.chosenOptionIndex == 1)
+
     let exportData = try useCases.exportDiaryData()
     #expect(!exportData.isEmpty)
     let decoder = JSONDecoder()
@@ -69,6 +72,7 @@ struct DecisionUseCasesTests {
     try useCases.prepareDiary()
     let empty = try useCases.loadDiarySnapshot()
     #expect(empty.entries.isEmpty)
+    #expect(empty.latestFeedback.isEmpty)
   }
 
   @Test
@@ -131,6 +135,9 @@ struct DecisionUseCasesTests {
     #expect(statistics.chosenOptionCounts == [2: 1])
     #expect(statistics.chosenClusterDilemmaCount == 1)
 
+    var snapshot = try useCases.loadDiarySnapshot()
+    #expect(snapshot.latestFeedback[entry.id]?.chosenOptionIndex == 2)
+
     try useCases.saveFeedback(
       FeedbackCommand(
         entryID: entry.id,
@@ -150,6 +157,9 @@ struct DecisionUseCasesTests {
     #expect(statistics.feedbackCount == 0)
     #expect(statistics.chosenOptionCounts.isEmpty)
     #expect(statistics.chosenClusterDilemmaCount == 0)
+
+    snapshot = try useCases.loadDiarySnapshot()
+    #expect(snapshot.latestFeedback[entry.id] == nil)
   }
 
   @Test

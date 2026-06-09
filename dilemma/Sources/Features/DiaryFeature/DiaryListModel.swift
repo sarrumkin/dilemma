@@ -8,6 +8,7 @@ import Observation
 final class DiaryListModel {
   private(set) var entries: [DiaryEntry] = []
   private(set) var latestAnalyses: [UUID: DecisionAnalysis] = [:]
+  private(set) var latestFeedback: [UUID: Feedback] = [:]
   var errorMessage: String?
 
   @ObservationIgnored private let loadDiarySnapshot: LoadDiarySnapshotUseCase
@@ -32,11 +33,16 @@ final class DiaryListModel {
   func apply(_ snapshot: DiarySnapshot) {
     entries = snapshot.entries
     latestAnalyses = snapshot.latestAnalyses
+    latestFeedback = snapshot.latestFeedback
     errorMessage = nil
   }
 
   func latestAnalysis(for entry: DiaryEntry) -> DecisionAnalysis? {
     latestAnalyses[entry.id]
+  }
+
+  func latestFeedback(for entry: DiaryEntry) -> Feedback? {
+    latestFeedback[entry.id]
   }
 
   func delete(_ entry: DiaryEntry) -> Bool {

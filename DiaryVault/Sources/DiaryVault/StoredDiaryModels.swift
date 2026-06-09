@@ -3,10 +3,16 @@ import Foundation
 public struct StoredDiarySnapshot: Equatable, Sendable {
   public var entries: [StoredDiaryEntry]
   public var latestAnalyses: [UUID: StoredDecisionAnalysis]
+  public var latestFeedback: [UUID: StoredFeedback]
 
-  public init(entries: [StoredDiaryEntry], latestAnalyses: [UUID: StoredDecisionAnalysis]) {
+  public init(
+    entries: [StoredDiaryEntry],
+    latestAnalyses: [UUID: StoredDecisionAnalysis],
+    latestFeedback: [UUID: StoredFeedback] = [:]
+  ) {
     self.entries = entries
     self.latestAnalyses = latestAnalyses
+    self.latestFeedback = latestFeedback
   }
 }
 
