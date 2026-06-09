@@ -264,6 +264,26 @@ struct DecisionModelsTests {
   }
 
   @Test
+  func likelyChoiceAdviceShowsUniqueLeaderBelowOldSupportThreshold() throws {
+    let currentAnalysis = sampleSideAnalysis(axisScores: [(1, 1)])
+    let option1Choice = sampleSideAnalysis(axisScores: [(1, 1)])
+    let nearOption2Choice = sampleSideAnalysis(axisScores: [(1, 1), (2, 0.2)])
+
+    let advice = try #require(LikelyChoiceAdvice(
+      currentAnalysis: currentAnalysis,
+      currentOptionIndices: [1, 2],
+      decidedChoices: [
+        SimilarDecidedChoice(analysis: option1Choice, chosenOptionIndex: 1),
+        SimilarDecidedChoice(analysis: nearOption2Choice, chosenOptionIndex: 2),
+      ]
+    ))
+
+    #expect(advice.optionIndex == 1)
+    #expect(advice.support > 0.5)
+    #expect(advice.support < 0.55)
+  }
+
+  @Test
   func likelyChoiceAdviceAllowsOneSimilarDecidedChoice() throws {
     let currentAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])
     let pastAnalysis = sampleSideAnalysis(axisScores: [(1, 1), (2, -1)])

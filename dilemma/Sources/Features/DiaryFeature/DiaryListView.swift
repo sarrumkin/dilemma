@@ -35,7 +35,7 @@ struct DiaryListView: View {
               let analysis = model.latestAnalysis(for: entry)
               let feedback = model.latestFeedback(for: entry)
               NavigationLink {
-                AnalysisDetailView(
+                DilemmaDetailView(
                   model: makeAnalysisDetailModel(entry, analysis)
                 )
               } label: {
@@ -385,15 +385,7 @@ private struct EntryRow: View {
         .foregroundStyle(.secondary)
         .lineLimit(1)
       if let selectedOptionTitle {
-        HStack(alignment: .firstTextBaseline, spacing: 4) {
-          Image(systemName: "checkmark.circle.fill")
-            .imageScale(.small)
-          Text("Recorded choice") + Text(verbatim: ": \(selectedOptionTitle)")
-        }
-        .font(.caption)
-        .foregroundStyle(.tint)
-        .lineLimit(nil)
-        .fixedSize(horizontal: false, vertical: true)
+        RecordedChoiceTableRow(optionTitle: selectedOptionTitle)
       }
     }
     .padding(.vertical, 4)

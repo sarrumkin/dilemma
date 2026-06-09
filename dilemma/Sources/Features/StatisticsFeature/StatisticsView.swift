@@ -97,7 +97,7 @@ private struct RecordedDecisionListView: View {
       Section("Dilemmas") {
         ForEach(records) { record in
           NavigationLink {
-            AnalysisDetailView(
+            DilemmaDetailView(
               model: makeAnalysisDetailModel(record.entry, record.analysis)
             )
           } label: {
@@ -161,7 +161,7 @@ private struct ClusterDilemmaListView: View {
       Section("Dilemmas") {
         ForEach(group.records) { record in
           NavigationLink {
-            AnalysisDetailView(
+            DilemmaDetailView(
               model: makeAnalysisDetailModel(record.entry, record.analysis)
             )
           } label: {

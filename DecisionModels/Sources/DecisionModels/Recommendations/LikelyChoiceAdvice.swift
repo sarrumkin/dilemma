@@ -13,6 +13,7 @@ public struct SimilarDecidedChoice: Equatable, Sendable {
 }
 
 /// Advice about which current option looks more likely based on similar past decisions.
+/// This is an advisory aggregate, not a choice made by the app on the user's behalf.
 /// It keeps support values and per-option weights so UI can show confidence instead of only a hard answer.
 public struct LikelyChoiceAdvice: Equatable, Sendable {
   public var optionIndex: Int?
@@ -114,7 +115,10 @@ public struct LikelyChoiceAdvice: Equatable, Sendable {
     let supportByOption = optionWeights.mapValues { weight in
       weight / totalWeight
     }
-    let optionIndex = support >= Self.minimumDecisiveSupport ? top.key : nil
+    let hasTiedLeader = rankedWeights.dropFirst().first.map { runnerUp in
+      abs(top.value - runnerUp.value) <= Self.epsilon
+    } ?? false
+    let optionIndex = hasTiedLeader ? nil : top.key
 
     self.init(
       optionIndex: optionIndex,
@@ -142,7 +146,6 @@ public struct LikelyChoiceAdvice: Equatable, Sendable {
 
   private static let epsilon = 0.000_000_001
   private static let minimumSideSimilarity = 0.03
-  private static let minimumDecisiveSupport = 0.55
 
   private enum AxisKey: Hashable {
     case attribute(Int)

@@ -177,6 +177,40 @@
         }
       }
     },
+    "Based on %lld marked similar dilemmas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Based on %lld marked similar dilemmas"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На основе %lld отмеченных похожих дилемм"
+          }
+        }
+      }
+    },
+    "Based on 1 marked similar dilemma" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Based on 1 marked similar dilemma"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На основе 1 отмеченной похожей дилеммы"
+          }
+        }
+      }
+    },
     "Benefit" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -258,6 +292,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Паттерны выбора появятся после обратной связи с выбранным вариантом."
+          }
+        }
+      }
+    },
+    "Choice recorded" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choice recorded"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбор сделан"
           }
         }
       }
@@ -1265,6 +1316,23 @@
         }
       }
     },
+    "Likely Hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likely Hint"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вероятная подсказка"
+          }
+        }
+      }
+    },
     "Lock" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1338,6 +1406,7 @@
       }
     },
     "No clear likely choice yet" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1366,6 +1435,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пока нет решений"
+          }
+        }
+      }
+    },
+    "No non-zero clusters for this option." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No non-zero clusters for this option."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для этого варианта нет ненулевых кластеров."
           }
         }
       }
@@ -1421,6 +1507,40 @@
         }
       }
     },
+    "Not enough data to build a hint yet." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not enough data to build a hint yet."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пока недостаточно данных, чтобы построить подсказку."
+          }
+        }
+      }
+    },
+    "Not enough marked similar dilemmas yet." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not enough marked similar dilemmas yet."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В top-5 похожих дилемм пока нет отметок."
+          }
+        }
+      }
+    },
     "Not useful" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1451,6 +1571,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Заметка"
+          }
+        }
+      }
+    },
+    "Open analysis to review similar-dilemma support." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open analysis to review similar-dilemma support."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открой анализ, чтобы посмотреть поддержку по похожим дилеммам."
           }
         }
       }
@@ -1726,6 +1863,7 @@
       }
     },
     "Save choices in similar dilemmas to see a likely choice here." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1859,6 +1997,23 @@
         }
       }
     },
+    "Similar Dilemmas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Similar Dilemmas"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Похожие дилеммы"
+          }
+        }
+      }
+    },
     "Similar dilemmas appear after more analyzed entries are saved." : {
       "comment" : "A message displayed when there are no similar decision-making clusters to display in the \"Similar Conflict Clusters\" section of the analysis detail view.",
       "isCommentAutoGenerated" : true,
@@ -1911,9 +2066,22 @@
         }
       }
     },
-    "support" : {
-      "comment" : "A label describing the percentage of times a user's choice was selected in a dilemma.",
-      "isCommentAutoGenerated" : true
+    "Support is evenly split" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Support is evenly split"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поддержка распределилась поровну"
+          }
+        }
+      }
     },
     "The file must be a JSON array. Each item needs schemaVersion, rawText, and exactly two options. Each option needs title, benefits, and costs." : {
       "extractionState" : "manual",

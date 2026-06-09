@@ -15,6 +15,7 @@ final class AnalysisDetailModel {
   private(set) var savedFeedback: Feedback?
   private(set) var isEditingFeedback = false
   private(set) var likelyChoiceAdvice: LikelyChoiceAdvice?
+  private(set) var likelyChoiceAdviceStatus: LikelyChoiceAdviceStatus = .noAnalysis
   var didSaveFeedback = false
   var exportURL: URL?
   var errorMessage: String?
@@ -56,6 +57,11 @@ final class AnalysisDetailModel {
 
   var savedDecisionTitle: String {
     optionTitle(for: savedFeedback?.chosenOptionIndex)
+  }
+
+  var recordedChoiceTitle: String? {
+    guard let chosenOptionIndex = savedFeedback?.chosenOptionIndex else { return nil }
+    return optionTitle(for: chosenOptionIndex)
   }
 
   var savedNote: String {
@@ -153,35 +159,48 @@ final class AnalysisDetailModel {
   func reloadLikelyChoiceAdvice(limit: Int = 5) {
     guard let analysis else {
       likelyChoiceAdvice = nil
+      likelyChoiceAdviceStatus = .noAnalysis
       return
     }
 
     do {
-      likelyChoiceAdvice = LikelyChoiceAdvice(
+      let visibleCandidates = visibleSimilarDilemmaCandidates(limit: limit)
+      guard !visibleCandidates.isEmpty else {
+        likelyChoiceAdvice = nil
+        likelyChoiceAdviceStatus = .noSimilarDilemmas
+        return
+      }
+
+      let decidedChoices = try similarDecidedChoices(from: visibleCandidates)
+      guard !decidedChoices.isEmpty else {
+        likelyChoiceAdvice = nil
+        likelyChoiceAdviceStatus = .notEnoughMarkedSimilarDilemmas
+        return
+      }
+
+      let advice = LikelyChoiceAdvice(
         currentAnalysis: analysis,
         currentOptionIndices: entry.options.map(\.index),
-        decidedChoices: try similarDecidedChoices(limit: limit),
+        decidedChoices: decidedChoices,
         limit: limit
       )
+      likelyChoiceAdvice = advice
+      likelyChoiceAdviceStatus = advice == nil ? .unavailable : .available
     } catch {
       likelyChoiceAdvice = nil
+      likelyChoiceAdviceStatus = .unavailable
     }
   }
 
   func similarDilemmas(limit: Int = 5) -> [SimilarDilemma] {
     guard let analysis else { return [] }
 
-    return similarDilemmaCandidates()
-      .prefix(limit)
+    return visibleSimilarDilemmaCandidates(limit: limit)
       .map { candidate in
         SimilarDilemma(
           entry: candidate.entry,
           score: candidate.score,
-          sharedClusters: Self.sharedClusterLabels(
-            query: analysis,
-            candidate: candidate.analysis,
-            limit: 3
-          )
+          recordedChoiceTitle: recordedChoiceTitle(for: candidate)
         )
       }
   }
@@ -197,6 +216,10 @@ final class AnalysisDetailModel {
       exportDilemmaDraft: exportDilemmaDraft,
       onFeedbackSaved: onFeedbackSaved
     )
+  }
+
+  private func visibleSimilarDilemmaCandidates(limit: Int) -> [SimilarDilemmaCandidate] {
+    Array(similarDilemmaCandidates().prefix(limit))
   }
 
   private func similarDilemmaCandidates() -> [SimilarDilemmaCandidate] {
@@ -234,10 +257,11 @@ final class AnalysisDetailModel {
     }
   }
 
-  private func similarDecidedChoices(limit: Int) throws -> [SimilarDecidedChoice] {
+  private func similarDecidedChoices(
+    from candidates: [SimilarDilemmaCandidate]
+  ) throws -> [SimilarDecidedChoice] {
     var choices: [SimilarDecidedChoice] = []
-    for candidate in similarDilemmaCandidates() {
-      guard choices.count < limit else { break }
+    for candidate in candidates {
       guard
         let feedback = try loadFeedbackForAnalysisUseCase(
           entryID: candidate.entry.id,
@@ -256,67 +280,18 @@ final class AnalysisDetailModel {
     return choices
   }
 
-  private static func normalizedConflictVector(for analysis: DecisionAnalysis) -> [Int: Double]? {
-    let option1 = clusterScores(for: analysis, optionIndex: 1)
-    let option2 = clusterScores(for: analysis, optionIndex: 2)
-    let clusterIDs = Set(option1.keys).union(option2.keys)
-    let pairs: [(Int, Double)] = clusterIDs.compactMap { clusterID in
-      let value = abs((option1[clusterID] ?? 0) - (option2[clusterID] ?? 0))
-      guard value > 0 else { return nil }
-      return (clusterID, value)
-    }
-    let vector = Dictionary(uniqueKeysWithValues: pairs)
-    let magnitude = sqrt(vector.values.reduce(0) { $0 + ($1 * $1) })
-    guard magnitude > 0 else { return nil }
-    return vector.mapValues { $0 / magnitude }
-  }
-
-  private static func clusterScores(for analysis: DecisionAnalysis, optionIndex: Int) -> [Int: Double] {
-    let pairs: [(Int, Double)] = analysis.clusterProfiles
-      .filter { $0.optionIndex == optionIndex }
-      .map { ($0.clusterID, $0.score) }
-    return Dictionary(pairs, uniquingKeysWith: { first, _ in first })
-  }
-
-  private static func dot(_ lhs: [Int: Double], _ rhs: [Int: Double]) -> Double {
-    lhs.reduce(0) { total, pair in
-      total + (pair.value * (rhs[pair.key] ?? 0))
-    }
-  }
-
-  private static func sharedClusterLabels(
-    query: DecisionAnalysis,
-    candidate: DecisionAnalysis,
-    limit: Int
-  ) -> [SharedCluster] {
+  private func recordedChoiceTitle(for candidate: SimilarDilemmaCandidate) -> String? {
     guard
-      let queryVector = normalizedConflictVector(for: query),
-      let candidateVector = normalizedConflictVector(for: candidate)
+      let feedback = try? loadFeedbackForAnalysisUseCase(
+        entryID: candidate.entry.id,
+        analysisID: candidate.analysis.id
+      ),
+      let chosenOptionIndex = feedback.chosenOptionIndex
     else {
-      return []
+      return nil
     }
 
-    let labelPairs: [(Int, String)] = (query.clusterProfiles + candidate.clusterProfiles)
-      .map { ($0.clusterID, $0.label) }
-    let labels = Dictionary(labelPairs, uniquingKeysWith: { first, _ in first })
-
-    return queryVector.keys
-      .filter { candidateVector[$0] != nil }
-      .sorted {
-        let left = (queryVector[$0] ?? 0) * (candidateVector[$0] ?? 0)
-        let right = (queryVector[$1] ?? 0) * (candidateVector[$1] ?? 0)
-        if left == right {
-          return $0 < $1
-        }
-        return left > right
-      }
-      .prefix(limit)
-      .map { clusterID in
-        SharedCluster(
-          clusterID: clusterID,
-          label: labels[clusterID] ?? "Cluster \(clusterID)"
-        )
-      }
+    return optionTitle(for: chosenOptionIndex, in: candidate.entry)
   }
 
   private func applySavedFeedback() {
@@ -326,21 +301,27 @@ final class AnalysisDetailModel {
 
   private func optionTitle(for optionIndex: Int?) -> String {
     guard let optionIndex else { return "Not decided yet" }
-    return entry.options.first { $0.index == optionIndex }?.title ?? "Option \(optionIndex)"
+    return optionTitle(for: optionIndex, in: entry)
   }
+
+  private func optionTitle(for optionIndex: Int, in entry: DiaryEntry) -> String {
+    entry.options.first { $0.index == optionIndex }?.title ?? "Option \(optionIndex)"
+  }
+}
+
+enum LikelyChoiceAdviceStatus: Equatable {
+  case noAnalysis
+  case noSimilarDilemmas
+  case notEnoughMarkedSimilarDilemmas
+  case unavailable
+  case available
 }
 
 struct SimilarDilemma: Identifiable {
   var id: UUID { entry.id }
   let entry: DiaryEntry
   let score: Double
-  let sharedClusters: [SharedCluster]
-}
-
-struct SharedCluster: Identifiable {
-  var id: Int { clusterID }
-  let clusterID: Int
-  let label: String
+  let recordedChoiceTitle: String?
 }
 
 private struct SimilarDilemmaCandidate {
