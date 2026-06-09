@@ -16,12 +16,14 @@ final class AnalysisDetailModel {
   private(set) var isEditingFeedback = false
   private(set) var likelyChoiceAdvice: LikelyChoiceAdvice?
   private(set) var likelyChoiceAdviceStatus: LikelyChoiceAdviceStatus = .noAnalysis
+  private(set) var likelyChoiceSimilarDilemmas: [SimilarDilemma] = []
   var didSaveFeedback = false
   var exportURL: URL?
   var errorMessage: String?
 
   @ObservationIgnored private let saveFeedbackUseCase: SaveFeedbackUseCase
   @ObservationIgnored private let loadFeedbackForAnalysisUseCase: LoadFeedbackForAnalysisUseCase
+  @ObservationIgnored private let loadLikelyChoiceAdviceUseCase: LoadLikelyChoiceAdviceUseCase
   @ObservationIgnored private let exportDilemmaDraft: ExportDilemmaDraftUseCase
   @ObservationIgnored private let onFeedbackSaved: @MainActor () -> Void
 
@@ -32,6 +34,7 @@ final class AnalysisDetailModel {
     latestAnalyses: [UUID: DecisionAnalysis] = [:],
     saveFeedback: SaveFeedbackUseCase,
     loadFeedbackForAnalysis: LoadFeedbackForAnalysisUseCase,
+    loadLikelyChoiceAdvice: LoadLikelyChoiceAdviceUseCase,
     exportDilemmaDraft: ExportDilemmaDraftUseCase,
     onFeedbackSaved: @escaping @MainActor () -> Void
   ) {
@@ -41,6 +44,7 @@ final class AnalysisDetailModel {
     self.latestAnalyses = latestAnalyses
     self.saveFeedbackUseCase = saveFeedback
     self.loadFeedbackForAnalysisUseCase = loadFeedbackForAnalysis
+    self.loadLikelyChoiceAdviceUseCase = loadLikelyChoiceAdvice
     self.exportDilemmaDraft = exportDilemmaDraft
     self.onFeedbackSaved = onFeedbackSaved
     reloadSavedFeedback()
@@ -157,52 +161,26 @@ final class AnalysisDetailModel {
   }
 
   func reloadLikelyChoiceAdvice(limit: Int = 5) {
-    guard let analysis else {
-      likelyChoiceAdvice = nil
-      likelyChoiceAdviceStatus = .noAnalysis
-      return
-    }
-
     do {
-      let visibleCandidates = visibleSimilarDilemmaCandidates(limit: limit)
-      guard !visibleCandidates.isEmpty else {
-        likelyChoiceAdvice = nil
-        likelyChoiceAdviceStatus = .noSimilarDilemmas
-        return
-      }
-
-      let decidedChoices = try similarDecidedChoices(from: visibleCandidates)
-      guard !decidedChoices.isEmpty else {
-        likelyChoiceAdvice = nil
-        likelyChoiceAdviceStatus = .notEnoughMarkedSimilarDilemmas
-        return
-      }
-
-      let advice = LikelyChoiceAdvice(
-        currentAnalysis: analysis,
-        currentOptionIndices: entry.options.map(\.index),
-        decidedChoices: decidedChoices,
+      let snapshot = try loadLikelyChoiceAdviceUseCase(
+        entry: entry,
+        analysis: analysis,
+        allEntries: allEntries,
+        latestAnalyses: latestAnalyses,
         limit: limit
       )
-      likelyChoiceAdvice = advice
-      likelyChoiceAdviceStatus = advice == nil ? .unavailable : .available
+      likelyChoiceAdvice = snapshot.advice
+      likelyChoiceAdviceStatus = snapshot.status
+      likelyChoiceSimilarDilemmas = snapshot.similarDilemmas
     } catch {
       likelyChoiceAdvice = nil
       likelyChoiceAdviceStatus = .unavailable
+      likelyChoiceSimilarDilemmas = []
     }
   }
 
   func similarDilemmas(limit: Int = 5) -> [SimilarDilemma] {
-    guard let analysis else { return [] }
-
-    return visibleSimilarDilemmaCandidates(limit: limit)
-      .map { candidate in
-        SimilarDilemma(
-          entry: candidate.entry,
-          score: candidate.score,
-          recordedChoiceTitle: recordedChoiceTitle(for: candidate)
-        )
-      }
+    Array(likelyChoiceSimilarDilemmas.prefix(limit))
   }
 
   func makeSimilarDilemmaModel(for match: SimilarDilemma) -> AnalysisDetailModel {
@@ -213,85 +191,10 @@ final class AnalysisDetailModel {
       latestAnalyses: latestAnalyses,
       saveFeedback: saveFeedbackUseCase,
       loadFeedbackForAnalysis: loadFeedbackForAnalysisUseCase,
+      loadLikelyChoiceAdvice: loadLikelyChoiceAdviceUseCase,
       exportDilemmaDraft: exportDilemmaDraft,
       onFeedbackSaved: onFeedbackSaved
     )
-  }
-
-  private func visibleSimilarDilemmaCandidates(limit: Int) -> [SimilarDilemmaCandidate] {
-    Array(similarDilemmaCandidates().prefix(limit))
-  }
-
-  private func similarDilemmaCandidates() -> [SimilarDilemmaCandidate] {
-    guard
-      let analysis
-    else {
-      return []
-    }
-
-    return allEntries.compactMap { candidateEntry in
-      guard
-        candidateEntry.id != entry.id,
-        let candidateAnalysis = latestAnalyses[candidateEntry.id],
-        let score = LikelyChoiceAdvice.conflictSimilarity(
-          between: analysis,
-          and: candidateAnalysis
-        )
-      else {
-        return nil
-      }
-
-      guard score.isFinite, score > 0 else { return nil }
-
-      return SimilarDilemmaCandidate(
-        entry: candidateEntry,
-        analysis: candidateAnalysis,
-        score: score
-      )
-    }
-    .sorted {
-      if $0.score == $1.score {
-        return $0.entry.updatedAt > $1.entry.updatedAt
-      }
-      return $0.score > $1.score
-    }
-  }
-
-  private func similarDecidedChoices(
-    from candidates: [SimilarDilemmaCandidate]
-  ) throws -> [SimilarDecidedChoice] {
-    var choices: [SimilarDecidedChoice] = []
-    for candidate in candidates {
-      guard
-        let feedback = try loadFeedbackForAnalysisUseCase(
-          entryID: candidate.entry.id,
-          analysisID: candidate.analysis.id
-        ),
-        let chosenOptionIndex = feedback.chosenOptionIndex
-      else {
-        continue
-      }
-
-      choices.append(SimilarDecidedChoice(
-        analysis: candidate.analysis,
-        chosenOptionIndex: chosenOptionIndex
-      ))
-    }
-    return choices
-  }
-
-  private func recordedChoiceTitle(for candidate: SimilarDilemmaCandidate) -> String? {
-    guard
-      let feedback = try? loadFeedbackForAnalysisUseCase(
-        entryID: candidate.entry.id,
-        analysisID: candidate.analysis.id
-      ),
-      let chosenOptionIndex = feedback.chosenOptionIndex
-    else {
-      return nil
-    }
-
-    return optionTitle(for: chosenOptionIndex, in: candidate.entry)
   }
 
   private func applySavedFeedback() {
@@ -307,25 +210,4 @@ final class AnalysisDetailModel {
   private func optionTitle(for optionIndex: Int, in entry: DiaryEntry) -> String {
     entry.options.first { $0.index == optionIndex }?.title ?? "Option \(optionIndex)"
   }
-}
-
-enum LikelyChoiceAdviceStatus: Equatable {
-  case noAnalysis
-  case noSimilarDilemmas
-  case notEnoughMarkedSimilarDilemmas
-  case unavailable
-  case available
-}
-
-struct SimilarDilemma: Identifiable {
-  var id: UUID { entry.id }
-  let entry: DiaryEntry
-  let score: Double
-  let recordedChoiceTitle: String?
-}
-
-private struct SimilarDilemmaCandidate {
-  let entry: DiaryEntry
-  let analysis: DecisionAnalysis
-  let score: Double
 }

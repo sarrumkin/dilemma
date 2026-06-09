@@ -98,6 +98,7 @@ struct AppRootView: View {
       latestAnalyses: diaryModel.latestAnalyses,
       saveFeedback: dependencies.useCases.saveFeedback,
       loadFeedbackForAnalysis: dependencies.useCases.loadFeedbackForAnalysis,
+      loadLikelyChoiceAdvice: dependencies.useCases.loadLikelyChoiceAdvice,
       exportDilemmaDraft: dependencies.useCases.exportDilemmaDraft,
       onFeedbackSaved: {
         statisticsModel.reload()

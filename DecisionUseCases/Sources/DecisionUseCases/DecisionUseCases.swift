@@ -9,6 +9,7 @@ public struct DecisionUseCases: Sendable {
   public let createAnalyzedEntry: CreateAnalyzedEntryUseCase
   public let saveFeedback: SaveFeedbackUseCase
   public let loadFeedbackForAnalysis: LoadFeedbackForAnalysisUseCase
+  public let loadLikelyChoiceAdvice: LoadLikelyChoiceAdviceUseCase
   public let loadPreferenceStatistics: LoadPreferenceStatisticsUseCase
   public let exportDiaryData: ExportDiaryDataUseCase
   public let exportDilemmaDraft: ExportDilemmaDraftUseCase
@@ -30,6 +31,7 @@ public struct DecisionUseCases: Sendable {
       createAnalyzedEntry: CreateAnalyzedEntryUseCase(vault: vault, analysisGenerator: analysisGenerator),
       saveFeedback: SaveFeedbackUseCase(vault: vault),
       loadFeedbackForAnalysis: LoadFeedbackForAnalysisUseCase(vault: vault),
+      loadLikelyChoiceAdvice: LoadLikelyChoiceAdviceUseCase(vault: vault),
       loadPreferenceStatistics: LoadPreferenceStatisticsUseCase(vault: vault),
       exportDiaryData: ExportDiaryDataUseCase(vault: vault),
       exportDilemmaDraft: ExportDilemmaDraftUseCase(),
@@ -47,6 +49,7 @@ public struct DecisionUseCases: Sendable {
       createAnalyzedEntry: CreateAnalyzedEntryUseCase(vault: vault, analysisGenerator: analysisGenerator),
       saveFeedback: SaveFeedbackUseCase(vault: vault),
       loadFeedbackForAnalysis: LoadFeedbackForAnalysisUseCase(vault: vault),
+      loadLikelyChoiceAdvice: LoadLikelyChoiceAdviceUseCase(vault: vault),
       loadPreferenceStatistics: LoadPreferenceStatisticsUseCase(vault: vault),
       exportDiaryData: ExportDiaryDataUseCase(vault: vault),
       exportDilemmaDraft: ExportDilemmaDraftUseCase(),

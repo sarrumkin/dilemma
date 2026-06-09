@@ -30,7 +30,7 @@ struct LikelyChoiceRecommendationRegressionTests {
       "Bundled multilingual MiniLM model folder or Bhatia SQLite asset is not present."
     )
   )
-  func socksAdviceIsAmbiguousForBikeSpeedAndReportQualityChoices() async throws {
+  func socksAdviceKeepsSlightOptionTwoLeadForBikeSpeedAndReportQualityChoices() async throws {
     let fixture = try Self.loadFixture()
     let socksDraft = try #require(fixture["quality_vs_speed-socks"])
     let bikeDraft = try #require(fixture["quality_vs_speed-bike-repair"])
@@ -53,7 +53,8 @@ struct LikelyChoiceRecommendationRegressionTests {
       ]
     )
 
-    let advice = try #require(LikelyChoiceAdvice(
+    let recommendationService = DecisionRecommendationService()
+    let advice = try #require(recommendationService.likelyChoiceAdvice(
       currentAnalysis: socksAnalysis,
       currentOptionIndices: [1, 2],
       decidedChoices: [
@@ -69,7 +70,7 @@ struct LikelyChoiceRecommendationRegressionTests {
     print("LIKELY_CHOICE_REGRESSION_SUPPORT_BY_OPTION=\(advice.supportByOption)")
 
     #expect(advice.decidedDilemmaCount == 2)
-    #expect(advice.optionIndex == nil)
+    #expect(advice.optionIndex == 2)
     #expect((advice.optionWeights[1] ?? 0) > 0)
     #expect((advice.optionWeights[2] ?? 0) > 0)
     #expect(abs((advice.supportByOption[1] ?? 0) - 0.5) < 0.02)

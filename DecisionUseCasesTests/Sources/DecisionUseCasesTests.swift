@@ -215,6 +215,181 @@ struct DecisionUseCasesTests {
   }
 
   @Test
+  func likelyChoiceAdviceReturnsNoAnalysisStatus() throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(databaseURL: url)
+    let useCases = DecisionUseCases.testing(
+      vault: vault,
+      analysisGenerator: StubAnalysisGenerator()
+    )
+    try useCases.prepareDiary()
+
+    let entry = DiaryEntry(
+      rawText: "Should I choose?",
+      options: [
+        DiaryOption(index: 1, title: "One", reasons: []),
+        DiaryOption(index: 2, title: "Two", reasons: []),
+      ]
+    )
+
+    let snapshot = try useCases.loadLikelyChoiceAdvice(
+      entry: entry,
+      analysis: nil,
+      allEntries: [entry],
+      latestAnalyses: [:]
+    )
+
+    #expect(snapshot.status == .noAnalysis)
+    #expect(snapshot.advice == nil)
+    #expect(snapshot.similarDilemmas.isEmpty)
+  }
+
+  @Test
+  func likelyChoiceAdviceReturnsNoSimilarDilemmasStatus() async throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(databaseURL: url)
+    let useCases = DecisionUseCases.testing(
+      vault: vault,
+      analysisGenerator: StubAnalysisGenerator()
+    )
+    try useCases.prepareDiary()
+
+    let created = try await useCases.createAnalyzedEntry(.sample())
+    let entry = try #require(created.entries.first)
+    let analysis = try #require(created.latestAnalyses[entry.id])
+
+    let snapshot = try useCases.loadLikelyChoiceAdvice(
+      entry: entry,
+      analysis: analysis,
+      allEntries: [entry],
+      latestAnalyses: created.latestAnalyses
+    )
+
+    #expect(snapshot.status == .noSimilarDilemmas)
+    #expect(snapshot.advice == nil)
+    #expect(snapshot.similarDilemmas.isEmpty)
+  }
+
+  @Test
+  func likelyChoiceAdviceReturnsNotEnoughMarkedSimilarDilemmasStatus() async throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(databaseURL: url)
+    let useCases = DecisionUseCases.testing(
+      vault: vault,
+      analysisGenerator: StubAnalysisGenerator()
+    )
+    try useCases.prepareDiary()
+
+    let first = try await useCases.createAnalyzedEntry(.sample())
+    let currentEntry = try #require(first.entries.first)
+    let currentAnalysis = try #require(first.latestAnalyses[currentEntry.id])
+    var secondCommand = EntryDraftCommand.sample()
+    secondCommand.rawText = "Should I take a second path?"
+    let second = try await useCases.createAnalyzedEntry(secondCommand)
+
+    let snapshot = try useCases.loadLikelyChoiceAdvice(
+      entry: currentEntry,
+      analysis: currentAnalysis,
+      allEntries: second.entries,
+      latestAnalyses: second.latestAnalyses
+    )
+
+    #expect(snapshot.status == .notEnoughMarkedSimilarDilemmas)
+    #expect(snapshot.advice == nil)
+    #expect(snapshot.similarDilemmas.count == 1)
+    #expect(snapshot.similarDilemmas.first?.recordedChoiceTitle == nil)
+  }
+
+  @Test
+  func likelyChoiceAdviceReturnsAvailableAdviceFromMarkedSimilarDilemmas() async throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(databaseURL: url)
+    let useCases = DecisionUseCases.testing(
+      vault: vault,
+      analysisGenerator: StubAnalysisGenerator()
+    )
+    try useCases.prepareDiary()
+
+    let first = try await useCases.createAnalyzedEntry(.sample())
+    let currentEntry = try #require(first.entries.first)
+    let currentAnalysis = try #require(first.latestAnalyses[currentEntry.id])
+    var secondCommand = EntryDraftCommand.sample()
+    secondCommand.rawText = "Should I choose the matching path?"
+    let second = try await useCases.createAnalyzedEntry(secondCommand)
+    let candidateEntry = try #require(second.entries.first { $0.id != currentEntry.id })
+    let candidateAnalysis = try #require(second.latestAnalyses[candidateEntry.id])
+
+    try useCases.saveFeedback(
+      FeedbackCommand(
+        entryID: candidateEntry.id,
+        analysisID: candidateAnalysis.id,
+        conflictWasUseful: true,
+        chosenOptionIndex: 1
+      )
+    )
+
+    let snapshot = try useCases.loadLikelyChoiceAdvice(
+      entry: currentEntry,
+      analysis: currentAnalysis,
+      allEntries: second.entries,
+      latestAnalyses: second.latestAnalyses
+    )
+
+    #expect(snapshot.status == .available)
+    #expect(snapshot.advice?.optionIndex == 1)
+    #expect(snapshot.advice?.decidedDilemmaCount == 1)
+    #expect(snapshot.similarDilemmas.count == 1)
+    #expect(snapshot.similarDilemmas.first?.recordedChoiceTitle == candidateEntry.options.first?.title)
+  }
+
+  @Test
+  func likelyChoiceAdviceSortsEqualScoreSimilarDilemmasByUpdatedAtDescending() async throws {
+    let url = FileManager.default.temporaryDirectory
+      .appendingPathComponent(UUID().uuidString)
+      .appendingPathExtension("sqlite")
+    let vault = DiaryVault(databaseURL: url)
+    let useCases = DecisionUseCases.testing(
+      vault: vault,
+      analysisGenerator: StubAnalysisGenerator()
+    )
+    try useCases.prepareDiary()
+
+    let first = try await useCases.createAnalyzedEntry(.sample())
+    let currentEntry = try #require(first.entries.first)
+    let currentAnalysis = try #require(first.latestAnalyses[currentEntry.id])
+    var olderCommand = EntryDraftCommand.sample()
+    olderCommand.rawText = "Should I use the older similar entry?"
+    _ = try await useCases.createAnalyzedEntry(olderCommand)
+    var newerCommand = EntryDraftCommand.sample()
+    newerCommand.rawText = "Should I use the newer similar entry?"
+    let newerSnapshot = try await useCases.createAnalyzedEntry(newerCommand)
+    var olderEntry = try #require(newerSnapshot.entries.first { $0.rawText == olderCommand.rawText })
+    var newerEntry = try #require(newerSnapshot.entries.first { $0.rawText == newerCommand.rawText })
+    olderEntry.updatedAt = Date(timeIntervalSince1970: 10)
+    newerEntry.updatedAt = Date(timeIntervalSince1970: 20)
+    let allEntries = [currentEntry, olderEntry, newerEntry]
+
+    let snapshot = try useCases.loadLikelyChoiceAdvice(
+      entry: currentEntry,
+      analysis: currentAnalysis,
+      allEntries: allEntries,
+      latestAnalyses: newerSnapshot.latestAnalyses,
+      limit: 2
+    )
+
+    #expect(snapshot.status == .notEnoughMarkedSimilarDilemmas)
+    #expect(snapshot.similarDilemmas.map(\.entry.id) == [newerEntry.id, olderEntry.id])
+  }
+
+  @Test
   func exportSingleDilemmaAsDraftJSON() async throws {
     let url = FileManager.default.temporaryDirectory
       .appendingPathComponent(UUID().uuidString)
