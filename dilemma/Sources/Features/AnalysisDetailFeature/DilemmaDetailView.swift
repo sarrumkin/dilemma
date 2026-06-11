@@ -382,7 +382,6 @@ private struct SimilarDilemmaRow: View {
       HStack(alignment: .firstTextBaseline, spacing: 12) {
         Text(match.entry.rawText)
           .font(.subheadline.weight(.semibold))
-          .lineLimit(2)
         Spacer()
         Text(match.score.formatted(.percent.precision(.fractionLength(0))))
           .font(.caption.monospacedDigit().weight(.semibold))
@@ -424,7 +423,7 @@ private struct DilemmaAttributesContent: View {
                 attributeID: attribute.attribute.attributeID,
                 fallback: attribute.attribute.name
               ))
-                .lineLimit(2)
+              .lineLimit(2)
               Spacer()
               Text(format(Double(attribute.score)))
                 .font(.caption.monospacedDigit())
