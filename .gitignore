@@ -25,7 +25,7 @@ __pycache__/
 # measurement, but lean git keeps those large files outside version control.
 .hf_cache/
 /models/
-outputs/bhatia_reconstruction/
+outputs/
 отчет/
 презентация/
 DecisionKernel/Resources/Models/**
