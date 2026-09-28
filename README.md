@@ -86,17 +86,6 @@ In Xcode, select the `dilemma` scheme and run it on an iOS 18+ Simulator. The mo
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    UI["SwiftUI features"] --> UC["DecisionUseCases"]
-    UI --> DM["DecisionModels"]
-    UC --> DM
-    UC --> DK["DecisionKernel"]
-    UC --> DV["DiaryVault"]
-    DK --> ASSETS["Bundled model and attribute assets"]
-    DV --> DB["Private SQLite database"]
-```
-
 | Module | Responsibility |
 | --- | --- |
 | `dilemma` | SwiftUI interface, navigation, localization, and composition root |
