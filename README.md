@@ -5,7 +5,7 @@
 <h1 align="center">Dilemma</h1>
 
 <p align="center">
-  <strong>Приватный дневник решений, который помогает увидеть не только варианты — но и ценности за ними.</strong>
+  <strong>A private decision journal that helps you see the values behind your options.</strong>
 </p>
 
 <p align="center">
@@ -15,124 +15,125 @@
   <img alt="Languages: Russian and English" src="https://img.shields.io/badge/languages-RU%20%7C%20EN-5b5bd6">
 </p>
 
-Dilemma помогает разобрать сложный выбор между двумя вариантами: структурировать выгоды и издержки, найти скрытые конфликты ценностей и сохранить ход размышлений. Семантическая модель работает прямо на устройстве — без аккаунта, backend и отправки личного текста на сервер.
+Dilemma helps you think through a choice between two options. You record the benefits and costs of each option, examine the competing priorities, and keep a record of your reasoning. The semantic model runs on your device: there is no account, backend, or upload of your personal text.
 
-Это не приложение, которое решает за человека. Оно делает решение **объяснимым**: показывает, что на самом деле конкурирует внутри дилеммы, и со временем помогает опираться на собственный опыт похожих выборов.
+The app does not decide for you. It makes your reasoning easier to inspect and lets you draw on similar choices you have made before.
 
-## Почему Dilemma
+See the [screenshots page](docs/screenshots.md) for the journal, dilemma view, decision feedback, and similar dilemmas.
 
-- **Глубже обычного списка «за и против».** Аргументы сопоставляются с 207 атрибутами решений и собираются в 25 смысловых кластеров: от безопасности и карьеры до отношений и благополучия.
-- **Полностью локальный анализ.** Текст дилемм, причины, embeddings, результаты и обратная связь остаются на устройстве.
-- **Работает на русском и английском.** В приложение встроена мультиязычная модель `paraphrase-multilingual-MiniLM-L12-v2`.
-- **Опирается на вашу историю — без обучения в облаке.** Отмеченные решения используются, чтобы находить похожие дилеммы и показывать, какой вариант вы чаще выбирали в сопоставимых ситуациях.
-- **Данные принадлежат пользователю.** Дилеммы можно импортировать из JSON, весь дневник — экспортировать или удалить целиком.
+## Why Dilemma
 
-## Как это работает
+- **More than a pros-and-cons list.** The app compares your reasons with 207 decision attributes to highlight what matters in each option.
+- **On-device analysis.** Dilemma texts, reasons, embeddings, results, and feedback stay on your device.
+- **Russian and English support.** The app bundles the multilingual `paraphrase-multilingual-MiniLM-L12-v2` model.
+- **Your history, without cloud training.** Recorded decisions help the app find similar dilemmas and show which option you chose in comparable situations.
+- **Control over your data.** Import individual dilemmas from JSON, export the full journal, or delete it.
+
+## How it works
 
 ```mermaid
 flowchart LR
-    A["Дилемма и 2 варианта"] --> B["3 выгоды + 3 издержки<br/>для каждого варианта"]
-    B --> C["Локальные embeddings"]
-    C --> D["207 атрибутов решения"]
-    D --> E["25 кластеров ценностей"]
-    E --> F["Карта конфликтов и<br/>похожие прошлые решения"]
+    A["Dilemma and two options"] --> B["Three benefits and three costs<br/>for each option"]
+    B --> C["On-device embeddings"]
+    C --> D["207 decision attributes"]
+    D --> E["Option profiles, trade-offs,<br/>and similar past decisions"]
 ```
 
-Пользователь описывает два варианта и по три выгоды и издержки для каждого. `DecisionKernel` кодирует 12 причин локальной embedding-моделью, сопоставляет их с исследовательской таксономией и строит профили вариантов. Результат сохраняется в личном дневнике вместе с финальным выбором — если пользователь решит его отметить.
+You describe two options and give three benefits and three costs for each. `DecisionKernel` encodes the 12 reasons with a local embedding model, compares them with the research attribute set, and builds a profile for each option. The result is saved in your private journal. You can also record the choice you eventually make.
 
-## Возможности
+## Features
 
-- создание и локальный анализ структурированных дилемм;
-- сильнейшие положительные и отрицательные атрибуты каждого варианта;
-- тематические кластеры и карта ключевых конфликтов;
-- поиск семантически похожих записей в личном дневнике;
-- подсказка о вероятном выборе на основе **только отмеченных прошлых решений**;
-- статистика по записям, решениям и повторяющимся темам;
-- импорт отдельных дилемм и экспорт всего дневника в JSON;
-- удаление одной записи или всех пользовательских данных;
-- русский и английский интерфейс, светлая и тёмная темы.
+- Create and analyze structured dilemmas locally.
+- See the strongest positive and negative attributes for each option.
+- Examine the main trade-offs between options.
+- Find semantically similar entries in your own journal.
+- Get a likely-choice hint based **only on past decisions you recorded**.
+- View statistics about journal entries and recorded decisions.
+- Import individual dilemmas and export the full journal as JSON.
+- Delete one entry or all user data.
+- Use the Russian or English interface in light or dark mode.
 
-## Быстрый старт
+## Quick start
 
-### Требования
+### Requirements
 
-- macOS и Xcode 16+;
-- iOS 18+ Simulator или физическое устройство;
-- [Tuist 4](https://docs.tuist.dev/en/guides/quick-start/install-tuist);
-- Python 3.12 для подготовки model assets;
-- около 500 МБ свободного места для основной мультиязычной модели.
+- macOS with Xcode 16 or later.
+- An iOS 18+ Simulator or a physical device.
+- [Tuist 4](https://docs.tuist.dev/en/guides/quick-start/install-tuist).
+- Python 3.12 to prepare model assets.
+- About 500 MB of free space for the main multilingual model.
 
-### Запуск
+### Run the app
 
 ```bash
-# 1. Установите Tuist
+# 1. Install Tuist
 brew tap tuist/tuist
 brew install --formula tuist
 
-# 2. Подготовьте Python-окружение
+# 2. Create a Python environment
 /opt/homebrew/bin/python3.12 -m venv .venv
 .venv/bin/pip install -r tools/requirements.txt
 
-# 3. Загрузите локальную модель
+# 3. Download the local model
 .venv/bin/python tools/download_bundled_model.py \
   --model paraphrase-multilingual-MiniLM-L12-v2
 
-# 4. Сгенерируйте workspace и откройте его в Xcode
+# 4. Generate and open the Xcode workspace
 ./tools/generate_project.sh --open
 ```
 
-В Xcode выберите схему `dilemma` и запустите приложение на iOS 18+ Simulator. Модель скачивается только на этапе подготовки проекта; runtime приложения не обращается к Hugging Face.
+In Xcode, select the `dilemma` scheme and run it on an iOS 18+ Simulator. The model is downloaded while preparing the project; the app does not contact Hugging Face at runtime.
 
-## Архитектура
+## Architecture
 
 ```mermaid
 flowchart TD
-    UI["SwiftUI Features"] --> UC["DecisionUseCases"]
+    UI["SwiftUI features"] --> UC["DecisionUseCases"]
     UI --> DM["DecisionModels"]
     UC --> DM
     UC --> DK["DecisionKernel"]
     UC --> DV["DiaryVault"]
-    DK --> ASSETS["Bundled model + attribute assets"]
+    DK --> ASSETS["Bundled model and attribute assets"]
     DV --> DB["Private SQLite database"]
 ```
 
-| Модуль | Ответственность |
+| Module | Responsibility |
 | --- | --- |
-| `dilemma` | SwiftUI-интерфейс, навигация, локализация и composition root |
-| `DecisionModels` | Общие команды, модели дневника, анализа, feedback и export DTO |
-| `DecisionUseCases` | Пользовательские сценарии и оркестрация между UI, анализом и хранилищем |
-| `DecisionKernel` | Embeddings, scoring, кластеризация, конфликты и similarity |
-| `DiaryVault` | Приватное SQLite-хранилище записей, анализов и обратной связи |
+| `dilemma` | SwiftUI interface, navigation, localization, and composition root |
+| `DecisionModels` | Shared commands and models for journal entries, analyses, feedback, and export |
+| `DecisionUseCases` | User workflows across the interface, analysis engine, and storage |
+| `DecisionKernel` | Embeddings, attribute scoring, trade-offs, and similarity |
+| `DiaryVault` | Private SQLite storage for entries, analyses, and feedback |
 
-Граница зависимостей намеренная: UI не обращается к kernel или базе напрямую, kernel ничего не знает о пользовательском хранилище, а `DiaryVault` — единственный модуль, который сохраняет приватные данные. Подробнее — в [документе об архитектуре](docs/architecture.md).
+The UI does not access the analysis engine or database directly. The engine does not know about user storage, and `DiaryVault` is the only module that persists private data. See the [architecture document](docs/architecture.md) for details.
 
-## Технологии
+## Tech stack
 
-| Задача | Решение |
+| Purpose | Technology |
 | --- | --- |
-| UI | SwiftUI, Observation |
-| Язык | Swift 6 |
-| Генерация проекта | Tuist |
-| Локальные embeddings | [`swift-embeddings`](https://github.com/jkrukowski/swift-embeddings) |
-| Основная модель | `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` |
-| Хранение | SQLite3 |
-| Тестирование | Swift Testing, pytest |
+| Interface | SwiftUI, Observation |
+| Language | Swift 6 |
+| Project generation | Tuist |
+| On-device embeddings | [`swift-embeddings`](https://github.com/jkrukowski/swift-embeddings) |
+| Main model | `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` |
+| Storage | SQLite3 |
+| Tests | Swift Testing, pytest |
 
-## Производительность
+## Performance
 
-Текущий baseline для анализа одной дилеммы из 12 аргументов на iPhone 16 Simulator / iOS 18.2:
+Baseline for analyzing one dilemma with 12 reasons on an iPhone 16 Simulator running iOS 18.2:
 
-| Этап | Время |
+| Stage | Time |
 | --- | ---: |
-| Загрузка модели | 561,9 мс |
-| Построение embeddings | 127,6 мс |
-| Scoring и агрегация | 11,8 мс |
+| Model loading | 561.9 ms |
+| Embedding generation | 127.6 ms |
+| Scoring and aggregation | 11.8 ms |
 
-Это измерения симулятора, а не обещание для любого устройства. Полная методика, memory baseline и release-gate описаны в [MVP release prep](docs/mvp_release_prep.md).
+These are simulator measurements, not a guarantee for every device. The method, memory baseline, and release checks are documented in [MVP release prep](docs/mvp_release_prep.md).
 
-## Проверка проекта
+## Tests
 
-Для полного набора интеграционных и экспериментальных тестов дополнительно понадобится английская L12-модель:
+The full integration and experiment suite also needs the English L12 model:
 
 ```bash
 .venv/bin/python tools/download_bundled_model.py --model all-MiniLM-L12-v2
@@ -144,22 +145,21 @@ xcodebuild test \
   -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2'
 ```
 
-Проверить только offline assets:
+To check only the offline assets:
 
 ```bash
 .venv/bin/python -m pytest tools/test_attribute_assets.py
 ```
 
-Подробные команды для kernel и similarity-экспериментов собраны в [DecisionKernelTests/README.md](DecisionKernelTests/README.md).
+See [DecisionKernelTests/README.md](DecisionKernelTests/README.md) for more kernel and similarity experiment commands.
 
-## Исследовательская основа
+## Research background
 
-Таксономия проекта опирается на работу Sudeep Bhatia и соавторов — [«Computational analysis of 100 K choice dilemmas: Decision attributes, trade-off structures, and model-based prediction»](https://doi.org/10.1073/pnas.2406489122), PNAS, 2025.
+The project's attribute set draws on Sudeep Bhatia and colleagues' [“Computational analysis of 100 K choice dilemmas: Decision attributes, trade-off structures, and model-based prediction”](https://doi.org/10.1073/pnas.2406489122), PNAS, 2025.
 
-В production asset зафиксированы 207 атрибутов и восстановленная Ward-кластеризация по реальным описаниям вариантов выбора. Генерация embeddings и сборка SQLite assets выполняются offline и воспроизводятся скриптами из `tools/`; приложение использует уже подготовленные read-only ресурсы.
+The production asset contains 207 decision attributes. Embeddings and SQLite assets are generated offline by scripts in `tools/`; the app uses the prepared read-only resources.
 
-Актуальная публичная редакция исследования: [Attribute Projections for Conflict Similarity in Text Embeddings](https://github.com/sarrumkin/concept-projection-dilemmas). Английские README и notebook, все данные, графики и два режима воспроизведения; Concept207 — основной предмет исследования, Hybrid50 — второстепенная гипотеза.
-
+The related public study is [Attribute Projections for Conflict Similarity in Text Embeddings](https://github.com/sarrumkin/concept-projection-dilemmas). Its English README and notebook provide the data, figures, and reproduction paths. Concept207 is the primary representation studied; Hybrid50 is a secondary hypothesis.
 
 ```bash
 .venv/bin/python tools/generate_attribute_assets.py \
@@ -170,30 +170,30 @@ xcodebuild test \
 .venv/bin/python tools/generate_production_assets.py
 ```
 
-## Структура репозитория
+## Repository layout
 
 ```text
 .
-├── dilemma/                 # iOS app и SwiftUI features
-├── DecisionModels/          # общие domain-модели
-├── DecisionUseCases/        # application layer
-├── DecisionKernel/          # локальный analysis engine и assets
-├── DiaryVault/              # приватное SQLite-хранилище
-├── *Tests/                  # unit, integration и experiment suites
-├── tools/                   # подготовка моделей и datasets
-├── reports/                 # quality и performance reports
-├── docs/                    # архитектура и release prep
+├── dilemma/                 # iOS app and SwiftUI features
+├── DecisionModels/          # shared domain models
+├── DecisionUseCases/        # application workflows
+├── DecisionKernel/          # local analysis engine and assets
+├── DiaryVault/              # private SQLite storage
+├── *Tests/                  # unit, integration, and experiment suites
+├── tools/                   # model and dataset preparation
+├── reports/                 # quality and performance reports
+├── docs/                    # architecture and release preparation
 └── Project.swift            # Tuist manifest
 ```
 
-## Статус проекта
+## Project status
 
-Dilemma находится на стадии исследовательского MVP. Локальный анализ, дневник, feedback, статистика, импорт/экспорт и privacy controls реализованы; перед публичным релизом остаются проверки на физических устройствах и финальный QA.
+Dilemma is a research MVP. Local analysis, the journal, feedback, statistics, import and export, and privacy controls are implemented. Testing on physical devices and final QA are still needed before shipping the app.
 
-## История разработки
+## Development history
 
-[Коммиты основной ветки](https://github.com/sarrumkin/dilemma/commits/main) показывают развитие приложения по датам; [остальные ветки](https://github.com/sarrumkin/dilemma/branches) сохраняют параллельные эксперименты и рабочие этапы. Исходные даты и авторство коммитов сохранены. Перед публикацией из истории удалён локальный экспорт дневника, поэтому часть хэшей коммитов изменилась.
+[Commits on `main`](https://github.com/sarrumkin/dilemma/commits/main) show how the app developed over time; [other branches](https://github.com/sarrumkin/dilemma/branches) preserve parallel experiments and work stages. The original authorship and commit dates were retained. A local journal export was removed from the history before publication, so some commit hashes changed.
 
-## Лицензия
+## License
 
-Исходный код опубликован под [лицензией MIT](LICENSE). Сведения о материалах Bhatia и их лицензии приведены в [NOTICE](NOTICE).
+The source code is available under the [MIT License](LICENSE). See [NOTICE](NOTICE) for attribution and license details for the Bhatia materials.
