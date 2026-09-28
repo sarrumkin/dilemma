@@ -5,6 +5,12 @@ import SwiftUI
 struct DilemmaDetailView: View {
   @Bindable var model: AnalysisDetailModel
   @State private var isShowingAnalysis = false
+  @State private var expandedOptionIDs: Set<UUID>
+
+  init(model: AnalysisDetailModel) {
+    self.model = model
+    _expandedOptionIDs = State(initialValue: Set(model.entry.options.map(\.id)))
+  }
 
   var body: some View {
     List {
@@ -13,13 +19,18 @@ struct DilemmaDetailView: View {
       }
 
       ForEach(model.entry.options) { option in
-        Section(option.title) {
-          ForEach(option.reasons) { reason in
-            HStack(alignment: .top, spacing: 12) {
-              Image(systemName: reason.polarity == .benefit ? "plus.circle" : "minus.circle")
-                .foregroundStyle(reason.polarity == .benefit ? .green : .red)
-              Text(reason.text)
+        Section {
+          DisclosureGroup(isExpanded: isOptionExpanded(option.id)) {
+            ForEach(option.reasons) { reason in
+              HStack(alignment: .top, spacing: 12) {
+                Image(systemName: reason.polarity == .benefit ? "plus.circle" : "minus.circle")
+                  .foregroundStyle(reason.polarity == .benefit ? .green : .red)
+                Text(reason.text)
+              }
             }
+          } label: {
+            Text(option.title)
+              .font(.headline)
           }
         }
       }
@@ -146,6 +157,18 @@ struct DilemmaDetailView: View {
           Label("Share JSON", systemImage: "doc")
         }
         .accessibilityIdentifier("share-entry-export-button")
+      }
+    }
+  }
+
+  private func isOptionExpanded(_ optionID: UUID) -> Binding<Bool> {
+    Binding {
+      expandedOptionIDs.contains(optionID)
+    } set: { isExpanded in
+      if isExpanded {
+        expandedOptionIDs.insert(optionID)
+      } else {
+        expandedOptionIDs.remove(optionID)
       }
     }
   }
